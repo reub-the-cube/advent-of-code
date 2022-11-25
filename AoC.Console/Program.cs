@@ -14,7 +14,7 @@ Console.ReadKey();
 
 void InitialiseChallenge(int day)
 {
-    var input = File.ReadAllLines($"day{day}input.txt");
+    var input = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"day{day}input.txt"));
 
     var dayProcesser = new Day1();
     dayProcesser.Initialise(input);
