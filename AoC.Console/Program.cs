@@ -3,7 +3,7 @@
 using AoC.Day01;
 
 Console.WriteLine("Hello!");
-Console.WriteLine("Which challenge would you like to run? Use a number from 1 to 50.");
+Console.WriteLine("Which day's challenges would you like to run? Use a number from 1 to 25.");
 var challengeNumberInput = Console.ReadLine();
 
 var challengeNumber = ValidateChallengeNumber(challengeNumberInput);
@@ -19,6 +19,9 @@ void InitialiseChallenge(int day)
     var sonarScannerReport = new SonarScannerReport(input);
     var numberOfIncreases = sonarScannerReport.GetIncreasesInDepthByDay();
     Console.WriteLine($"Final answer: {numberOfIncreases}");
+
+    var numberOfSlidingIncreases = sonarScannerReport.GetIncreasesInDepthBySlidingWindow();
+    Console.WriteLine($"Final answer: {numberOfSlidingIncreases}");
 }
 
 (bool IsValid, int Value) ValidateChallengeNumber(string? number)
@@ -30,7 +33,7 @@ void InitialiseChallenge(int day)
         case 1:
             Console.WriteLine("This challenge is under construction.");
             break;
-        case >= 2 and <= 50:
+        case >= 2 and <= 25:
             Console.WriteLine("This challenge hasn't been implemented.");
             break;
         default:
