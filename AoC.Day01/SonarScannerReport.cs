@@ -11,45 +11,16 @@ public class SonarScannerReport
 
     public int GetIncreasesInDepthByDay()
     {
-        return GetNumberOfTimesNextElementIsGreaterThanThePrevious(_depthMeasurements);
+        return _depthMeasurements
+            .GetNumberOfTimesNextElementIsGreaterThanThePrevious();
     }
 
     public int GetIncreasesInDepthBySlidingWindow()
     {
-        return GetNumberOfTimesNextElementIsGreaterThanThePrevious(GetAggregatedValuesOfThisAndNextTwoElements(_depthMeasurements));
-    }
-
-    private static int GetNumberOfTimesNextElementIsGreaterThanThePrevious(int[] values)
-    {
-        var increases = 0;
+        if (_depthMeasurements.Length < 2) return 0;
         
-        for (var i = 1; i < values.Length; i++)
-        {
-            var previousMeasurement = values[i - 1];
-            var thisMeasurement = values[i];
-
-            if (thisMeasurement > previousMeasurement)
-            {
-                increases++;
-            }
-        }
-        
-        return increases;
-    }
-
-    private int[] GetAggregatedValuesOfThisAndNextTwoElements(int[] values)
-    {
-        var aggregatedValues = new int[values.Length - 2];
-        
-        for (var i = 0; i < values.Length - 2; i++)
-        {
-            var thisMeasurement = values[i];
-            var nextMeasurement = values[i + 1];
-            var nextButOneMeasurement = values[i + 2];
-
-            aggregatedValues[i] = thisMeasurement + nextMeasurement + nextButOneMeasurement;
-        }
-
-        return aggregatedValues;
+        return _depthMeasurements
+            .GetAggregatedValuesOfThisAndSubsequentElements(2)
+            .GetNumberOfTimesNextElementIsGreaterThanThePrevious();
     }
 }

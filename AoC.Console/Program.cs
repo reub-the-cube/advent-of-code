@@ -1,6 +1,23 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using AoC.Core;
 using AoC.Day01;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+using IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((_, services) =>
+        services
+            .AddScoped<Day1>()
+            .AddTransient<Func<int, IDay>>(dayServiceProvider => dayNumber =>
+            {
+                return dayNumber switch
+                {
+                    1 => dayServiceProvider.GetService<Day1>() ?? throw new InvalidOperationException(),
+                    _ => throw new InvalidOperationException()
+                };
+            }))
+    .Build();
 
 Console.WriteLine("Hello!");
 Console.WriteLine("Which day's challenges would you like to run? Use a number from 1 to 25.");
@@ -16,7 +33,9 @@ void InitialiseChallenge(int day)
 {
     var input = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"day{day}input.txt"));
 
-    var dayProcesser = new Day1();
+    var dayServiceResolver = host.Services.GetService<Func<int, IDay>>() ?? throw new InvalidOperationException("Day service resolver not found.");
+    var dayProcesser = dayServiceResolver(day);
+    
     dayProcesser.Initialise(input);
     var challengeOneOuput = dayProcesser.ChallengeOne();
     Console.WriteLine($"Final answer for day {day}, challenge 1: {challengeOneOuput}");
