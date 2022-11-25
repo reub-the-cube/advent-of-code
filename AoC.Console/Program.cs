@@ -17,7 +17,8 @@ void InitialiseChallenge(int day)
     var input = File.ReadAllLines($"day{day}input.txt");
 
     var sonarScannerReport = new SonarScannerReport(input);
-    sonarScannerReport.GetIncreasesInDepthByDay();
+    var numberOfIncreases = sonarScannerReport.GetIncreasesInDepthByDay();
+    Console.WriteLine($"Final answer: {numberOfIncreases}");
 }
 
 (bool IsValid, int Value) ValidateChallengeNumber(string? number)
