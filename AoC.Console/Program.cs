@@ -4,10 +4,10 @@ using AoC.Day01;
 
 Console.WriteLine("Hello!");
 Console.WriteLine("Which day's challenges would you like to run? Use a number from 1 to 25.");
-var challengeNumberInput = Console.ReadLine();
+var dayNumberInput = Console.ReadLine();
 
-var challengeNumber = ValidateChallengeNumber(challengeNumberInput);
-if (challengeNumber.IsValid) InitialiseChallenge(challengeNumber.Value);
+var dayNumber = ValidateDayNumber(dayNumberInput);
+if (dayNumber.IsValid) InitialiseChallenge(dayNumber.Value);
 
 Console.WriteLine("Press any key to finish.");
 Console.ReadKey();
@@ -16,15 +16,16 @@ void InitialiseChallenge(int day)
 {
     var input = File.ReadAllLines($"day{day}input.txt");
 
-    var sonarScannerReport = new SonarScannerReport(input);
-    var numberOfIncreases = sonarScannerReport.GetIncreasesInDepthByDay();
-    Console.WriteLine($"Final answer: {numberOfIncreases}");
+    var dayProcesser = new Day1();
+    dayProcesser.Initialise(input);
+    var challengeOneOuput = dayProcesser.ChallengeOne();
+    Console.WriteLine($"Final answer for day {day}, challenge 1: {challengeOneOuput}");
 
-    var numberOfSlidingIncreases = sonarScannerReport.GetIncreasesInDepthBySlidingWindow();
-    Console.WriteLine($"Final answer: {numberOfSlidingIncreases}");
+    var challengeTwoOutput = dayProcesser.ChallengeTwo();
+    Console.WriteLine($"Final answer for day {day}, challenge 2: {challengeTwoOutput}");
 }
 
-(bool IsValid, int Value) ValidateChallengeNumber(string? number)
+(bool IsValid, int Value) ValidateDayNumber(string? number)
 {
     var isValid = int.TryParse(number, out var parsedNumber);
     

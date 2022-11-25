@@ -4,9 +4,9 @@ public class SonarScannerReport
 {
     private readonly int[] _depthMeasurements;
 
-    public SonarScannerReport(string[] inputMeasurements)
+    public SonarScannerReport(int[] depthMeasurements)
     {
-        _depthMeasurements = Array.ConvertAll(inputMeasurements, Parser.ParseLine);
+        _depthMeasurements = depthMeasurements;
     }
 
     public int GetIncreasesInDepthByDay()
