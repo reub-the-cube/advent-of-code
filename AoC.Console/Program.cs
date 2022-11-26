@@ -11,6 +11,7 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services
             .AddScoped<Day1>()
             .AddScoped<Day2>()
+            .AddScoped<IParser<AoC.Day02.Models.Input>, AoC.Day02.Parser>()
             .AddScoped<Func<int, IDay>>(dayServiceProvider => dayNumber =>
             {
                 return dayNumber switch
