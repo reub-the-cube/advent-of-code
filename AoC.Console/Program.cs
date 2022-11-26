@@ -9,9 +9,8 @@ using Microsoft.Extensions.Hosting;
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
         services
-            .AddScoped<Day1>()
-            .AddScoped<Day2>()
-            .AddScoped<IParser<AoC.Day02.Models.Input>, AoC.Day02.Parser>()
+            .ConfigureDay1Services()
+            .ConfigureDay2Services()
             .AddScoped<Func<int, IDay>>(dayServiceProvider => dayNumber =>
             {
                 return dayNumber switch
