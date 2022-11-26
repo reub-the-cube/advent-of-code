@@ -5,22 +5,12 @@ namespace AoC.Day01;
 
 public class Day1 : IDay
 {
-    private SonarScannerReport? _sonarScannerReport;
-
-    public void Initialise(string[] input)
+    public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
     {
-        _sonarScannerReport = new SonarScannerReport(Array.ConvertAll(input, Parser.ParseLine));
-    }
+        var sonarScannerReport = new SonarScannerReport(Array.ConvertAll(input, Parser.ParseLine));
+        var answerOne = sonarScannerReport.GetIncreasesInDepthByDay();
+        var answerTwo = sonarScannerReport.GetIncreasesInDepthBySlidingWindow();
 
-    public int ChallengeOne()
-    {
-        Debug.Assert(_sonarScannerReport != null, nameof(_sonarScannerReport) + " != null");
-        return _sonarScannerReport.GetIncreasesInDepthByDay();
-    }
-
-    public int ChallengeTwo()
-    {
-        Debug.Assert(_sonarScannerReport != null, nameof(_sonarScannerReport) + " != null");
-        return _sonarScannerReport.GetIncreasesInDepthBySlidingWindow();
+        return (answerOne, answerTwo);
     }
 }

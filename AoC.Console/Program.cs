@@ -35,13 +35,10 @@ void InitialiseChallenge(int day)
 
     var dayServiceResolver = host.Services.GetService<Func<int, IDay>>() ?? throw new InvalidOperationException("Day service resolver not found.");
     var dayProcesser = dayServiceResolver(day);
+    var (AnswerOne, AnswerTwo) = dayProcesser.CalculateAnswers(input);
     
-    dayProcesser.Initialise(input);
-    var challengeOneOuput = dayProcesser.ChallengeOne();
-    Console.WriteLine($"Final answer for day {day}, challenge 1: {challengeOneOuput}");
-
-    var challengeTwoOutput = dayProcesser.ChallengeTwo();
-    Console.WriteLine($"Final answer for day {day}, challenge 2: {challengeTwoOutput}");
+    Console.WriteLine($"Final answer for day {day}, challenge 1: {AnswerOne}");
+    Console.WriteLine($"Final answer for day {day}, challenge 2: {AnswerTwo}");
 }
 
 (bool IsValid, int Value) ValidateDayNumber(string? number)
