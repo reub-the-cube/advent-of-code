@@ -9,10 +9,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AoC.Day01\AoC.Day01.csproj" />
+    <ProjectReference Include="..\AoC.Day02\AoC.Day02.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="day1input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="day2input.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

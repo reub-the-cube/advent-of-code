@@ -2,6 +2,7 @@
 
 using AoC.Core;
 using AoC.Day01;
+using AoC.Day02;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -9,11 +10,13 @@ using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
         services
             .AddScoped<Day1>()
-            .AddTransient<Func<int, IDay>>(dayServiceProvider => dayNumber =>
+            .AddScoped<Day2>()
+            .AddScoped<Func<int, IDay>>(dayServiceProvider => dayNumber =>
             {
                 return dayNumber switch
                 {
                     1 => dayServiceProvider.GetService<Day1>() ?? throw new InvalidOperationException(),
+                    2 => dayServiceProvider.GetService<Day2>() ?? throw new InvalidOperationException(),
                     _ => throw new InvalidOperationException()
                 };
             }))
@@ -47,10 +50,10 @@ void InitialiseChallenge(int day)
     
     switch (parsedNumber)
     {
-        case 1:
+        case >= 1 and <= 2:
             Console.WriteLine("This challenge is under construction.");
             break;
-        case >= 2 and <= 25:
+        case >= 3 and <= 25:
             Console.WriteLine("This challenge hasn't been implemented.");
             break;
         default:
