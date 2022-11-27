@@ -1,6 +1,4 @@
 ﻿namespace AoC.Day03.Models
 {
-    public class Input
-    {
-    }
+    public readonly record struct Input(uint BinaryNumber);
 }
