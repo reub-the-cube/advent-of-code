@@ -47,30 +47,21 @@ public class Day3 : IDay
 
     public static uint GetGammaRate(int[] numberOfSetBitsByPosition, int threshold)
     {
-        uint gammaRate;
-        if (numberOfSetBitsByPosition[0] > threshold)
-        {
-            gammaRate = 0b_1;
-        }
-        else if (numberOfSetBitsByPosition[0] < threshold)
-        {
-            gammaRate = 0b_0;
-        }
-        else
-        {
-            throw new Exception("Number of bits match. What do we do?");
-        }
+        uint gammaRate = 0b_0;
+        uint setBit = 0b_1;
 
-        foreach (var item in numberOfSetBitsByPosition.Skip(1))
+        foreach (var item in numberOfSetBitsByPosition)
         {
+            // Shift left
+            gammaRate <<= 1;
+
             if (item > threshold)
             {
-                gammaRate = (gammaRate << 1) & 1;
+                gammaRate ^= setBit;
 
             }
             else if (item < threshold)
             {
-                gammaRate <<= 1;
             }
             else
             {
