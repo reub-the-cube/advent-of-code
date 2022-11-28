@@ -37,10 +37,10 @@ void InitialiseChallenge(int day)
     
     switch (parsedNumber)
     {
-        case >= 1 and <= 3:
+        case >= 1 and <= 4:
             Console.WriteLine("This challenge is under construction.");
             break;
-        case >= 4 and <= 25:
+        case >= 5 and <= 25:
             Console.WriteLine("This challenge hasn't been implemented.");
             isValid = false;
             break;
