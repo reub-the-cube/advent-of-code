@@ -7,7 +7,12 @@ namespace AoC.Day03
     {
         public Input[] ParseInput(string[] input)
         {
-            throw new NotImplementedException();
+            return input.Select(ParseLine).ToArray();
+        }
+
+        private static Input ParseLine(string line)
+        {
+            return new Input(Convert.ToUInt32(line, fromBase: 2));
         }
     }
 }
