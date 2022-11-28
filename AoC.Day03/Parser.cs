@@ -11,7 +11,7 @@ namespace AoC.Day03
             return input.Select(ParseLine).ToArray();
         }
 
-        private Input ParseLine(string line)
+        private static Input ParseLine(string line)
         {
             return new Input(Convert.ToUInt32(line, fromBase: 2));
         }

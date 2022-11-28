@@ -33,7 +33,7 @@ public class Day3Tests
     public void CheckBinaryParser()
     {
         var parser = new Parser();
-        var parsedInput = parser.ParseInput(new string[] { "0001", "0111" });
+        var parsedInput = parser.ParseInput(new [] { "0001", "0111" });
 
         uint expectedOne = 0b_0001;
         uint expectedTwo = 0b_0111;
@@ -44,19 +44,19 @@ public class Day3Tests
     [Fact]
     public void CheckBitValueCount()
     {
-        var parsedInput = new uint[] { 0b_0001, 0b_0111 };
-        var result = Day3.CountSetBitsByPosition(parsedInput.Select(i => new Input(i)).ToArray(), 4);
+        var parsedInput = new uint[] { 0b_0001, 0b_0111, 0b_1011 };
+        var result = Day3.MostCommonBitFlagByPosition(parsedInput, 4, null).ToList();
 
-        result[0].Should().Be(0);
-        result[1].Should().Be(1);
-        result[2].Should().Be(1);
-        result[3].Should().Be(2);
+        result[0].Should().Be(false);
+        result[1].Should().Be(false);
+        result[2].Should().Be(true);
+        result[3].Should().Be(true);
     }
 
     [Fact] 
     public void GetGammaRate()
     {
-        var result = Day3.GetGammaRate(new int[] { 4, 1, 1, 3, 1 }, 2);
+        var result = Day3.GetGammaRate(new [] { true, false, false, true, false });
 
         const uint expectedOne = 0b_0001_0010;
         result.Should().Be(expectedOne);
@@ -68,5 +68,14 @@ public class Day3Tests
         // 0b_0101 --> 0b_1010
         var result = Day3.GetBitwiseComplement(5, 4);
         result.Should().Be(10);
+    }
+    
+    [Fact]
+    public void GetOxygenGeneratorRating()
+    {
+        var result = Day3.GetOxygenGeneratorRating(new uint[] { 0b_1011, 0b_1001, 0b_1000, 0b_1110 }, 4);
+
+        const uint expectedOne = 0b_1001;
+        result.Should().Be(expectedOne);
     }
 }
