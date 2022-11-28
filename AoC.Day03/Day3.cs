@@ -13,30 +13,31 @@ public class Day3 : IDay
 
     public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
     {
+        if (input == null) throw new ArgumentNullException(nameof(input));
+        
         var parsedInput = _parser.ParseInput(input);
         var numberOfBits = input?.FirstOrDefault()?.Length ?? 0;
         var numberOfSetBitsByPosition = CountSetBitsByPosition(parsedInput, numberOfBits);
+        
+        var gammaRate = GetGammaRate(numberOfSetBitsByPosition, input?.Length / 2 ?? 0);
+        var epsilonRate = GetBitwiseComplement(gammaRate, numberOfBits); // Does this work if first character is 0?
 
-
-
-        throw new NotImplementedException();
+        return (Convert.ToInt32(gammaRate * epsilonRate), 0);
     }
 
     public static int[] CountSetBitsByPosition(Input[] parsedInput, int numberOfBits)
     {
         var bitValueCountByPosition = new int[numberOfBits];
 
-        for (int i = 0; i < parsedInput?.Length; i++)
+        for (var i = 0; i < parsedInput?.Length; i++)
         {
-            for (int j = 0; j < numberOfBits; j++)
+            for (var j = 0; j < numberOfBits; j++)
             {
                 var bitValue = ((parsedInput[i].BinaryNumber >> j) & 1);
                 switch (bitValue)
                 {
                     case 1:
                         bitValueCountByPosition[numberOfBits - j - 1] += 1;
-                        break;
-                    default:
                         break;
                 }
             }
@@ -45,30 +46,38 @@ public class Day3 : IDay
         return bitValueCountByPosition;
     }
 
-    public static uint GetGammaRate(int[] numberOfSetBitsByPosition, int threshold)
+    public static uint GetGammaRate(IEnumerable<int> numberOfSetBitsByPosition, int threshold)
     {
         uint gammaRate = 0b_0;
-        uint setBit = 0b_1;
+        const uint setBit = 0b_1;
 
         foreach (var item in numberOfSetBitsByPosition)
         {
+            if (item == threshold)
+            {
+                throw new Exception("Number of set bits match number of unset bits. What do we do?");
+            }
+            
             // Shift left
             gammaRate <<= 1;
 
             if (item > threshold)
             {
                 gammaRate ^= setBit;
-
-            }
-            else if (item < threshold)
-            {
-            }
-            else
-            {
-                throw new Exception("Number of bits match. What do we do?");
             }
         }
 
         return gammaRate;
+    }
+
+    public static uint GetBitwiseComplement(uint original, int numberOfBits)
+    {
+        var invertedString = Convert.ToString(original, 2)
+            .Replace('1', '2')
+            .Replace('0', '1')
+            .Replace('2', '0')
+            .PadLeft(numberOfBits, '1');
+
+        return Convert.ToUInt32(invertedString, 2);
     }
 }

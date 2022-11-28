@@ -58,6 +58,7 @@ void InitialiseChallenge(int day)
             break;
         case >= 4 and <= 25:
             Console.WriteLine("This challenge hasn't been implemented.");
+            isValid = false;
             break;
         default:
             Console.WriteLine("This input was not valid. Please try again.");

@@ -58,7 +58,15 @@ public class Day3Tests
     {
         var result = Day3.GetGammaRate(new int[] { 4, 1, 1, 3, 1 }, 2);
 
-        uint expectedOne = 0b_0001_0010;
+        const uint expectedOne = 0b_0001_0010;
         result.Should().Be(expectedOne);
+    }
+    
+    [Fact] 
+    public void GetBitwiseComplement()
+    {
+        // 0b_0101 --> 0b_1010
+        var result = Day3.GetBitwiseComplement(5, 4);
+        result.Should().Be(10);
     }
 }
