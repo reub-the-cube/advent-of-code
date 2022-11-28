@@ -26,7 +26,7 @@ public class Day3Tests
 
         var (_, answerTwo) = day.CalculateAnswers(INPUT);
 
-        Assert.Fail("not implemented");
+        answerTwo.Should().Be(230);
     }
 
     [Fact] 
@@ -45,7 +45,7 @@ public class Day3Tests
     public void CheckBitValueCount()
     {
         var parsedInput = new uint[] { 0b_0001, 0b_0111, 0b_1011 };
-        var result = Day3.MostCommonBitFlagByPosition(parsedInput, 4, null).ToList();
+        var result = Day3.MostCommonBitFlags(parsedInput, 4).ToList();
 
         result[0].Should().Be(false);
         result[1].Should().Be(false);
@@ -73,9 +73,30 @@ public class Day3Tests
     [Fact]
     public void GetOxygenGeneratorRating()
     {
-        var result = Day3.GetOxygenGeneratorRating(new uint[] { 0b_1011, 0b_1001, 0b_1000, 0b_1110 }, 4);
+        var result = Day3.GetOxygenGeneratorRating(new uint[] { 0b_1011, 0b_1001, 0b_0000, 0b_1110, 0b_0111 }, 4);
 
-        const uint expectedOne = 0b_1001;
+        const uint expectedOne = 0b_1011;
         result.Should().Be(expectedOne);
+
+        // 0b_1011 --> 0b_011 --> 0b_11 --> 0b_1
+        // 0b_1001 --> 0b_001 --> 0b_01 --> XX
+        // 0b_0000 --> XX
+        // 0b_1110 --> 0b_110 --> XX
+        // 0b_0111 --> XX
+    }
+
+    [Fact]
+    public void GetCO2ScrubberRating()
+    {
+        var result = Day3.GetCO2ScrubberRating(new uint[] { 0b_1011, 0b_1001, 0b_0000, 0b_1110, 0b_0111 }, 4);
+
+        const uint expected = 0b_0000;
+        result.Should().Be(expected);
+
+        // 0b_1011 --> XX
+        // 0b_1001 --> XX
+        // 0b_0000 --> 0b_000 --> 0b_00
+        // 0b_1110 --> XX
+        // 0b_0111 --> 0b_111 --> XX
     }
 }

@@ -17,37 +17,46 @@ public class Day3 : IDay
         
         var parsedInput = _parser.ParseInput(input);
         var numberOfBits = input?.FirstOrDefault()?.Length ?? 0;
-        var numberOfSetBitsByPosition = MostCommonBitFlagByPosition(
-            parsedInput.Select(s => s.BinaryNumber).ToArray(), 
-            numberOfBits, 
-            null);
+        var numberOfSetBitsByPosition = MostCommonBitFlags(parsedInput.Select(s => s.BinaryNumber).ToArray(), numberOfBits);
         
         var gammaRate = GetGammaRate(numberOfSetBitsByPosition);
-        var epsilonRate = GetBitwiseComplement(gammaRate, numberOfBits); // Does this work if first character is 0?
+        var epsilonRate = GetBitwiseComplement(gammaRate, numberOfBits);
 
-        return (Convert.ToInt32(gammaRate * epsilonRate), 0);
+        var oxygenRating = GetOxygenGeneratorRating(parsedInput.Select(s => s.BinaryNumber).ToArray(), numberOfBits);
+        var co2Rating = GetCO2ScrubberRating(parsedInput.Select(s => s.BinaryNumber).ToArray(), numberOfBits);
+
+        return (Convert.ToInt32(gammaRate * epsilonRate), Convert.ToInt32(oxygenRating * co2Rating));
     }
 
-    public static IEnumerable<bool> MostCommonBitFlagByPosition(uint[] parsedInput, int numberOfBits, bool? tieBreaker)
+    public static IEnumerable<bool> MostCommonBitFlags(uint[] parsedInput, int numberOfBits)
     {
         var bitValueCountByPosition = new int[numberOfBits];
 
-        foreach (var i in parsedInput)
+        for (var j = 0; j < numberOfBits; j++)
         {
-            for (var j = 0; j < numberOfBits; j++)
-            {
-                var bitValue = (i >> j) & 1;
-                switch (bitValue)
-                {
-                    case 1:
-                        bitValueCountByPosition[numberOfBits - j - 1] += 1;
-                        break;
-                }
-            }
+            bitValueCountByPosition[numberOfBits - j - 1] = GetSetBitCountByPosition(parsedInput, j);
         }
 
         var thresholdCount = (double)parsedInput.Length / 2;
-        return bitValueCountByPosition.Select(count => IsCountAboveThreshold(count, thresholdCount, tieBreaker));
+        return bitValueCountByPosition.Select(count => IsCountAboveThreshold(count, thresholdCount, null));
+    }
+
+    private static int GetSetBitCountByPosition(uint[] parsedInput, int shiftRightCount)
+    {
+        int setBitCount = 0;
+
+        foreach (var i in parsedInput)
+        {
+            var bitValue = (i >> shiftRightCount) & 1;
+            switch (bitValue)
+            {
+                case 1:
+                    setBitCount += 1;
+                    break;
+            }
+        }
+
+        return setBitCount;
     }
 
     private static bool IsCountAboveThreshold(int count, double threshold, bool? tieBreaker)
@@ -97,17 +106,59 @@ public class Day3 : IDay
 
     public static uint GetOxygenGeneratorRating(uint[] ints, int numberOfBits)
     {
-        var mostCommonByPosition = MostCommonBitFlagByPosition(ints, numberOfBits, true);
-        
-        while (ints.Length > 1)
+        return ReduceRatingsForBitFlagsAgainstMostCommonFlagAtEachPosition(ints, numberOfBits, true);
+    }
+
+
+    public static uint GetCO2ScrubberRating(uint[] ints, int numberOfBits)
+    {
+        return ReduceRatingsForBitFlagsAgainstMostCommonFlagAtEachPosition(ints, numberOfBits, false);
+    }
+
+    private static uint ReduceRatingsForBitFlagsAgainstMostCommonFlagAtEachPosition(uint[] values, int numberOfBits, bool retainMostCommonlyOccurringBitFlag)
+    {
+        var remainingNumbers = new KeyValuePair<uint, int>[values.Length];
+        for (int i = 0; i < values.Length; i++)
         {
-            ints.Where(i =>
-            {
-                // First character is most common
-                throw new NotImplementedException();
-            });
-            throw new Exception();
+            remainingNumbers[i] = new KeyValuePair<uint, int>(values[i], i);
         }
-        throw new NotImplementedException();
+
+        while (remainingNumbers.Length > 1)
+        {
+            var setBitCount = GetSetBitCountByPosition(remainingNumbers.Select(k => k.Key).ToArray(), numberOfBits - 1);
+            var setBitIsMostCommon = IsCountAboveThreshold(setBitCount, (double)remainingNumbers.Length / 2, true);
+
+            remainingNumbers = remainingNumbers
+                .Where(i =>
+                {
+                    // Get first value by shifting right
+                    var bitValue = (i.Key >> numberOfBits - 1) & 1;
+                    // Keep the item if its first value matches the most common bit value
+                    return retainMostCommonlyOccurringBitFlag ? Convert.ToBoolean(bitValue) == setBitIsMostCommon : Convert.ToBoolean(bitValue) != setBitIsMostCommon;
+                })
+                .Select(i =>
+                {
+                    uint newValue = i.Key;
+
+                    // Reduce number of bits by 1. Unset bit if set.
+                    if (setBitIsMostCommon)
+                    {
+                        uint mask = Convert.ToUInt32(1 << numberOfBits - 1);
+                        newValue &= ~mask;
+                    }
+
+                    return new KeyValuePair<uint, int>(newValue, i.Value);
+                })
+                .ToArray();
+
+            numberOfBits -= 1;
+        }
+
+        if (remainingNumbers.Length == 0)
+        {
+            throw new Exception("D'oh, what's happened here?");
+        }
+
+        return values[remainingNumbers[0].Value];
     }
 }
