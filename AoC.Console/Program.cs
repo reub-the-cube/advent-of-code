@@ -1,31 +1,15 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using AoC.Console;
 using AoC.Core;
-using AoC.Day01;
-using AoC.Day02;
-using AoC.Day03;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
-        services
-            .ConfigureDay1Services()
-            .ConfigureDay2Services()
-            .ConfigureDay3Services()
-            .AddScoped<Func<int, IDay>>(dayServiceProvider => dayNumber =>
-            {
-                return dayNumber switch
-                {
-                    1 => dayServiceProvider.GetService<Day1>() ?? throw new InvalidOperationException(),
-                    2 => dayServiceProvider.GetService<Day2>() ?? throw new InvalidOperationException(),
-                    3 => dayServiceProvider.GetService<Day3>() ?? throw new InvalidOperationException(),
-                    _ => throw new InvalidOperationException()
-                };
-            }))
+        services.ConfigureDayServices())
     .Build();
 
-Console.WriteLine("Hello!");
 Console.WriteLine("Which day's challenges would you like to run? Use a number from 1 to 25.");
 var dayNumberInput = Console.ReadLine();
 

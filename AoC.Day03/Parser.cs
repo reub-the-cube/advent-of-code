@@ -1,6 +1,5 @@
 ﻿using AoC.Core;
 using AoC.Day03.Models;
-using System.Diagnostics;
 
 namespace AoC.Day03
 {

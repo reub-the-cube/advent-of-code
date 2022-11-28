@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using AoC.Core;
 
 namespace AoC.Day01;

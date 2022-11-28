@@ -1,4 +1,3 @@
-using AoC.Day03.Models;
 using FluentAssertions;
 
 namespace AoC.Day03.Tests;
