@@ -16,13 +16,17 @@ public class Day4 :IDay
     public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
     {
         var parsedInput = _parser.ParseInput(input);
-        var (WinningNumber, WinningBoard) = FindWinningBoard(parsedInput);
-        var answerOne = WinningNumber * WinningBoard.GetUnmarkedTotal();
+        var (FirstWinningNumber, FirstWinningBoard) = FindFirstWinningBoard(parsedInput);
+        var answerOne = FirstWinningNumber * FirstWinningBoard.GetUnmarkedTotal();
 
-        return (answerOne, 0);
+        parsedInput = _parser.ParseInput(input);
+        var (LastWinningNumber, LastWinningBoard) = FindLastWinningBoard(parsedInput);
+        var answerTwo = LastWinningNumber * LastWinningBoard.GetUnmarkedTotal();
+
+        return (answerOne, answerTwo);
     }
 
-    private static (int WinningNumber, Board WinningBoard) FindWinningBoard(Input parsedInput)
+    private static (int WinningNumber, Board WinningBoard) FindFirstWinningBoard(Input parsedInput)
     {
         var boards = parsedInput.Boards;
 
@@ -45,6 +49,37 @@ public class Day4 :IDay
             if (winningBoard != null)
             {
                 return (numberToCall, winningBoard);
+            }
+        }
+
+        return (-1, new Board());
+    }
+
+    private static (int WinningNumber, Board WinningBoard) FindLastWinningBoard(Input parsedInput)
+    {
+        var boards = parsedInput.Boards;
+
+        foreach (var numberToCall in parsedInput.NumbersToCall)
+        {
+            boards = boards
+                .Where(b => !b.HasCompleteRow && !b.HasCompleteColumn)
+                .Select(b =>
+                {
+                    var (Found, Column, Row) = b.Find(numberToCall);
+                    if (Found)
+                    {
+                        return b.Mark(Row, Column);
+                    }
+                    else
+                    {
+                        return b;
+                    }
+                }).ToArray();
+
+            var lastBoardComplete = boards.Length == 1 && boards.FirstOrDefault(b => b.HasCompleteColumn || b.HasCompleteRow) != null;
+            if (lastBoardComplete)
+            {
+                return (numberToCall, boards[0]);
             }
         }
 

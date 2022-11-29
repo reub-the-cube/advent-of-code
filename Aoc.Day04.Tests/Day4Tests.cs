@@ -9,7 +9,7 @@ public class Day4Tests
 
     public Day4Tests()
     {
-        INPUT = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\..\\AoC.Console\\day4input.txt"));
+        INPUT = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\..\\AoC.Console\\day4testinput.txt"));
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class Day4Tests
 
         var (_, answerTwo) = day4.CalculateAnswers(INPUT);
 
-        answerTwo.Should().Be(-1);
+        answerTwo.Should().Be(1924);
     }
 
     [Fact]
