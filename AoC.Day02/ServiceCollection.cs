@@ -10,7 +10,7 @@ namespace AoC.Day02
         {
             return services
                 .AddScoped<Day2>()
-                .AddScoped<IParser<Input>, Parser>();
+                .AddScoped<IParser<MachineReadout>, Parser>();
         }
     }
 }

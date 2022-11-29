@@ -5,11 +5,11 @@ using static AoC.Day02.Enums;
 
 namespace AoC.Day02
 {
-    public class Parser : IParser<Input>
+    public class Parser : IParser<MachineReadout>
     {
-        public Input[] ParseInput(string[] input)
+        public MachineReadout ParseInput(string[] input)
         {
-            return input.Select(ParseLine).ToArray();
+            return new MachineReadout(input.Select(ParseLine).ToArray());
         }
 
         private Input ParseLine(string line)

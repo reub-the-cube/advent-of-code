@@ -36,8 +36,8 @@ public class Day3Tests
 
         uint expectedOne = 0b_0001;
         uint expectedTwo = 0b_0111;
-        parsedInput[0].BinaryNumber.Should().Be(expectedOne);
-        parsedInput[1].BinaryNumber.Should().Be(expectedTwo);
+        parsedInput.BinaryNumbers[0].Should().Be(expectedOne);
+        parsedInput.BinaryNumbers[1].Should().Be(expectedTwo);
     }
 
     [Fact]

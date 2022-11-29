@@ -17,13 +17,13 @@ public class Day3 : IDay
         
         var parsedInput = _parser.ParseInput(input);
         var numberOfBits = input?.FirstOrDefault()?.Length ?? 0;
-        var numberOfSetBitsByPosition = MostCommonBitFlags(parsedInput.Select(s => s.BinaryNumber).ToArray(), numberOfBits);
+        var numberOfSetBitsByPosition = MostCommonBitFlags(parsedInput.BinaryNumbers, numberOfBits);
         
         var gammaRate = GetGammaRate(numberOfSetBitsByPosition);
         var epsilonRate = GetBitwiseComplement(gammaRate, numberOfBits);
 
-        var oxygenRating = GetOxygenGeneratorRating(parsedInput.Select(s => s.BinaryNumber).ToArray(), numberOfBits);
-        var co2Rating = GetCO2ScrubberRating(parsedInput.Select(s => s.BinaryNumber).ToArray(), numberOfBits);
+        var oxygenRating = GetOxygenGeneratorRating(parsedInput.BinaryNumbers, numberOfBits);
+        var co2Rating = GetCO2ScrubberRating(parsedInput.BinaryNumbers, numberOfBits);
 
         return (Convert.ToInt32(gammaRate * epsilonRate), Convert.ToInt32(oxygenRating * co2Rating));
     }

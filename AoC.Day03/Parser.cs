@@ -5,14 +5,14 @@ namespace AoC.Day03
 {
     public class Parser : IParser<Input>
     {
-        public Input[] ParseInput(string[] input)
+        public Input ParseInput(string[] input)
         {
-            return input.Select(ParseLine).ToArray();
+            return new Input(input.Select(ParseLine).ToArray());
         }
 
-        private static Input ParseLine(string line)
+        private static uint ParseLine(string line)
         {
-            return new Input(Convert.ToUInt32(line, fromBase: 2));
+            return Convert.ToUInt32(line, fromBase: 2);
         }
     }
 }
