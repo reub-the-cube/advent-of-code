@@ -5,7 +5,7 @@ namespace day
 {
     public class Parser : IParser<Input>
     {
-        public Input[] ParseInput(string[] input)
+        public Input ParseInput(string[] input)
         {
             throw new NotImplementedException();
         }
