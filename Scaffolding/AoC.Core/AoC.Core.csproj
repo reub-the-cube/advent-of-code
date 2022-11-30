@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
-	    <PackageId>AoC.2021.Core</PackageId>
+	    <PackageId>AoC.Core</PackageId>
 	    <Version>$(Version)</Version>
 	    <Authors>Reuben Hillyer</Authors>
 	    <Company>Reuben Hillyer</Company>
