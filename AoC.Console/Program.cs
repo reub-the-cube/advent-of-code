@@ -32,8 +32,8 @@ void InitialiseChallenge(int year, int day)
     var dayFormatted = day.ToString("00");
     var input = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{year}", $"day{dayFormatted}input.txt"));
 
-    var dayServiceResolver = host.Services.GetService<Func<int, IDay>>() ?? throw new InvalidOperationException("Day service resolver not found.");
-    var dayProcesser = dayServiceResolver(day);
+    var dayServiceResolver = host.Services.GetService<Func<(int, int), IDay>>() ?? throw new InvalidOperationException("Day service resolver not found.");
+    var dayProcesser = dayServiceResolver((year, day));
     var (AnswerOne, AnswerTwo) = dayProcesser.CalculateAnswers(input);
     
     Console.WriteLine($"Final answer for day {dayFormatted}, challenge 1: {AnswerOne}");

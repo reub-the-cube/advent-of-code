@@ -2,11 +2,11 @@
 using aoc._2022.day01.models;
 
 namespace aoc._2022.day01;
-public class DayX :IDay
+public class Day01Solver :IDay
 {
     private readonly IParser<Input> _parser;
 
-    public DayX(IParser<Input> parser)
+    public Day01Solver(IParser<Input> parser)
     {
         _parser = parser;
     }
