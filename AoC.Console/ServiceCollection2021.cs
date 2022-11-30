@@ -26,7 +26,7 @@ namespace AoC.Console
                 2 => serviceProvider.GetService<Day2>() ?? throw new InvalidOperationException(),
                 3 => serviceProvider.GetService<Day3>() ?? throw new InvalidOperationException(),
                 4 => serviceProvider.GetService<Day4>() ?? throw new InvalidOperationException(),
-                _ => throw new InvalidOperationException()
+                _ => throw new NotImplementedException($"Day service provider has not been configured for day {day} this year.")
             };
         }
     }

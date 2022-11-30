@@ -30,14 +30,21 @@ void RequestChallengeInput()
 void InitialiseChallenge(int year, int day)
 {
     var dayFormatted = day.ToString("00");
-    var input = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{year}", $"day{dayFormatted}input.txt"));
 
     var dayServiceResolver = host.Services.GetService<Func<(int, int), IDay>>() ?? throw new InvalidOperationException("Day service resolver not found.");
-    var dayProcesser = dayServiceResolver((year, day));
-    var (AnswerOne, AnswerTwo) = dayProcesser.CalculateAnswers(input);
-    
-    Console.WriteLine($"Final answer for day {dayFormatted}, challenge 1: {AnswerOne}");
-    Console.WriteLine($"Final answer for day {dayFormatted}, challenge 2: {AnswerTwo}");
+    try
+    {
+        var dayProcesser = dayServiceResolver((year, day));
+        var input = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{year}", $"day{dayFormatted}input.txt"));
+        var (AnswerOne, AnswerTwo) = dayProcesser.CalculateAnswers(input);
+
+        Console.WriteLine($"Final answer for day {dayFormatted}, challenge 1: {AnswerOne}");
+        Console.WriteLine($"Final answer for day {dayFormatted}, challenge 2: {AnswerTwo}");
+    }
+    catch (NotImplementedException nie)
+    {
+        Console.WriteLine($"{nie.Message}");
+    }
 }
 
 (bool IsValid, int Value) ValidateDayNumber(string? number)
@@ -46,14 +53,7 @@ void InitialiseChallenge(int year, int day)
     
     switch (parsedNumber)
     {
-        case >= 1 and <= 4:
-            Console.WriteLine("This challenge is under construction.");
-            break;
-        case >= 5 and <= 25:
-            Console.WriteLine("This challenge hasn't been implemented.");
-            isValid = false;
-            break;
-        default:
+        case < 1 or > 25:
             Console.WriteLine("This input was not valid. Please try again.");
             isValid = false;
             break;

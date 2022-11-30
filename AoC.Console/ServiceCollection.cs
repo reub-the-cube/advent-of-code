@@ -16,7 +16,7 @@ namespace AoC.Console
                     {
                         2021 => dayServiceProvider.ResolveDayFor2021(options.Day),
                         2022 => dayServiceProvider.ResolveDayFor2022(options.Day),
-                        _ => throw new InvalidOperationException()
+                        _ => throw new NotImplementedException($"Service provider has not been configured for year {options.Year}.")
                     };
                 });
         }

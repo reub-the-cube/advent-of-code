@@ -12,10 +12,14 @@ namespace AoC.Console
                 .ConfigureDay01Services();
         }
 
-        public static IDay ResolveDayFor2022(this IServiceProvider serviceProvider, int day) => day switch
+        public static IDay ResolveDayFor2022(this IServiceProvider serviceProvider, int day)
         {
-            1 => serviceProvider.GetService<aoc._2022.day01.Day01Solver>() ?? throw new InvalidOperationException(),
-            _ => throw new InvalidOperationException()
-        };
+            Day01Solver daySolver = day switch
+            {
+                1 => serviceProvider.GetService<Day01Solver>() ?? throw new InvalidOperationException(),
+                _ => throw new NotImplementedException($"Day service provider has not been configured for day {day} this year.")
+            };
+            return daySolver;
+        }
     }
 }
