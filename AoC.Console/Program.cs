@@ -10,25 +10,34 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services.ConfigureDayServices())
     .Build();
 
-Console.WriteLine("Which day's challenges would you like to run? Use a number from 1 to 25.");
-var dayNumberInput = Console.ReadLine();
+RequestChallengeInput();
 
-var (IsValid, Value) = ValidateDayNumber(dayNumberInput);
-if (IsValid) InitialiseChallenge(Value);
-
-Console.WriteLine("Press any key to finish.");
-Console.ReadKey();
-
-void InitialiseChallenge(int day)
+void RequestChallengeInput()
 {
-    var input = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"day{day}input.txt"));
+    Console.WriteLine("Which day's challenges would you like to run? Use a number from 1 to 25.");
+    var dayNumberInput = Console.ReadLine();
+    var (IsValid, Value) = ValidateDayNumber(dayNumberInput);
+    if (IsValid) InitialiseChallenge(2021, Value);
+
+    Console.WriteLine("Press any key to finish, or press return to play again.");
+    if (Console.ReadKey().Key == ConsoleKey.Enter)
+    {
+        Console.WriteLine();
+        RequestChallengeInput();
+    }
+}
+
+void InitialiseChallenge(int year, int day)
+{
+    var dayFormatted = day.ToString("00");
+    var input = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{year}", $"day{dayFormatted}input.txt"));
 
     var dayServiceResolver = host.Services.GetService<Func<int, IDay>>() ?? throw new InvalidOperationException("Day service resolver not found.");
     var dayProcesser = dayServiceResolver(day);
     var (AnswerOne, AnswerTwo) = dayProcesser.CalculateAnswers(input);
     
-    Console.WriteLine($"Final answer for day {day}, challenge 1: {AnswerOne}");
-    Console.WriteLine($"Final answer for day {day}, challenge 2: {AnswerTwo}");
+    Console.WriteLine($"Final answer for day {dayFormatted}, challenge 1: {AnswerOne}");
+    Console.WriteLine($"Final answer for day {dayFormatted}, challenge 2: {AnswerTwo}");
 }
 
 (bool IsValid, int Value) ValidateDayNumber(string? number)
