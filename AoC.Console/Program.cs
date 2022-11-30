@@ -13,8 +13,8 @@ using IHost host = Host.CreateDefaultBuilder(args)
 Console.WriteLine("Which day's challenges would you like to run? Use a number from 1 to 25.");
 var dayNumberInput = Console.ReadLine();
 
-var dayNumber = ValidateDayNumber(dayNumberInput);
-if (dayNumber.IsValid) InitialiseChallenge(dayNumber.Value);
+var (IsValid, Value) = ValidateDayNumber(dayNumberInput);
+if (IsValid) InitialiseChallenge(Value);
 
 Console.WriteLine("Press any key to finish.");
 Console.ReadKey();

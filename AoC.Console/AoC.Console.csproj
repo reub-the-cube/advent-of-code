@@ -8,13 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AoC.Day01\AoC.Day01.csproj" />
-    <ProjectReference Include="..\AoC.Day02\AoC.Day02.csproj" />
-    <ProjectReference Include="..\AoC.Day03\AoC.Day03.csproj" />
-    <ProjectReference Include="..\AoC.Day04\aoc.day04.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="day1input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -35,6 +28,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\2021\AoC.Day01\AoC.Day01.csproj" />
+    <ProjectReference Include="..\2021\AoC.Day02\AoC.Day02.csproj" />
+    <ProjectReference Include="..\2021\AoC.Day03\AoC.Day03.csproj" />
+    <ProjectReference Include="..\2021\AoC.Day04\aoc.day04.csproj" />
   </ItemGroup>
 
 </Project>
