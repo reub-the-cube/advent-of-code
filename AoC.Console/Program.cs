@@ -55,6 +55,7 @@ void InitialiseChallenge(int year, int day)
             break;
         default:
             Console.WriteLine("This input was not valid. Please try again.");
+            isValid = false;
             break;
     }
 
