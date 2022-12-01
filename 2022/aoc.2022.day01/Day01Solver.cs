@@ -15,7 +15,8 @@ public class Day01Solver :IDay
     {
         var parsedInput = _parser.ParseInput(input);
         var answerOne = parsedInput.MostCaloriesHeldByAnElf();
+        var answerTwo = parsedInput.TotalCaloriesHeldByElvesWithMostCalories(3);
 
-        return (answerOne, 0);
+        return (answerOne, answerTwo);
     }
 }

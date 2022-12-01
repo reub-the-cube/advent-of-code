@@ -31,6 +31,6 @@ public class Day01SolverTests
 
         var (_, answerTwo) = dayX.CalculateAnswers(INPUT);
 
-        Assert.Fail("We don't have part 2 of the day's challenge yet so it is not implemented");
+        answerTwo.Should().Be(45000);
     }
 }

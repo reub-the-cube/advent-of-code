@@ -17,7 +17,7 @@ void RequestChallengeInput()
     Console.WriteLine("Which day's challenges would you like to run? Use a number from 1 to 25.");
     var dayNumberInput = Console.ReadLine();
     var (IsValid, Value) = ValidateDayNumber(dayNumberInput);
-    if (IsValid) InitialiseChallenge(2021, Value);
+    if (IsValid) InitialiseChallenge(2022, Value);
 
     Console.WriteLine("Press any key to finish, or press return to play again.");
     if (Console.ReadKey().Key == ConsoleKey.Enter)

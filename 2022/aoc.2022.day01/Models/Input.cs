@@ -14,7 +14,9 @@
             Elves.Add(elf);
         }
 
-        public int MostCaloriesHeldByAnElf() => Elves.Max(e => e.TotalCalories);
+        public int MostCaloriesHeldByAnElf() => TotalCaloriesHeldByElvesWithMostCalories(1);
+
+        public int TotalCaloriesHeldByElvesWithMostCalories(int numberOfElvesToInclude) => Elves.OrderByDescending(e => e.TotalCalories).Take(numberOfElvesToInclude).Sum(e => e.TotalCalories);
     }
 
     public record struct Elf(List<int> Calories, int Order)

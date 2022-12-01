@@ -10,7 +10,7 @@ namespace aoc._2022.day01
             var parsedInput = new Input();
 
             int elfIndex = 0;
-            List<int> elfCalories = new List<int>();
+            List<int> elfCalories = new();
 
             foreach (var item in input)
             {
@@ -28,6 +28,9 @@ namespace aoc._2022.day01
                     elfCalories.Add(int.Parse(item));
                 }
             }
+
+            // Add the last elf
+            parsedInput.AddElf(new Elf(elfCalories, elfIndex));
 
             return parsedInput;
         }
