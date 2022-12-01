@@ -2,7 +2,7 @@
 using AoC.Day02.Models;
 
 namespace AoC.Day02;
-public class Day2 : IDay
+public class Day2 : IDaySolver
 {
     private readonly IParser<MachineReadout> _parser;
     

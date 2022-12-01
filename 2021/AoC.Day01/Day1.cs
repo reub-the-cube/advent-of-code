@@ -2,7 +2,7 @@ using AoC.Core;
 
 namespace AoC.Day01;
 
-public class Day1 : IDay
+public class Day1 : IDaySolver
 {
     public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
     {

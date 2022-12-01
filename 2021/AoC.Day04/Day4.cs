@@ -1,10 +1,9 @@
-﻿using AoC.Core;
-using aoc.day04.models;
-using System.Diagnostics;
+﻿using aoc.day04.models;
 using aoc.day04.Models;
+using AoC.Core;
 
 namespace aoc.day04;
-public class Day4 :IDay
+public class Day4 :IDaySolver
 {
     private readonly IParser<Input> _parser;
 
