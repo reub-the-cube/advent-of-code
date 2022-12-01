@@ -4,7 +4,7 @@ namespace aoc._2022.day01.tests;
 
 public class Day01SolverTests
 {
-    private readonly string[] INPUT = new string[] { };         // <-------- new day's test example input goes here
+    private readonly string[] INPUT = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\..\\..\\Inputs\\2022\\day01testinput.txt"));
 
     [Fact]
     public void InputLoadsCorrectly()
@@ -20,7 +20,7 @@ public class Day01SolverTests
 
         var (answerOne, _) = dayX.CalculateAnswers(INPUT);
 
-        answerOne.Should().Be(150);                             // <--------- solution from web page test example goes here
+        answerOne.Should().Be(24000);
     }
 
     [Fact]

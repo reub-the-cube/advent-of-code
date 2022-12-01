@@ -14,6 +14,8 @@ public class Day01Solver :IDay
     public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
     {
         var parsedInput = _parser.ParseInput(input);
-        throw new NotImplementedException();
+        var answerOne = parsedInput.MostCaloriesHeldByAnElf();
+
+        return (answerOne, 0);
     }
 }
