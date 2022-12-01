@@ -14,9 +14,9 @@ namespace AoC.Console
                 .ConfigureDay02Services();
         }
 
-        public static IDay ResolveDayFor2022(this IServiceProvider serviceProvider, int day)
+        public static IDaySolver ResolveDayFor2022(this IServiceProvider serviceProvider, int day)
         {
-            IDay daySolver = day switch
+            IDaySolver daySolver = day switch
             {
                 1 => serviceProvider.GetService<Day01Solver>() ?? throw new InvalidOperationException(),
                 2 => serviceProvider.GetService<Day02Solver>() ?? throw new InvalidOperationException(),

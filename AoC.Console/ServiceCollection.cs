@@ -10,7 +10,7 @@ namespace AoC.Console
             return services
                 .Configure2021Services()
                 .Configure2022Services()
-                .AddScoped<Func<(int Year, int Day), IDay>>(dayServiceProvider => options =>
+                .AddScoped<Func<(int Year, int Day), IDaySolver>>(dayServiceProvider => options =>
                 {
                     return options.Year switch
                     {

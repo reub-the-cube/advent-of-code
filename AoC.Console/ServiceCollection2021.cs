@@ -18,7 +18,7 @@ namespace AoC.Console
                 .ConfigureDay4Services();
         }
 
-        public static IDay ResolveDayFor2021(this IServiceProvider serviceProvider, int day)
+        public static IDaySolver ResolveDayFor2021(this IServiceProvider serviceProvider, int day)
         {
             return day switch
             {
