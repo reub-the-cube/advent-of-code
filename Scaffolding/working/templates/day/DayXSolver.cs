@@ -2,11 +2,12 @@
 using day.models;
 
 namespace day;
-public class DayX :IDay
+
+public class DayXSolver : IDay
 {
     private readonly IParser<Input> _parser;
 
-    public DayX(IParser<Input> parser)
+    public DayXSolver(IParser<Input> parser)
     {
         _parser = parser;
     }

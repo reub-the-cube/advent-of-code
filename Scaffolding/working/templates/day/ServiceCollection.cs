@@ -9,7 +9,7 @@ namespace day
         public static IServiceCollection ConfigureDayXServices(this IServiceCollection services)
         {
             return services
-                .AddScoped<DayX>()
+                .AddScoped<DayXSolver>()
                 .AddScoped<IParser<Input>, Parser>();
         }
     }

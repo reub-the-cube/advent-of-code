@@ -1,6 +1,6 @@
 namespace AoC.Core;
 
-public interface IDay
+public interface IDaySolver
 {
     (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input);
 }
