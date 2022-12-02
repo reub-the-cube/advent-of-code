@@ -6,8 +6,6 @@ namespace aoc._2022.day02
 {
     public class Parser : IParser<Input>
     {
-
-
         public Input ParseInput(string[] input)
         {
             var parsedInput = new Input();
@@ -17,7 +15,5 @@ namespace aoc._2022.day02
 
             return parsedInput;
         }
-
-
     }
 }
