@@ -15,6 +15,6 @@ public class Day02Solver : IDaySolver
     {
         var parsedInput = _parser.ParseInput(input);
 
-        return parsedInput.GetMyTotalScores();
+        return (parsedInput.GetMyGameScore(0), parsedInput.GetMyGameScore(1));
     }
 }

@@ -4,27 +4,23 @@ namespace aoc._2022.day02.domain
 {
     public class Input
     {
-        private readonly RockPaperScissorsGame StrategyOneGame = new(new List<Round>());
-        private readonly RockPaperScissorsGame StrategyTwoGame = new(new List<Round>());
+        private readonly RockPaperScissorsGame[] Games = new RockPaperScissorsGame[2] { new RockPaperScissorsGame(), new RockPaperScissorsGame() };
 
-        public void AddRoundToStrategyOne(Round round)
+        public void AddRoundToGame(int gameIndex, Round round)
         {
-            StrategyOneGame.AddRound(round);
+            Games[gameIndex].AddRound(round);
         }
 
-        public void AddRoundToStrategyTwo(Round round)
+        public int GetMyGameScore(int gameIndex)
         {
-            StrategyTwoGame.AddRound(round);
-        }
-
-        public (int StrategyOneTotal, int StrategyTwoTotal) GetMyTotalScores()
-        {
-            return (StrategyOneGame.MyGameScore, StrategyTwoGame.MyGameScore);
+            return Games[gameIndex].MyGameScore;
         }
     }
 
     public readonly record struct RockPaperScissorsGame(List<Round> Rounds)
     {
+        public RockPaperScissorsGame() : this(new List<Round>()) { }
+
         public void AddRound(Round round) => Rounds.Add(round);
 
         public int MyGameScore => Rounds.Sum(r => r.MyRoundScore);

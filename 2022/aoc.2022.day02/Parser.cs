@@ -1,6 +1,5 @@
 ﻿using aoc._2022.day02.domain;
 using AoC.Core;
-using static aoc._2022.day02.Enums;
 
 namespace aoc._2022.day02
 {
@@ -14,8 +13,8 @@ namespace aoc._2022.day02
             {
                 var opponentShape = MapperHelper.InputCodeToShape[i[0]];
 
-                parsedInput.AddRoundToStrategyOne(new Round(opponentShape, MapperHelper.InputCodeToShape[i[2]]));
-                parsedInput.AddRoundToStrategyTwo(new Round(opponentShape, RoundHelper.MapToShapeFromDesiredResult(i[2], opponentShape)));
+                parsedInput.AddRoundToGame(0, new Round(opponentShape, MapperHelper.InputCodeToShape[i[2]]));
+                parsedInput.AddRoundToGame(1, new Round(opponentShape, RoundHelper.MapToShapeFromDesiredResult(i[2], opponentShape)));
             });
 
             return parsedInput;
