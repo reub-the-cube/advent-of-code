@@ -4,27 +4,34 @@ namespace aoc._2022.day02.domain
 {
     public class Input
     {
-        readonly List<Round> StrategyOneRounds = new();
-        readonly List<Round> StrategyTwoRounds = new();
+        private readonly RockPaperScissorsGame StrategyOneGame = new(new List<Round>());
+        private readonly RockPaperScissorsGame StrategyTwoGame = new(new List<Round>());
 
         public void AddRoundToStrategyOne(Round round)
         {
-            StrategyOneRounds.Add(round);
+            StrategyOneGame.AddRound(round);
         }
 
         public void AddRoundToStrategyTwo(Round round)
         {
-            StrategyTwoRounds.Add(round);
+            StrategyTwoGame.AddRound(round);
         }
 
-        public (int StrategyOneTotal, int StrategyTwoTotal) GetMyTotalScore()
+        public (int StrategyOneTotal, int StrategyTwoTotal) GetMyTotalScores()
         {
-            return (StrategyOneRounds.Sum(r => r.MyScore), StrategyTwoRounds.Sum(r => r.MyScore));
+            return (StrategyOneGame.MyGameScore, StrategyTwoGame.MyGameScore);
         }
+    }
+
+    public readonly record struct RockPaperScissorsGame(List<Round> Rounds)
+    {
+        public void AddRound(Round round) => Rounds.Add(round);
+
+        public int MyGameScore => Rounds.Sum(r => r.MyRoundScore);
     }
 
     public readonly record struct Round(RockPaperScissor Them, RockPaperScissor Me)
     {
-        public int MyScore => MapperHelper.ShapeToScore[Me] + RoundHelper.OutcomeScore(Me, Them);
+        public int MyRoundScore => MapperHelper.ShapeToScore[Me] + RoundHelper.OutcomeScore(Me, Them);
     }
 }

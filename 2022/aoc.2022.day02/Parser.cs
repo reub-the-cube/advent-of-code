@@ -10,8 +10,13 @@ namespace aoc._2022.day02
         {
             var parsedInput = new Input();
 
-            Array.ForEach(input, i => parsedInput.AddRoundToStrategyOne(new Round(MapperHelper.InputCodeToShape[i[0]], MapperHelper.InputCodeToShape[i[2]])));
-            Array.ForEach(input, i => parsedInput.AddRoundToStrategyTwo(new Round(MapperHelper.InputCodeToShape[i[0]], RoundHelper.MapToShapeFromDesiredResult(i[2], MapperHelper.InputCodeToShape[i[0]]))));
+            Array.ForEach(input, i =>
+            {
+                var opponentShape = MapperHelper.InputCodeToShape[i[0]];
+
+                parsedInput.AddRoundToStrategyOne(new Round(opponentShape, MapperHelper.InputCodeToShape[i[2]]));
+                parsedInput.AddRoundToStrategyTwo(new Round(opponentShape, RoundHelper.MapToShapeFromDesiredResult(i[2], opponentShape)));
+            });
 
             return parsedInput;
         }
