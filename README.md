@@ -1,5 +1,9 @@
 # advent-of-code
 
+## Pre-reqs
+
+- Local NuGet source containing the `AoC.Core` package. Run `.\update-scaffolding.ps1`, see 'Project scaffolding for a new day' below for more details.
+
 ## Run what you've got
 
 From the `.\AoC.Console\` directory
