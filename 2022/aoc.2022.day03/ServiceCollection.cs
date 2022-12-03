@@ -1,5 +1,5 @@
 using AoC.Core;
-using aoc._2022.day03.models;
+using aoc._2022.day03.domain;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace aoc._2022.day03
