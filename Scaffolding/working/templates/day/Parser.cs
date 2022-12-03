@@ -1,5 +1,5 @@
 ﻿using AoC.Core;
-using day.models;
+using day.domain;
 
 namespace day
 {

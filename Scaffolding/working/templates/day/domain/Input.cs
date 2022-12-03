@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace day.models
+namespace day.domain
 {
     public class Input
     {
