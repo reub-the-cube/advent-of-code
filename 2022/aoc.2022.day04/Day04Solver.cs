@@ -15,6 +15,10 @@ public class Day04Solver : IDaySolver
     public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
     {
         var parsedInput = _parser.ParseInput(input);
-        throw new NotImplementedException();
+
+        var numberOfFullOverlaps = parsedInput.AssignmentPairs.Count(pair => pair.HasFullRangeOverlap);
+        var numberOfTotalOverlaps = parsedInput.AssignmentPairs.Count(pair => pair.HasSomeKindOfOverlap);
+
+        return (numberOfFullOverlaps, numberOfTotalOverlaps);
     }
 }
