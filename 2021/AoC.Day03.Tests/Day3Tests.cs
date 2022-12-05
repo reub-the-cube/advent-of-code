@@ -14,7 +14,7 @@ public class Day3Tests
 
         var (answerOne, _) = day.CalculateAnswers(INPUT);
 
-        answerOne.Should().Be(198);
+        answerOne.Should().Be("198");
     }
 
     [Fact]
@@ -25,7 +25,7 @@ public class Day3Tests
 
         var (_, answerTwo) = day.CalculateAnswers(INPUT);
 
-        answerTwo.Should().Be(230);
+        answerTwo.Should().Be("230");
     }
 
     [Fact] 

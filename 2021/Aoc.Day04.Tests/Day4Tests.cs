@@ -26,7 +26,7 @@ public class Day4Tests
 
         var (answerOne, _) = day4.CalculateAnswers(INPUT);
 
-        answerOne.Should().Be(4512);
+        answerOne.Should().Be("4512");
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class Day4Tests
 
         var (_, answerTwo) = day4.CalculateAnswers(INPUT);
 
-        answerTwo.Should().Be(1924);
+        answerTwo.Should().Be("1924");
     }
 
     [Fact]

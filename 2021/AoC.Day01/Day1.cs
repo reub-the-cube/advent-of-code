@@ -4,12 +4,12 @@ namespace AoC.Day01;
 
 public class Day1 : IDaySolver
 {
-    public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
+    public (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input)
     {
         var sonarScannerReport = new SonarScannerReport(Array.ConvertAll(input, Parser.ParseLine));
         var answerOne = sonarScannerReport.GetIncreasesInDepthByDay();
         var answerTwo = sonarScannerReport.GetIncreasesInDepthBySlidingWindow();
 
-        return (answerOne, answerTwo);
+        return (answerOne.ToString(), answerTwo.ToString());
     }
 }

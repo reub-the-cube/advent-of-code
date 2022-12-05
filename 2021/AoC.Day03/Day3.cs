@@ -11,7 +11,7 @@ public class Day3 : IDaySolver
         _parser = parser;
     }
 
-    public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
+    public (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input)
     {
         if (input == null) throw new ArgumentNullException(nameof(input));
         
@@ -25,7 +25,7 @@ public class Day3 : IDaySolver
         var oxygenRating = GetOxygenGeneratorRating(parsedInput.BinaryNumbers, numberOfBits);
         var co2Rating = GetCO2ScrubberRating(parsedInput.BinaryNumbers, numberOfBits);
 
-        return (Convert.ToInt32(gammaRate * epsilonRate), Convert.ToInt32(oxygenRating * co2Rating));
+        return (Convert.ToInt32(gammaRate * epsilonRate).ToString(), Convert.ToInt32(oxygenRating * co2Rating).ToString());
     }
 
     public static IEnumerable<bool> MostCommonBitFlags(uint[] parsedInput, int numberOfBits)

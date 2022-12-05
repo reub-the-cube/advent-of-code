@@ -12,7 +12,7 @@ public class Day4 :IDaySolver
         _parser = parser;
     }
 
-    public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
+    public (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input)
     {
         var parsedInput = _parser.ParseInput(input);
         var (FirstWinningNumber, FirstWinningBoard) = FindFirstWinningBoard(parsedInput);
@@ -22,7 +22,7 @@ public class Day4 :IDaySolver
         var (LastWinningNumber, LastWinningBoard) = FindLastWinningBoard(parsedInput);
         var answerTwo = LastWinningNumber * LastWinningBoard.GetUnmarkedTotal();
 
-        return (answerOne, answerTwo);
+        return (answerOne.ToString(), answerTwo.ToString());
     }
 
     private static (int WinningNumber, Board WinningBoard) FindFirstWinningBoard(Input parsedInput)

@@ -11,7 +11,7 @@ public class Day2 : IDaySolver
         _parser = parser;
     }
     
-    public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
+    public (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input)
     {
         var plannedCourse = _parser.ParseInput(input);
         var calculationOne = JourneyPredictor.ProjectFinalHorizontalPositionAndDepth(plannedCourse.Inputs);
@@ -19,6 +19,6 @@ public class Day2 : IDaySolver
 
         var answerOne = calculationOne.HorizontalChange * calculationOne.DepthChange;
         var answerTwo = calculationTwo.HorizontalChange * calculationTwo.DepthChange;
-        return (answerOne, answerTwo);
+        return (answerOne.ToString(), answerTwo.ToString());
     }
 }
