@@ -4,7 +4,7 @@
     {
         public static RangeOverlapResult GetTypeOfOverlap(this Range range, Range compareTo)
         {
-            if ((range.Start.Value == compareTo.Start.Value) && (range.Start.Value == compareTo.Start.Value))
+            if ((range.Start.Value == compareTo.Start.Value) && (range.End.Value == compareTo.End.Value))
             {
                 return RangeOverlapResult.Equal;
             }
