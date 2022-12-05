@@ -3,7 +3,7 @@ using day.domain;
 
 namespace day;
 
-public class DayXSolver : IDaySolver
+public class DayXSolver : IDaySolver<int>
 {
     private readonly IParser<Input> _parser;
 
