@@ -16,10 +16,16 @@ public class Day05Solver : IDaySolver
     {
         var unloadingYard = _parser.ParseInput(input);
 
-        var topCrates = unloadingYard.RearrangeYard().GetTopCrateOfEachStack();
+        var topCratesAfterCrateMover9000 = unloadingYard
+            .RearrangeYard(CraneTypes.CrateMover9000)
+            .GetTopCrateOfEachStack();
+        var topCratesAfterCrateMover9001 = unloadingYard
+            .RearrangeYard(CraneTypes.CrateMover9001)
+            .GetTopCrateOfEachStack();
 
-        var answerOne = string.Join(string.Empty, topCrates).Replace("[", string.Empty).Replace("]", string.Empty);
+        var answerOne = string.Join(string.Empty, topCratesAfterCrateMover9000).Replace("[", string.Empty).Replace("]", string.Empty);
+        var answerTwo = string.Join(string.Empty, topCratesAfterCrateMover9001).Replace("[", string.Empty).Replace("]", string.Empty);
 
-        return (answerOne, "");
+        return (answerOne, answerTwo);
     }
 }
