@@ -12,13 +12,13 @@ public class Day04Solver : IDaySolver
         _parser = parser;
     }
 
-    public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
+    public (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input)
     {
         var parsedInput = _parser.ParseInput(input);
 
         var numberOfFullOverlaps = parsedInput.AssignmentPairs.Count(pair => pair.HasFullRangeOverlap);
         var numberOfTotalOverlaps = parsedInput.AssignmentPairs.Count(pair => pair.HasSomeKindOfOverlap);
 
-        return (numberOfFullOverlaps, numberOfTotalOverlaps);
+        return (numberOfFullOverlaps.ToString(), numberOfTotalOverlaps.ToString());
     }
 }

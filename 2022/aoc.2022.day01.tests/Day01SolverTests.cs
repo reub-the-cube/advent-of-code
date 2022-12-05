@@ -20,7 +20,7 @@ public class Day01SolverTests
 
         var (answerOne, _) = dayX.CalculateAnswers(INPUT);
 
-        answerOne.Should().Be(24000);
+        answerOne.Should().Be("24000");
     }
 
     [Fact]
@@ -31,6 +31,6 @@ public class Day01SolverTests
 
         var (_, answerTwo) = dayX.CalculateAnswers(INPUT);
 
-        answerTwo.Should().Be(45000);
+        answerTwo.Should().Be("45000");
     }
 }

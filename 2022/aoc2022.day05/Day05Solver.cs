@@ -12,12 +12,7 @@ public class Day05Solver : IDaySolver
         _parser = parser;
     }
 
-    public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
-    {
-        throw new NotImplementedException();
-    }
-
-    public (string AnswerOne, string AnswerTwo) CalculateNewAnswers(string[] input)
+    public (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input)
     {
         var unloadingYard = _parser.ParseInput(input);
 

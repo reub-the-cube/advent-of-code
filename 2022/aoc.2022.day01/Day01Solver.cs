@@ -11,12 +11,12 @@ public class Day01Solver :IDaySolver
         _parser = parser;
     }
 
-    public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
+    public (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input)
     {
         var parsedInput = _parser.ParseInput(input);
         var answerOne = parsedInput.MostCaloriesHeldByAnElf();
         var answerTwo = parsedInput.TotalCaloriesHeldByElvesWithMostCalories(3);
 
-        return (answerOne, answerTwo);
+        return (answerOne.ToString(), answerTwo.ToString());
     }
 }

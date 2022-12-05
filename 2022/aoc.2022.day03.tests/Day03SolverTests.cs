@@ -6,8 +6,8 @@ namespace aoc._2022.day03.tests;
 public class Day03SolverTests
 {
     private readonly string[] INPUT = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\..\\..\\Inputs\\2022\\day03testinput.txt"));
-    private const int EXPECTED_DAY_ONE_ANSWER = 157; // <--------- solution from web page test example goes here
-    private const int EXPECTED_DAY_TWO_ANSWER = 70; // <--------- solution from web page test example goes here
+    private const string EXPECTED_DAY_ONE_ANSWER = "157"; // <--------- solution from web page test example goes here
+    private const string EXPECTED_DAY_TWO_ANSWER = "70"; // <--------- solution from web page test example goes here
 
     [Fact]
     public void InputLoadsCorrectly()

@@ -6,7 +6,7 @@ public class Day05SolverTests
 {
     private readonly string[] INPUT = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\..\\..\\Inputs\\2022\\day05testinput.txt"));
     private const string EXPECTED_ANSWER_ONE = "CMZ"; // <--------- solution from web page test example goes here
-    private const int EXPECTED_ANSWER_TWO = -1; // <--------- solution from web page test example goes here
+    private const string EXPECTED_ANSWER_TWO = "not_implemented"; // <--------- solution from web page test example goes here
 
     [Fact]
     public void InputLoadsCorrectly()
@@ -20,7 +20,7 @@ public class Day05SolverTests
         var parser = new Parser();
         var day05 = new Day05Solver(parser);
 
-        var (answerOne, _) = day05.CalculateNewAnswers(INPUT);
+        var (answerOne, _) = day05.CalculateAnswers(INPUT);
 
         answerOne.Should().Be(EXPECTED_ANSWER_ONE);
     }

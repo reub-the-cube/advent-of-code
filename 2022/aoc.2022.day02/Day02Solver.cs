@@ -11,10 +11,10 @@ public class Day02Solver : IDaySolver
         _parser = parser;
     }
 
-    public (int AnswerOne, int AnswerTwo) CalculateAnswers(string[] input)
+    public (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input)
     {
         var parsedInput = _parser.ParseInput(input);
 
-        return (parsedInput.GetMyGameScore(0), parsedInput.GetMyGameScore(1));
+        return (parsedInput.GetMyGameScore(0).ToString(), parsedInput.GetMyGameScore(1).ToString());
     }
 }
