@@ -1,6 +1,6 @@
 namespace AoC.Core;
 
-public interface IDaySolver<T>
+public interface IDaySolver
 {
-    (T AnswerOne, T AnswerTwo) CalculateAnswers(string[] input);
+    (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input);
 }
