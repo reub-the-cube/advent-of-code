@@ -1,5 +1,3 @@
-using AoC.Core;
-using aoc2022.day06.domain;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace aoc2022.day06
@@ -9,8 +7,7 @@ namespace aoc2022.day06
         public static IServiceCollection ConfigureDay06Services(this IServiceCollection services)
         {
             return services
-                .AddScoped<Day06Solver>()
-                .AddScoped<IParser<Input>, Parser>();
+                .AddScoped<Day06Solver>();
         }
     }
 }
