@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace aoc2022.day07.domain
+﻿namespace aoc2022.day07.domain
 {
     public class Input
     {
-        public Dictionary<(string Name, string PathToParent), TreeItem> Tree { get; init; }
+        public Dictionary<(string Name, string PathToParent), TreeItem> Tree { get; }
 
         public Input()
         {

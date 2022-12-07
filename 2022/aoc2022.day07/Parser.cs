@@ -8,52 +8,56 @@ namespace aoc2022.day07
         public Input ParseInput(string[] input)
         {
             var parsedInput = new Input();
+            var directoryStack = new Stack<string>();
             var workingDirectory = "/";
+            
+            // Add root
             parsedInput.AddTreeItem("/", string.Empty, new TreeDirectoryItem());
 
-            foreach (var inputRow in input.Skip(1))
+            foreach (var inputRow in input.Skip(1).Where(i => i != "$ ls"))
             {
-                if (workingDirectory.First() != '/') workingDirectory = $"/{workingDirectory}";
-                
-                switch (inputRow)
+                if (inputRow[..4] == "$ cd")
                 {
-                    case "$ ls":
-                        break;
-                    case "$ cd ..":
-                        workingDirectory = $"{string.Join('/', workingDirectory.Split('/', StringSplitOptions.RemoveEmptyEntries).SkipLast(1))}/";
-                        break;
-                    default:
-                    {
-                        if (inputRow[..4] == "$ cd")
-                        {
-                            workingDirectory = $"{workingDirectory}{inputRow[5..]}/";
-                        }
-                        else
-                        {
-                            var (Name, Item) = ParseLine(inputRow);
-                            parsedInput.AddTreeItem(Name, workingDirectory, Item);
-                        }
-
-                        break;
-                    }
+                    workingDirectory = GetWorkingDirectory(inputRow[5..], directoryStack);
+                }
+                else
+                {
+                    var (Name, Item) = ParseLine(inputRow);
+                    parsedInput.AddTreeItem(Name, workingDirectory, Item);
                 }
             }
 
             return parsedInput;
         }
 
+        private static string GetWorkingDirectory(string newDirectory, Stack<string> directoryStack)
+        {
+            switch (newDirectory)
+            {
+                case "..":
+                    directoryStack.Pop();
+                    break;
+                default:
+                    directoryStack.Push(newDirectory);
+                    break;
+            }
+
+            return directoryStack.Count switch
+            {
+                0 => "/",
+                _ => $"/{string.Join('/', directoryStack.Reverse())}/"
+            };
+        }
+        
         private static (string Name, TreeItem Item) ParseLine(string inputRow)
         {
             if (inputRow[..3] == "dir")
             {
                 return (inputRow[4..], new TreeDirectoryItem());
             }
-            else
-            {
-                var splitRow = inputRow.Split(" ");
-                return (splitRow[1], new TreeFileItem(int.Parse(splitRow[0])));
-            }
+
+            var splitRow = inputRow.Split(" ");
+            return (splitRow[1], new TreeFileItem(int.Parse(splitRow[0])));
         }
     }
 }
-
