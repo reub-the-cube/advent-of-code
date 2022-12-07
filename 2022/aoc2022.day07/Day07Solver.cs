@@ -15,6 +15,15 @@ public class Day07Solver : IDaySolver
     public (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input)
     {
         var parsedInput = _parser.ParseInput(input);
-        throw new NotImplementedException();
+
+        var directories = parsedInput.GetDirectoriesBySize();
+
+        var answerOne = directories.Values.Sum(d => d <= 100000 ? d : 0);
+
+        var unusedSpace = 70000000 - directories.Values.FirstOrDefault();
+        var deltaToFreeUpSpace = 30000000 - unusedSpace;
+        var answerTwo = directories.Values.Order().FirstOrDefault(v => v > deltaToFreeUpSpace);
+        
+        return (answerOne.ToString(), answerTwo.ToString());
     }
 }
