@@ -15,8 +15,10 @@ using IHost host = Host.CreateDefaultBuilder(args)
 var implementedYearsAndDays = new Dictionary<int, List<int>>()
 {
     { 2021, new List<int> { 1, 2, 3, 4 } },
-    { 2022, new List<int> { 1, 2, 3, 4, 5, 6 } }
+    { 2022, new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 } }
 };
+
+var deltaStopwatch = new Stopwatch();
 
 ParseArgs();
 
@@ -141,6 +143,7 @@ void PrepareAll()
     }
     stopwatch.Stop();
     Console.WriteLine($"Elapsed time (ms): {stopwatch.ElapsedMilliseconds}");
+    Console.WriteLine($"Elapsed calculation time (ms): {deltaStopwatch.ElapsedMilliseconds}");
 }
 
 void PrepareYear(int year)
@@ -152,6 +155,7 @@ void PrepareYear(int year)
     }
     stopwatch.Stop();
     Console.WriteLine($"Elapsed time (ms): {stopwatch.ElapsedMilliseconds}");
+    Console.WriteLine($"Elapsed calculation time (ms): {deltaStopwatch.ElapsedMilliseconds}");
 }
 
 void PrepareDay(int year, int day)
@@ -160,6 +164,7 @@ void PrepareDay(int year, int day)
     SolveDay(year, day);
     stopwatch.Stop();
     Console.WriteLine($"Elapsed time (ms): {stopwatch.ElapsedMilliseconds}");
+    Console.WriteLine($"Elapsed calculation time (ms): {deltaStopwatch.ElapsedMilliseconds}");
 }
 
 void SolveDay(int year, int day)
@@ -171,7 +176,9 @@ void SolveDay(int year, int day)
         var dayFormatted = day.ToString("00");
 
         var input = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{year}", $"day{dayFormatted}input.txt"));
+        deltaStopwatch.Start();
         var (AnswerOne, AnswerTwo) = daySolver.CalculateAnswers(input);
+        deltaStopwatch.Stop();
 
         Console.WriteLine($"Final answer for year {year}, day {dayFormatted}, challenge 1: {AnswerOne}");
         Console.WriteLine($"Final answer for year {year}, day {dayFormatted}, challenge 2: {AnswerTwo}");
