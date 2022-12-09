@@ -1,5 +1,6 @@
 using AoC.Core;
 using aoc2022.day09.domain;
+using System.Runtime.CompilerServices;
 
 namespace aoc2022.day09;
 
@@ -17,8 +18,8 @@ public class Day09Solver : IDaySolver
         var instructions = _parser.ParseInput(input);
 
         var knots = Enumerable.Repeat(new Knot(0, 0), 10).ToList();
-        var visitedFirstTail = new Dictionary<(int X, int Y), int>();
-        var visitedSecondTail = new Dictionary<(int X, int Y), int>();
+        var firstTailVisits = new Dictionary<(int X, int Y), int>();
+        var secondTailVisits = new Dictionary<(int X, int Y), int>();
 
         foreach (var instruction in instructions)
         {
@@ -30,33 +31,27 @@ public class Day09Solver : IDaySolver
                 {
                     knots[knotNumber] = knots[knotNumber].Follow(knots[knotNumber - 1].X, knots[knotNumber - 1].Y);
 
-                    if (knotNumber == 1)
-                    {
-                        if (visitedFirstTail.ContainsKey((knots[knotNumber].X, knots[knotNumber].Y)))
-                        {
-                            visitedFirstTail[(knots[knotNumber].X, knots[knotNumber].Y)]++;
-                        }
-                        else
-                        {
-                            visitedFirstTail.Add((knots[knotNumber].X, knots[knotNumber].Y), 1);
-                        }
-                    }
-
-                    if (knotNumber == knots.Count - 1)
-                    {
-                        if (visitedSecondTail.ContainsKey((knots[knotNumber].X, knots[knotNumber].Y)))
-                        {
-                            visitedSecondTail[(knots[knotNumber].X, knots[knotNumber].Y)]++;
-                        }
-                        else
-                        {
-                            visitedSecondTail.Add((knots[knotNumber].X, knots[knotNumber].Y), 1);
-                        }
-                    }
+                    if (knotNumber == 1) firstTailVisits.Log((knots[knotNumber].X, knots[knotNumber].Y));
+                    if (knotNumber == knots.Count - 1) secondTailVisits.Log((knots[knotNumber].X, knots[knotNumber].Y));
                 }
             }
         }
 
-        return (visitedFirstTail.Keys.Count.ToString(), visitedSecondTail.Keys.Count.ToString());
+        return (firstTailVisits.Keys.Count.ToString(), secondTailVisits.Keys.Count.ToString());
+    }
+}
+
+public static class DictionaryExtensions
+{
+    public static void Log(this Dictionary<(int X, int Y), int> visitTracker, (int X, int Y) newKnotLocation)
+    {
+        if (!visitTracker.ContainsKey(newKnotLocation))
+        {
+            visitTracker.Add(newKnotLocation, 1);
+        }
+        else
+        {
+            visitTracker[newKnotLocation]++;
+        }
     }
 }
