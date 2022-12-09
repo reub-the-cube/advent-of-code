@@ -10,7 +10,7 @@ namespace aoc2022.day09
         {
             return services
                 .AddScoped<Day09Solver>()
-                .AddScoped<IParser<Input>, Parser>();
+                .AddScoped<IParser<Instruction[]>, Parser>();
         }
     }
 }
