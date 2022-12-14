@@ -17,20 +17,33 @@ namespace aoc2022.day14.domain
         public int GetNumberOfRows() => Tiles.GetUpperBound(0);
         public int GetNumberOfColumns() => Tiles.GetUpperBound(1);
 
-        public CaveSlice AddLineOfRocks(string rockFormation, int columnOffset)
+        public CaveSlice AddLineOfRocks(string rockFormation)
         {
             var coordinates = rockFormation
                 .Split(" -> ")
                 .Select(c =>
                 {
                     var coordinateAsArray = c.Split(',');
-                    return new Position(Convert.ToInt32(coordinateAsArray[1]), Convert.ToInt32(coordinateAsArray[0]) - columnOffset);
+                    return new Position(Convert.ToInt32(coordinateAsArray[1]), Convert.ToInt32(coordinateAsArray[0]));
                 })
                 .ToList();
 
             for (int i = 0; i < coordinates.Count - 1; i++)
             {
                 MakeRangeOfTilesARock(coordinates[i], coordinates[i + 1]);
+            }
+
+            return new CaveSlice(Tiles);
+        }
+
+        public CaveSlice AddLineOfRocksAcrossTheFloor()
+        {
+            for (int i = Tiles.GetUpperBound(0); i <= Tiles.GetUpperBound(0); i++)
+            {
+                for (int j = 0; j <= Tiles.GetUpperBound(1); j++)
+                {
+                    SetTileState(i, j, TileState.Rock);
+                }
             }
 
             return new CaveSlice(Tiles);
@@ -59,6 +72,12 @@ namespace aoc2022.day14.domain
             }
 
             TotalGrainsOfSand++;
+
+            if (position.Row == EntryPosition.Row && position.Column == EntryPosition.Column)
+            {
+                return null;
+            }
+
             return position;
         }
 

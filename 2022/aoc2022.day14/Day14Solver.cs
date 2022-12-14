@@ -18,12 +18,16 @@ public class Day14Solver : IDaySolver
 
         var cave = parsedInput.CaveSlice.Clone();
 
-        var answerOne = FillCaveSliceWithSand(cave, 0, 500 - parsedInput.ColumnOffset, parsedInput.ColumnOffset);
+        var answerOne = FillCaveSliceWithSand(cave, 0, 500);
 
-        return (answerOne.ToString(), string.Empty);
+        parsedInput = _parser.ParseInput(input.Append("row-of-rocks").ToArray());
+
+        var answerTwo = FillCaveSliceWithSand(parsedInput.CaveSlice, 0, 500);
+
+        return (answerOne.ToString(), answerTwo.ToString());
     }
 
-    private static int FillCaveSliceWithSand(CaveSlice cave, int entryRow, int entryColumn, int columnOffset)
+    private static int FillCaveSliceWithSand(CaveSlice cave, int entryRow, int entryColumn)
     {
         cave.SetSandDropPoint(entryRow, entryColumn);
 
