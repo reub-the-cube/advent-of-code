@@ -244,5 +244,13 @@ namespace aoc2022.day16.tests
             maximumRemainingPressure.Should().ContainKey("FF");
             maximumRemainingPressure["FF"].Should().Be(0);
         }
+
+
+        [Fact]
+        public void TestCaseCalculatesMaxPressureReleaseAsExpected()
+        {
+            var maximumRemainingPressure = PressureCounter.CalculateMaximumRemainingPressure("AA", 30, distancesBetweenValves, valveFlowRates);
+            maximumRemainingPressure.Values.Max().Should().Be(1651);
+        }
     }
 }
