@@ -14,7 +14,9 @@
                 var remainingMinutes = numberOfMinutes - distanceToValve - 1;
                 if (remainingMinutes > 0)
                 {
-                    maxPressureRemainingByStartingValve.Add(valve.Key, remainingOffValves[startingValve]);
+                    var maxPressureOnRemainingValves = CalculateMaximumRemainingPressure(valve.Key, remainingMinutes, distancesBetweenValves, remainingOffValves.Where(r => r.Key != valve.Key).ToDictionary(k => k.Key, v => v.Value));
+                    var maxPressureRemaining = (remainingOffValves[valve.Key] * remainingMinutes) + maxPressureOnRemainingValves.Values.DefaultIfEmpty(0).Max(); 
+                    maxPressureRemainingByStartingValve.Add(valve.Key, maxPressureRemaining);
                 }
             }
 
