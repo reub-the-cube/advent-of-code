@@ -245,7 +245,6 @@ namespace aoc2022.day16.tests
             maximumRemainingPressure["FF"].Should().Be(0);
         }
 
-
         [Fact]
         public void TestCaseCalculatesMaxPressureReleaseAsExpected()
         {
