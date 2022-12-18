@@ -16,16 +16,18 @@ namespace aoc2022.day17.domain
             HeightsAtEachWidthIndex = (int[])startingHeights.Clone();
         }
 
+        public int GetHighestRock() => HeightsAtEachWidthIndex.Max();
+
         public int LetRockFall(Shape rock, int bottomLeftIndex, int bottomLeftHeight)
         {
             var isBlocked = rock.IsBlockedBelow(HeightsAtEachWidthIndex, bottomLeftIndex, bottomLeftHeight);
 
-            return isBlocked ? bottomLeftIndex : bottomLeftIndex - 1;
+            return isBlocked ? bottomLeftHeight : bottomLeftHeight - 1;
         }
 
-        public int[] PlaceRock(Shape rock, int indexOfBottomLeftPartOfShape)
+        public int[] PlaceRock(Shape rock, int indexOfBottomLeftPartOfShape, int heightOfBottomLeftPartOfShape)
         {
-            rock.UpdateHeightsAfterComingToRest(ref HeightsAtEachWidthIndex, indexOfBottomLeftPartOfShape);
+            rock.UpdateHeightsAfterComingToRest(ref HeightsAtEachWidthIndex, indexOfBottomLeftPartOfShape, heightOfBottomLeftPartOfShape);
 
             return HeightsAtEachWidthIndex;
         }

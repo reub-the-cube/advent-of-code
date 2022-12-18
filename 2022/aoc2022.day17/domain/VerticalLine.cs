@@ -19,7 +19,7 @@
                 (heights[bottomLeftIndex + 1] >= bottomLeftHeight);
         }
 
-        public override void UpdateHeightsAfterComingToRest(ref int[] heights, int bottomLeftIndex)
+        public override void UpdateHeightsAfterComingToRest(ref int[] heights, int bottomLeftIndex, int bottomLeftHeight)
         {
             // ...
             // .*.
@@ -27,7 +27,7 @@
             // .*.
             // .*.
             // ...
-            heights[bottomLeftIndex] += 4;
+            heights[bottomLeftIndex] = bottomLeftHeight + 3;
         }
     }
 }

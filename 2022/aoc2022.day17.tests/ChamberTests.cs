@@ -25,7 +25,7 @@ namespace aoc2022.day17.tests
             var chamber = new Chamber(startingHeights);
             var rock = MakeShapeTypeFromRockShapeEnum(rockShape);
 
-            var actualHeights = chamber.PlaceRock(rock, indexOfBottomLeftPosition);
+            var actualHeights = chamber.PlaceRock(rock, indexOfBottomLeftPosition, 1);
 
             actualHeights.Should().HaveCount(expectedHeights.Length);
             actualHeights.Should().BeEquivalentTo(expectedHeights);
@@ -158,9 +158,9 @@ namespace aoc2022.day17.tests
             var chamber = new Chamber(activeHeights);
             Shape rock = MakeShapeTypeFromRockShapeEnum(rockShape);
 
-            var indexOfBottomLeftPosition = chamber.LetRockFall(rock, indexOfBottomLeftPositionBeforeDrop, heightOfBottomLeftPositionBeforeDrop);
+            var heightOfBottomLeftPosition = chamber.LetRockFall(rock, indexOfBottomLeftPositionBeforeDrop, heightOfBottomLeftPositionBeforeDrop);
 
-            indexOfBottomLeftPosition.Should().Be(indexOfBottomLeftPositionBeforeDrop - 1);
+            heightOfBottomLeftPosition.Should().Be(heightOfBottomLeftPositionBeforeDrop - 1);
         }
 
         [Theory]
@@ -182,9 +182,9 @@ namespace aoc2022.day17.tests
             var chamber = new Chamber(activeHeights);
             Shape rock = MakeShapeTypeFromRockShapeEnum(rockShape);
 
-            var indexOfBottomLeftPosition = chamber.LetRockFall(rock, indexOfBottomLeftPositionBeforeDrop, heightOfBottomLeftPositionBeforeDrop);
+            var heightOfBottomLeftPosition = chamber.LetRockFall(rock, indexOfBottomLeftPositionBeforeDrop, heightOfBottomLeftPositionBeforeDrop);
 
-            indexOfBottomLeftPosition.Should().Be(indexOfBottomLeftPositionBeforeDrop);
+            heightOfBottomLeftPosition.Should().Be(heightOfBottomLeftPositionBeforeDrop);
         }
 
         private static Shape MakeShapeTypeFromRockShapeEnum(RockShape rockShape)

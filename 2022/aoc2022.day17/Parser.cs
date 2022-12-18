@@ -1,13 +1,12 @@
 ﻿using AoC.Core;
-using aoc2022.day17.domain;
 
 namespace aoc2022.day17
 {
-    public class Parser : IParser<Input>
+    public class Parser : IParser<string>
     {
-        public Input ParseInput(string[] input)
+        public string ParseInput(string[] input)
         {
-            throw new NotImplementedException();
+            return input[0];
         }
     }
 }

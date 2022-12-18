@@ -5,10 +5,10 @@
         public enum RockShape
         {
             HorizontalLine,
-            VerticalLine,
             Plus,
-            Square,
-            MirroredL
+            MirroredL,
+            VerticalLine,
+            Square
         }
     }
 }

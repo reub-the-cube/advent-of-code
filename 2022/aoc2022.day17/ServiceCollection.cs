@@ -1,5 +1,4 @@
 using AoC.Core;
-using aoc2022.day17.domain;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace aoc2022.day17
@@ -10,7 +9,7 @@ namespace aoc2022.day17
         {
             return services
                 .AddScoped<Day17Solver>()
-                .AddScoped<IParser<Input>, Parser>();
+                .AddScoped<IParser<string>, Parser>();
         }
     }
 }
