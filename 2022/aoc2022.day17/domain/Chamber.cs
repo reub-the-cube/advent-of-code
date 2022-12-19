@@ -4,6 +4,7 @@ namespace aoc2022.day17.domain
 {
     public class Chamber
     {
+        public int NumberOfRocksDropped { get; private set; }
         private int[] HeightsAtEachWidthIndex;
         private HashSet<int>[] BlockedHeightsAtEachWidthIndex;
 
@@ -17,6 +18,18 @@ namespace aoc2022.day17.domain
 
         public int GetHighestRock() => HeightsAtEachWidthIndex.Max();
 
+        public string GetHeightProfile()
+        {
+            var minHeight = HeightsAtEachWidthIndex.Min();
+            var heightDeltas = HeightsAtEachWidthIndex.Select(h => (h - minHeight).ToString());
+            return string.Join('|', heightDeltas);
+        }
+
+        public int[] GetHeights()
+        {
+            return HeightsAtEachWidthIndex;
+        }
+
         public int LetRockFall(Shape rock, int bottomLeftIndex, int bottomLeftHeight)
         {
             var isBlocked = rock.IsBlockedBelow(BlockedHeightsAtEachWidthIndex, bottomLeftIndex, bottomLeftHeight);
@@ -27,10 +40,9 @@ namespace aoc2022.day17.domain
         public int[] PlaceRock(Shape rock, int indexOfBottomLeftPartOfShape, int heightOfBottomLeftPartOfShape)
         {
             rock.UpdateHeightsAfterComingToRest(ref BlockedHeightsAtEachWidthIndex, indexOfBottomLeftPartOfShape, heightOfBottomLeftPartOfShape);
+            NumberOfRocksDropped++;
 
             HeightsAtEachWidthIndex = BlockedHeightsAtEachWidthIndex.Select(h => h.DefaultIfEmpty(0).Max()).ToArray();
-
-            RemoveImpossibleHeights();
             
             return HeightsAtEachWidthIndex;
         }
@@ -47,12 +59,6 @@ namespace aoc2022.day17.domain
             var isBlocked = rock.IsBlockedToTheRight(BlockedHeightsAtEachWidthIndex, indexOfBottomLeftPartOfShape, heightOfBottomLeftPartOfShape);
 
             return isBlocked ? indexOfBottomLeftPartOfShape : indexOfBottomLeftPartOfShape + 1;
-        }
-
-        private void RemoveImpossibleHeights()
-        {
-            var minHeight = BlockedHeightsAtEachWidthIndex.Select(h => h.DefaultIfEmpty(0).Min()).Min();
-            Array.ForEach(BlockedHeightsAtEachWidthIndex, b => b.RemoveWhere(h => h < minHeight));
         }
     }
 }
