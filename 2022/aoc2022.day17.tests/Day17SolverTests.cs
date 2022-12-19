@@ -32,7 +32,7 @@ public class Day17SolverTests
         var day17 = new Day17Solver(parser);
 
         var (_, answerTwo) = day17.CalculateAnswers(INPUT);
-        
+
         answerTwo.Should().Be(EXPECTED_ANSWER_TWO);
     }
 }

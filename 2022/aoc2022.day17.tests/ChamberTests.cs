@@ -23,7 +23,7 @@ namespace aoc2022.day17.tests
         {
             var startingHeights = Enumerable.Repeat(0, expectedHeights.Length).ToArray();
             var chamber = new Chamber(startingHeights);
-            var rock = MakeShapeTypeFromRockShapeEnum(rockShape);
+            var rock = Shape.MakeShape(rockShape);
 
             var actualHeights = chamber.PlaceRock(rock, indexOfBottomLeftPosition, 1);
 
@@ -46,7 +46,7 @@ namespace aoc2022.day17.tests
         {
             var startingHeights = Enumerable.Repeat(0, 7).ToArray();
             var chamber = new Chamber(startingHeights);
-            Shape rock = MakeShapeTypeFromRockShapeEnum(rockShape);
+            var rock = Shape.MakeShape(rockShape);
 
             var indexOfBottomLeftPosition = chamber.PushRockLeft(rock, indexOfBottomLeftPositionBeforePush, 1);
 
@@ -63,7 +63,7 @@ namespace aoc2022.day17.tests
         {
             var startingHeights = Enumerable.Repeat(0, 7).ToArray();
             var chamber = new Chamber(startingHeights);
-            Shape rock = MakeShapeTypeFromRockShapeEnum(rockShape);
+            var rock = Shape.MakeShape(rockShape);
 
             var indexOfBottomLeftPosition = chamber.PushRockLeft(rock, 0, 1);
 
@@ -82,7 +82,7 @@ namespace aoc2022.day17.tests
         public void PushingRockLeftRetainsBottomLeftPositionIfObstructed(RockShape rockShape, int indexOfBottomLeftPositionBeforePush, int heightOfBottomLeftPositionBeforePush, int[] activeHeights)
         {
             var chamber = new Chamber(activeHeights);
-            Shape rock = MakeShapeTypeFromRockShapeEnum(rockShape);
+            var rock = Shape.MakeShape(rockShape);
 
             var indexOfBottomLeftPosition = chamber.PushRockLeft(rock, indexOfBottomLeftPositionBeforePush, heightOfBottomLeftPositionBeforePush);
 
@@ -99,7 +99,7 @@ namespace aoc2022.day17.tests
         {
             var startingHeights = Enumerable.Repeat(0, 7).ToArray();
             var chamber = new Chamber(startingHeights);
-            Shape rock = MakeShapeTypeFromRockShapeEnum(rockShape);
+            var rock = Shape.MakeShape(rockShape);
 
             var indexOfBottomLeftPosition = chamber.PushRockRight(rock, indexOfBottomLeftPositionBeforePush, 1);
 
@@ -116,7 +116,7 @@ namespace aoc2022.day17.tests
         {
             var startingHeights = Enumerable.Repeat(0, 7).ToArray();
             var chamber = new Chamber(startingHeights);
-            Shape rock = MakeShapeTypeFromRockShapeEnum(rockShape);
+            var rock = Shape.MakeShape(rockShape);
 
             var indexOfBottomLeftPosition = chamber.PushRockRight(rock, indexOfBottomLeftPositionBeforePush, 1);
 
@@ -135,7 +135,7 @@ namespace aoc2022.day17.tests
         public void PushingRockRightRetainsBottomLeftPositionIfObstructed(RockShape rockShape, int indexOfBottomLeftPositionBeforePush, int heightOfBottomLeftPositionBeforePush, int[] activeHeights)
         {
             var chamber = new Chamber(activeHeights);
-            Shape rock = MakeShapeTypeFromRockShapeEnum(rockShape);
+            var rock = Shape.MakeShape(rockShape);
 
             var indexOfBottomLeftPosition = chamber.PushRockRight(rock, indexOfBottomLeftPositionBeforePush, heightOfBottomLeftPositionBeforePush);
 
@@ -156,7 +156,7 @@ namespace aoc2022.day17.tests
         {
             // Dropping from height 2 is possible if won't collide with a floor on height 1. i.e. a gap of two is required to drop
             var chamber = new Chamber(activeHeights);
-            Shape rock = MakeShapeTypeFromRockShapeEnum(rockShape);
+            var rock = Shape.MakeShape(rockShape);
 
             var heightOfBottomLeftPosition = chamber.LetRockFall(rock, indexOfBottomLeftPositionBeforeDrop, heightOfBottomLeftPositionBeforeDrop);
 
@@ -180,24 +180,96 @@ namespace aoc2022.day17.tests
         public void LettingRockFallUpdatesBottomLeftPositionIfTouchingTheFloor(RockShape rockShape, int indexOfBottomLeftPositionBeforeDrop, int heightOfBottomLeftPositionBeforeDrop, int[] activeHeights)
         {
             var chamber = new Chamber(activeHeights);
-            Shape rock = MakeShapeTypeFromRockShapeEnum(rockShape);
+            var rock = Shape.MakeShape(rockShape);
 
             var heightOfBottomLeftPosition = chamber.LetRockFall(rock, indexOfBottomLeftPositionBeforeDrop, heightOfBottomLeftPositionBeforeDrop);
 
             heightOfBottomLeftPosition.Should().Be(heightOfBottomLeftPositionBeforeDrop);
         }
 
-        private static Shape MakeShapeTypeFromRockShapeEnum(RockShape rockShape)
+        [Fact]
+        public void RockCanFallThroughGapAndRestUnderExistingHeightForColumn()
         {
-            return rockShape switch
-            {
-                RockShape.HorizontalLine => new HorizontalLine(),
-                RockShape.VerticalLine => new VerticalLine(),
-                RockShape.Plus => new Plus(),
-                RockShape.Square => new Square(),
-                RockShape.MirroredL => new MirroredL(),
-                _ => throw new NotImplementedException(),
-            };
+            // 13   . . S S . . .   ---->   . . . . . . .
+            // 12   . . S S . . .   ---->   . . . . . . .
+            // 11   . . . . . . .   ---->   . . . . . . .
+            // 10   . . . . . . .   ---->   . . . . . . .
+            //  9   . . . . . . .   ---->   . . . . . . . 
+            //  8   . . V . . . .   ---->   . . V . . . .
+            //  7   . . V . . . .   ---->   . . V . . . .
+            //  6   . . V . L . .   ---->   . . V . L . .
+            //  5   . . V . L . .   ---->   . . V . L . .
+            //  4   . . L L L P .   ---->   . . L L L P .
+            //  3   . . . . P P P   ---->   . S S . P P P
+            //  2   . . . . . P .   ---->   . S S . . P .
+            //  1   . . H H H H .   ---->   . . H H H H .
+            //  0   F F F F F F F   ---->   F F F F F F F
+            var activeHeights = new[] {0, 0, 8, 4, 6, 4, 3};
+            var finishingHeights = new[] {0, 3, 8, 4, 6, 4, 3};
+            var chamber = new Chamber(activeHeights);
+            var rock = Shape.MakeShape(RockShape.Square);
+
+            var bottomLeftPosition = 2;
+            var bottomLeftHeight = 12;
+
+            bottomLeftPosition = chamber.PushRockLeft(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(1);
+            bottomLeftHeight.Should().Be(11);
+
+            bottomLeftPosition = chamber.PushRockLeft(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(0);
+            bottomLeftHeight.Should().Be(10);
+            
+            bottomLeftPosition = chamber.PushRockLeft(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(0);
+            bottomLeftHeight.Should().Be(9);
+            
+            bottomLeftPosition = chamber.PushRockLeft(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(0);
+            bottomLeftHeight.Should().Be(8);
+            
+            bottomLeftPosition = chamber.PushRockRight(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(0);
+            bottomLeftHeight.Should().Be(7);
+            
+            bottomLeftPosition = chamber.PushRockRight(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(0);
+            bottomLeftHeight.Should().Be(6);
+            
+            bottomLeftPosition = chamber.PushRockRight(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(0);
+            bottomLeftHeight.Should().Be(5);
+            
+            bottomLeftPosition = chamber.PushRockRight(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(0);
+            bottomLeftHeight.Should().Be(4);
+            
+            bottomLeftPosition = chamber.PushRockRight(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(0);
+            bottomLeftHeight.Should().Be(3);
+            
+            bottomLeftPosition = chamber.PushRockRight(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(0);
+            bottomLeftHeight.Should().Be(2);
+            
+            bottomLeftPosition = chamber.PushRockRight(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(1);
+            bottomLeftHeight.Should().Be(2);
+
+            var heights = chamber.PlaceRock(rock, bottomLeftPosition, bottomLeftHeight);
+            heights.Should().HaveCount(finishingHeights.Length);
+            heights.Should().BeEquivalentTo(finishingHeights);
         }
     }
 }
