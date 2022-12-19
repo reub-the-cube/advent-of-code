@@ -2,8 +2,6 @@ using FluentAssertions;
 
 namespace aoc2022.day17.tests;
 
-// Thinking array that stores the floor for each column
-
 public class Day17SolverTests
 {
     private readonly string[] INPUT = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "Inputs", "2022", "day17testinput.txt"));

@@ -22,7 +22,7 @@ public class Day17Solver : IDaySolver
         return (answerOne.ToString(), "not done yet");
     }
 
-    private static int HeightOfRocksAfter2022Drops(char[] jetPattern)
+    private static int HeightOfRocksAfter2022Drops(IReadOnlyList<char> jetPattern)
     {
         var chamber = new Chamber(Enumerable.Repeat(0, 7).ToArray());
         var jetPatternIndex = -1;
@@ -37,7 +37,7 @@ public class Day17Solver : IDaySolver
 
             while (rockIsMoving)
             {
-                if (jetPatternIndex < jetPattern.Length - 1)
+                if (jetPatternIndex < jetPattern.Count - 1)
                 {
                     jetPatternIndex += 1;
                 }
@@ -46,14 +46,12 @@ public class Day17Solver : IDaySolver
                     jetPatternIndex = 0;
                 }
 
-                if (jetPattern[jetPatternIndex] == '<')
+                bottomLeftIndex = jetPattern[jetPatternIndex] switch
                 {
-                    bottomLeftIndex = chamber.PushRockLeft(rock, bottomLeftIndex, bottomLeftHeight);
-                }
-                else if (jetPattern[jetPatternIndex] == '>')
-                {
-                    bottomLeftIndex = chamber.PushRockRight(rock, bottomLeftIndex, bottomLeftHeight);
-                }
+                    '<' => chamber.PushRockLeft(rock, bottomLeftIndex, bottomLeftHeight),
+                    '>' => chamber.PushRockRight(rock, bottomLeftIndex, bottomLeftHeight),
+                    _ => throw new Exception($"Unexpected character in jet pattern {jetPattern[jetPatternIndex]}")
+                };
 
                 var bottomLeftHeightAfterFall = chamber.LetRockFall(rock, bottomLeftIndex, bottomLeftHeight);
 
