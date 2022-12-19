@@ -2,35 +2,36 @@
 {
     public class HorizontalLine : Shape
     {
-        public override bool IsBlockedBelow(int[] heights, int bottomLeftIndex, int bottomLeftHeight)
+        public override bool IsBlockedBelow(HashSet<int>[] heights, int bottomLeftIndex, int bottomLeftHeight)
         {
-            return (heights[bottomLeftIndex] == bottomLeftHeight - 1) ||
-                (heights[bottomLeftIndex + 1] == bottomLeftHeight - 1) ||
-                (heights[bottomLeftIndex + 2] == bottomLeftHeight - 1) ||
-                (heights[bottomLeftIndex + 3] == bottomLeftHeight - 1);
+            return heights[bottomLeftIndex].Contains(bottomLeftHeight - 1) ||
+                   heights[bottomLeftIndex + 1].Contains(bottomLeftHeight - 1) ||
+                   heights[bottomLeftIndex + 2].Contains(bottomLeftHeight - 1) ||
+                   heights[bottomLeftIndex + 3].Contains(bottomLeftHeight - 1);
         }
 
-        public override bool IsBlockedToTheLeft(int[] heights, int bottomLeftIndex, int bottomLeftHeight)
+        public override bool IsBlockedToTheLeft(HashSet<int>[] heights, int bottomLeftIndex, int bottomLeftHeight)
         {
-            return (bottomLeftIndex == 0) || (heights[bottomLeftIndex - 1] >= bottomLeftHeight);
+            return bottomLeftIndex == 0 || 
+                   heights[bottomLeftIndex - 1].Contains(bottomLeftHeight);
         }
 
-        public override bool IsBlockedToTheRight(int[] heights, int bottomLeftIndex, int bottomLeftHeight)
+        public override bool IsBlockedToTheRight(HashSet<int>[] heights, int bottomLeftIndex, int bottomLeftHeight)
         {
             var rightWallIndex = heights.Length - 1;
-            return (bottomLeftIndex >= rightWallIndex - 3) ||
-                (heights[bottomLeftIndex + 4] >= bottomLeftHeight);
+            return bottomLeftIndex == rightWallIndex - 3 ||
+                   heights[bottomLeftIndex + 4].Contains(bottomLeftHeight);
         }
 
-        public override void UpdateHeightsAfterComingToRest(ref int[] heights, int bottomLeftIndex, int bottomLeftHeight)
+        public override void UpdateHeightsAfterComingToRest(ref HashSet<int>[] heights, int bottomLeftIndex, int bottomLeftHeight)
         {            
             // ......
             // .****.
             // ......
-            heights[bottomLeftIndex] = bottomLeftHeight;
-            heights[bottomLeftIndex + 1] = bottomLeftHeight;
-            heights[bottomLeftIndex + 2] = bottomLeftHeight;
-            heights[bottomLeftIndex + 3] = bottomLeftHeight;
+            heights[bottomLeftIndex].Add(bottomLeftHeight);
+            heights[bottomLeftIndex + 1].Add(bottomLeftHeight);
+            heights[bottomLeftIndex + 2].Add(bottomLeftHeight);
+            heights[bottomLeftIndex + 3].Add(bottomLeftHeight);
         }
     }
 }

@@ -2,24 +2,35 @@
 {
     public class VerticalLine : Shape
     {
-        public override bool IsBlockedBelow(int[] heights, int bottomLeftIndex, int bottomLeftHeight)
+        public override bool IsBlockedBelow(HashSet<int>[] heights, int bottomLeftIndex, int bottomLeftHeight)
         {
-            return (heights[bottomLeftIndex] == bottomLeftHeight - 1);
+            return heights[bottomLeftIndex].Contains(bottomLeftHeight - 1);
         }
 
-        public override bool IsBlockedToTheLeft(int[] heights, int bottomLeftIndex, int bottomLeftHeight)
+        public override bool IsBlockedToTheLeft(HashSet<int>[] heights, int bottomLeftIndex, int bottomLeftHeight)
         {
-            return (bottomLeftIndex == 0) || (heights[bottomLeftIndex - 1] >= bottomLeftHeight);
+            // return bottomLeftIndex == 0 || 
+            //        heights[bottomLeftIndex - 1].Overlaps(Enumerable.Range(bottomLeftHeight, 4));
+            return bottomLeftIndex == 0 || 
+                   heights[bottomLeftIndex - 1].Contains(bottomLeftHeight) ||
+                   heights[bottomLeftIndex - 1].Contains(bottomLeftHeight + 1) ||
+                   heights[bottomLeftIndex - 1].Contains(bottomLeftHeight + 2) ||
+                   heights[bottomLeftIndex - 1].Contains(bottomLeftHeight + 3);
         }
 
-        public override bool IsBlockedToTheRight(int[] heights, int bottomLeftIndex, int bottomLeftHeight)
+        public override bool IsBlockedToTheRight(HashSet<int>[] heights, int bottomLeftIndex, int bottomLeftHeight)
         {
             var rightWallIndex = heights.Length - 1;
-            return (bottomLeftIndex >= rightWallIndex) ||
-                (heights[bottomLeftIndex + 1] >= bottomLeftHeight);
+            // return bottomLeftIndex == rightWallIndex ||
+            //        heights[bottomLeftIndex + 1].Overlaps(Enumerable.Range(bottomLeftHeight, 4));
+            return bottomLeftIndex == rightWallIndex ||
+                   heights[bottomLeftIndex + 1].Contains(bottomLeftHeight) ||
+                   heights[bottomLeftIndex + 1].Contains(bottomLeftHeight + 1) ||
+                   heights[bottomLeftIndex + 1].Contains(bottomLeftHeight + 2) ||
+                   heights[bottomLeftIndex + 1].Contains(bottomLeftHeight + 3);
         }
 
-        public override void UpdateHeightsAfterComingToRest(ref int[] heights, int bottomLeftIndex, int bottomLeftHeight)
+        public override void UpdateHeightsAfterComingToRest(ref HashSet<int>[] heights, int bottomLeftIndex, int bottomLeftHeight)
         {
             // ...
             // .*.
@@ -27,7 +38,10 @@
             // .*.
             // .*.
             // ...
-            heights[bottomLeftIndex] = bottomLeftHeight + 3;
+            heights[bottomLeftIndex].Add(bottomLeftHeight);
+            heights[bottomLeftIndex].Add(bottomLeftHeight + 1);
+            heights[bottomLeftIndex].Add(bottomLeftHeight + 2);
+            heights[bottomLeftIndex].Add(bottomLeftHeight + 3);
         }
     }
 }

@@ -108,7 +108,7 @@ namespace aoc2022.day17.tests
 
         [InlineData(RockShape.HorizontalLine, 3)]
         [InlineData(RockShape.VerticalLine, 6)]
-        [InlineData(RockShape.Plus, 5)]
+        [InlineData(RockShape.Plus, 4)]
         [InlineData(RockShape.Square, 5)]
         [InlineData(RockShape.MirroredL, 4)]
         [Theory]
@@ -134,6 +134,15 @@ namespace aoc2022.day17.tests
         [Theory]
         public void PushingRockRightRetainsBottomLeftPositionIfObstructed(RockShape rockShape, int indexOfBottomLeftPositionBeforePush, int heightOfBottomLeftPositionBeforePush, int[] activeHeights)
         {
+            // . . . . . . .
+            // . . P . . . .
+            // . P P P # . .
+            // . . P . # . .
+            // . . . . # . .
+            // . . . . # . .
+            // . . . . # . .
+            // . . . . # . .
+            // F F F F F F F
             var chamber = new Chamber(activeHeights);
             var rock = Shape.MakeShape(rockShape);
 
@@ -186,6 +195,115 @@ namespace aoc2022.day17.tests
 
             heightOfBottomLeftPosition.Should().Be(heightOfBottomLeftPositionBeforeDrop);
         }
+        
+        [Fact]
+        public void SquareRockCanMoveRightUnderMaxHeightForWidthIndex()
+        {
+            //  9   . . . . . . .   ---->   . . . . . . .
+            //  8   . . V . . . .   ---->   . . V . . . .
+            //  7   . . V . . . .   ---->   . . V . . . .
+            //  6   . . V . L . .   ---->   . . V . L . .
+            //  5   . . V . L . .   ---->   . . V . L . .
+            //  4   . . L L L P .   ---->   . . L L L P .
+            //  3   S S . . P P P   ---->   . S S . P P P
+            //  2   S S . . . P .   ---->   . S S . . P .
+            //  1   . . H H H H .   ---->   . . H H H H .
+            //  0   F F F F F F F   ---->   F F F F F F F
+            var finishingHeights = new[] {0, 3, 8, 4, 6, 4, 3};
+            var chamber = new Chamber(Enumerable.Repeat(0, 7).ToArray());
+            var rock = Shape.MakeShape(RockShape.Square);
+            
+            // Setup chamber
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.HorizontalLine), 2, 1);
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.Plus), 4, 2);
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.MirroredL), 2, 4);
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.VerticalLine), 2, 5);
+            
+            var bottomLeftPosition = 0;
+            var bottomLeftHeight = 2;
+
+            bottomLeftPosition = chamber.PushRockRight(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(1);
+            bottomLeftHeight.Should().Be(2);
+
+            var heights = chamber.PlaceRock(rock, bottomLeftPosition, bottomLeftHeight);
+            heights.Should().HaveCount(finishingHeights.Length);
+            heights.Should().BeEquivalentTo(finishingHeights);
+        }
+        
+        [Fact]
+        public void SquareRockCanMoveLeftUnderMaxHeightForWidthIndex()
+        {
+            //  9   . . . . . . .   ---->   . . . . . . .
+            //  8   . . . . . . .   ---->   . . . . . . .
+            //  7   . . . . . . .   ---->   . . . . . . .
+            //  6   . . . L . . .   ---->   . . . L . . .
+            //  5   . . . L . . .   ---->   . . . L . . .
+            //  4   . L L L . . .   ---->   . L L L . . .
+            //  3   . P . . S S .   ---->   . P . S S . .
+            //  2   P P P . S S .   ---->   P P P S S . .
+            //  1   . P H H H H .   ---->   . P H H H H .
+            //  0   F F F F F F F   ---->   F F F F F F F
+            var finishingHeights = new[] {2, 4, 4, 6, 3, 1, 0};
+            var chamber = new Chamber(Enumerable.Repeat(0, 7).ToArray());
+            var rock = Shape.MakeShape(RockShape.Square);
+            
+            // Setup chamber
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.HorizontalLine), 2, 1);
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.Plus), 0, 1);
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.MirroredL), 1, 4);
+            
+            var bottomLeftPosition = 4;
+            var bottomLeftHeight = 2;
+
+            bottomLeftPosition = chamber.PushRockLeft(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(3);
+            bottomLeftHeight.Should().Be(2);
+
+            var heights = chamber.PlaceRock(rock, bottomLeftPosition, bottomLeftHeight);
+            heights.Should().HaveCount(finishingHeights.Length);
+            heights.Should().BeEquivalentTo(finishingHeights);
+        }
+        
+        [Fact]
+        public void PlusRockCanMoveUnderMaxHeightForWidthIndex()
+        {
+            //  9   . . . . . . .   ---->   . . . . . . .
+            //  8   . . . H H H H   ---->   . . . H H H H
+            //  7   . . . S S L .   ---->   . . . S S L .
+            //  6   . . . S S L .   ---->   . . . S S L .
+            //  5   . . . L L L V   ---->   . . . L L L V
+            //  4   . . . . P . V   ---->   . . . . P . V
+            //  3   . x . P P P V   ---->   . . x P P P V
+            //  2   x x x . P . V   ---->   . x x x P . V
+            //  1   . x . H H H H   ---->   . . x H H H H
+            //  0   F F F F F F F   ---->   F F F F F F F
+            var finishingHeights = new[] {0, 2, 3, 8, 8, 8, 8};
+            var chamber = new Chamber(Enumerable.Repeat(0, 7).ToArray());
+            var rock = Shape.MakeShape(RockShape.Plus);
+            
+            // Setup chamber
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.HorizontalLine), 3, 1);
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.Plus), 3, 2);
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.MirroredL), 3, 5);
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.VerticalLine), 6, 2);
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.Square), 3, 6);
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.HorizontalLine), 3, 8);
+            
+            var bottomLeftPosition = 0;
+            var bottomLeftHeight = 1;
+            
+            bottomLeftPosition = chamber.PushRockRight(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
+            bottomLeftPosition.Should().Be(1);
+            bottomLeftHeight.Should().Be(1);
+
+            var heights = chamber.PlaceRock(rock, bottomLeftPosition, bottomLeftHeight);
+            heights.Should().HaveCount(finishingHeights.Length);
+            heights.Should().BeEquivalentTo(finishingHeights);
+        }
 
         [Fact]
         public void RockCanFallThroughGapAndRestUnderExistingHeightForColumn()
@@ -204,11 +322,16 @@ namespace aoc2022.day17.tests
             //  2   . . . . . P .   ---->   . S S . . P .
             //  1   . . H H H H .   ---->   . . H H H H .
             //  0   F F F F F F F   ---->   F F F F F F F
-            var activeHeights = new[] {0, 0, 8, 4, 6, 4, 3};
             var finishingHeights = new[] {0, 3, 8, 4, 6, 4, 3};
-            var chamber = new Chamber(activeHeights);
+            var chamber = new Chamber(Enumerable.Repeat(0, 7).ToArray());
+            
+            // Setup chamber
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.HorizontalLine), 2, 1);
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.Plus), 4, 2);
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.MirroredL), 2, 4);
+            _ = chamber.PlaceRock(Shape.MakeShape(RockShape.VerticalLine), 2, 5);
+            
             var rock = Shape.MakeShape(RockShape.Square);
-
             var bottomLeftPosition = 2;
             var bottomLeftHeight = 12;
 
