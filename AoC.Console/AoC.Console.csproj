@@ -43,4 +43,8 @@
     <ProjectReference Include="..\2022\aoc2022.day20\aoc2022.day20.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
 </Project>

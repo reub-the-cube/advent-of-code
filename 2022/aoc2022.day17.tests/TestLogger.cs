@@ -23,10 +23,7 @@ public class TestLogger<T> : ILogger<T>, IDisposable
         return true;
     }
 
-    public IDisposable BeginScope<TState>(TState state)
-    {
-        return this;
-    }
+    IDisposable ILogger.BeginScope<TState>(TState state) => this;
 
     public void Dispose()
     {

@@ -7,7 +7,15 @@ namespace aoc2022.day20
     {
         public Input ParseInput(string[] input)
         {
-            throw new NotImplementedException();
+            var originalNumbers = new Dictionary<long, long>();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                _ = long.TryParse(input[i], out long parsedNumber);
+                originalNumbers.Add(i, parsedNumber);
+            }
+            
+            return new Input(originalNumbers);
         }
     }
 }

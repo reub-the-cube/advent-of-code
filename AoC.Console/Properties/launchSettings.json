@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "AoC.Console": {
-      "commandName": "Project",
-      "commandLineArgs": "--year 2022 --day 17"
-    }
-  }
-}
