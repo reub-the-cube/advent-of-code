@@ -4,10 +4,13 @@
     {
         public override bool IsBlockedBelow(HashSet<long>[] heights, int bottomLeftIndex, long bottomLeftHeight)
         {
-            return heights[bottomLeftIndex].Contains(bottomLeftHeight - 1) ||
-                   heights[bottomLeftIndex + 1].Contains(bottomLeftHeight - 1) ||
-                   heights[bottomLeftIndex + 2].Contains(bottomLeftHeight - 1) ||
-                   heights[bottomLeftIndex + 3].Contains(bottomLeftHeight - 1);
+            var isBlockedBelow = heights[bottomLeftIndex].Contains(bottomLeftHeight - 1) ||
+                                 heights[bottomLeftIndex + 1].Contains(bottomLeftHeight - 1) ||
+                                 heights[bottomLeftIndex + 2].Contains(bottomLeftHeight - 1) ||
+                                 heights[bottomLeftIndex + 3].Contains(bottomLeftHeight - 1);
+
+            if (isBlockedBelow) HasComeToRest = true;
+            return isBlockedBelow;
         }
 
         public override bool IsBlockedToTheLeft(HashSet<long>[] heights, int bottomLeftIndex, long bottomLeftHeight)

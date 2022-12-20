@@ -4,9 +4,12 @@
     {
         public override bool IsBlockedBelow(HashSet<long>[] heights, int bottomLeftIndex, long bottomLeftHeight)
         {
-            return heights[bottomLeftIndex].Contains(bottomLeftHeight) ||
-                   heights[bottomLeftIndex + 1].Contains(bottomLeftHeight - 1) ||
-                   heights[bottomLeftIndex + 2].Contains(bottomLeftHeight);
+            var isBlockedBelow = heights[bottomLeftIndex].Contains(bottomLeftHeight) ||
+                                 heights[bottomLeftIndex + 1].Contains(bottomLeftHeight - 1) ||
+                                 heights[bottomLeftIndex + 2].Contains(bottomLeftHeight);
+            
+            if (isBlockedBelow) HasComeToRest = true;
+            return isBlockedBelow;
         }
 
         public override bool IsBlockedToTheLeft(HashSet<long>[] heights, int bottomLeftIndex, long bottomLeftHeight)
@@ -20,6 +23,7 @@
         public override bool IsBlockedToTheRight(HashSet<long>[] heights, int bottomLeftIndex, long bottomLeftHeight)
         {
             var rightWallIndex = heights.Length - 1;
+            
             return bottomLeftIndex == rightWallIndex - 2 ||
                    heights[bottomLeftIndex + 2].Contains(bottomLeftHeight) ||
                    heights[bottomLeftIndex + 2].Contains(bottomLeftHeight + 2) ||

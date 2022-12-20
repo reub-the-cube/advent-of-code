@@ -78,25 +78,5 @@ namespace aoc2022.day17.domain
 
             return isBlocked ? indexOfBottomLeftPartOfShape : indexOfBottomLeftPartOfShape + 1;
         }
-
-        public bool RockFormationIsRepeated(long highestRock, int heightDelta)
-        {
-            var isRepeated = true;
-            for (var i = highestRock; i < highestRock - heightDelta; i--)
-            {
-                isRepeated = BlockedHeightsAtEachWidthIndex.All(t =>
-                {
-                    var bothHeightsAreBlocked = t.Contains(i) &&
-                                                t.Contains(i - heightDelta);
-                    var bothHeightsAreNotBlocked = t.Contains(i) &&
-                                                   t.Contains(i - heightDelta);
-                    return bothHeightsAreBlocked || bothHeightsAreNotBlocked;
-                });
-
-                if (!isRepeated) break;
-            }
-
-            return isRepeated;
-        }
     }
 }

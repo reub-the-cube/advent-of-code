@@ -6,6 +6,8 @@ namespace aoc2022.day17.domain
     {
         public Shape() { }
 
+        public bool HasComeToRest { get; protected set; }
+
         public abstract bool IsBlockedBelow(HashSet<long>[] heights, int bottomLeftIndex, long bottomLeftHeight);
 
         public abstract bool IsBlockedToTheLeft(HashSet<long>[] heights, int bottomLeftIndex, long bottomLeftHeight);
