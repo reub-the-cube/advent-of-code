@@ -15,6 +15,15 @@ public class Day18Solver : IDaySolver
     public (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input)
     {
         var parsedInput = _parser.ParseInput(input);
-        throw new NotImplementedException();
+
+        var grid = new Grid();
+        foreach (var cube in parsedInput.GetCubes())
+        {
+            grid.AddCube(cube);
+        }
+
+        var answerOne = grid.GetExposedFaces();
+
+        return (answerOne.ToString(), string.Empty);
     }
 }

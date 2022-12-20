@@ -7,7 +7,13 @@ namespace aoc2022.day18
     {
         public Input ParseInput(string[] input)
         {
-            throw new NotImplementedException();
+            var cubes = input.Select(i =>
+            {
+                var splitInput = i.Split(',');
+                return new Cube(int.Parse(splitInput[0]), int.Parse(splitInput[1]), int.Parse(splitInput[2]));
+            }).ToList();
+
+            return new Input(cubes);
         }
     }
 }
