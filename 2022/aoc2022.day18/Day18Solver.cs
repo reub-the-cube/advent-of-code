@@ -22,7 +22,8 @@ public class Day18Solver : IDaySolver
             grid.AddCube(cube);
         }
 
-        var answerOne = grid.GetExposedFaces();
+        var answerOne = grid.GetUnconnectedFaces();
+        var answerTwo = grid.GetExposedFaces();
 
         return (answerOne.ToString(), string.Empty);
     }
