@@ -15,6 +15,7 @@ using aoc2022.day14;
 using aoc2022.day15;
 using aoc2022.day16;
 using aoc2022.day17;
+using aoc2022.day20;
 using AoC.Core;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -41,7 +42,8 @@ namespace AoC.Console
                 .ConfigureDay14Services()
                 .ConfigureDay15Services()
                 .ConfigureDay16Services()
-                .ConfigureDay17Services();
+                .ConfigureDay17Services()
+                .ConfigureDay20Services();
         }
 
         public static IDaySolver ResolveDayFor2022(this IServiceProvider serviceProvider, int day)
@@ -57,14 +59,15 @@ namespace AoC.Console
                 7 => serviceProvider.GetService<Day07Solver>() ?? throw new InvalidOperationException(),
                 8 => serviceProvider.GetService<Day08Solver>() ?? throw new InvalidOperationException(),
                 9 => serviceProvider.GetService<Day09Solver>() ?? throw new InvalidOperationException(),
-                10 => serviceProvider.GetService<Day10Solver>() ??  throw new InvalidOperationException(),
-                11 => serviceProvider.GetService<Day11Solver>() ??  throw new InvalidOperationException(),
+                10 => serviceProvider.GetService<Day10Solver>() ?? throw new InvalidOperationException(),
+                11 => serviceProvider.GetService<Day11Solver>() ?? throw new InvalidOperationException(),
                 12 => serviceProvider.GetService<Day12Solver>() ?? throw new InvalidOperationException(),
                 13 => serviceProvider.GetService<Day13Solver>() ?? throw new InvalidOperationException(),
-                14 => serviceProvider.GetService<Day14Solver>() ??  throw new InvalidOperationException(),
+                14 => serviceProvider.GetService<Day14Solver>() ?? throw new InvalidOperationException(),
                 15 => serviceProvider.GetService<Day15Solver>() ?? throw new InvalidOperationException(),
                 16 => serviceProvider.GetService<Day16Solver>() ?? throw new InvalidOperationException(),
                 17 => serviceProvider.GetService<Day17Solver>() ?? throw new InvalidOperationException(),
+                20 => serviceProvider.GetService<Day20Solver>() ?? throw new InvalidOperationException(),
                 _ => throw new NotImplementedException($"Day service provider has not been configured for day {day} this year.")
             };
             return daySolver;
