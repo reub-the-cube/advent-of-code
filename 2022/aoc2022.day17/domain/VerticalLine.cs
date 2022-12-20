@@ -2,12 +2,12 @@
 {
     public class VerticalLine : Shape
     {
-        public override bool IsBlockedBelow(HashSet<int>[] heights, int bottomLeftIndex, int bottomLeftHeight)
+        public override bool IsBlockedBelow(HashSet<long>[] heights, int bottomLeftIndex, long bottomLeftHeight)
         {
             return heights[bottomLeftIndex].Contains(bottomLeftHeight - 1);
         }
 
-        public override bool IsBlockedToTheLeft(HashSet<int>[] heights, int bottomLeftIndex, int bottomLeftHeight)
+        public override bool IsBlockedToTheLeft(HashSet<long>[] heights, int bottomLeftIndex, long bottomLeftHeight)
         {
             // return bottomLeftIndex == 0 || 
             //        heights[bottomLeftIndex - 1].Overlaps(Enumerable.Range(bottomLeftHeight, 4));
@@ -18,7 +18,7 @@
                    heights[bottomLeftIndex - 1].Contains(bottomLeftHeight + 3);
         }
 
-        public override bool IsBlockedToTheRight(HashSet<int>[] heights, int bottomLeftIndex, int bottomLeftHeight)
+        public override bool IsBlockedToTheRight(HashSet<long>[] heights, int bottomLeftIndex, long bottomLeftHeight)
         {
             var rightWallIndex = heights.Length - 1;
             // return bottomLeftIndex == rightWallIndex ||
@@ -30,7 +30,7 @@
                    heights[bottomLeftIndex + 1].Contains(bottomLeftHeight + 3);
         }
 
-        public override void UpdateHeightsAfterComingToRest(ref HashSet<int>[] heights, int bottomLeftIndex, int bottomLeftHeight)
+        public override void UpdateHeightsAfterComingToRest(ref HashSet<long>[] heights, int bottomLeftIndex, long bottomLeftHeight)
         {
             // ...
             // .*.

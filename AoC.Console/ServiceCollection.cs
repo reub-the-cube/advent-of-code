@@ -1,5 +1,6 @@
 ﻿using AoC.Core;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AoC.Console
 {
@@ -8,6 +9,8 @@ namespace AoC.Console
         public static IServiceCollection ConfigureDayServices(this IServiceCollection services)
         {
             return services
+                .AddLogging(loggingBuilder => loggingBuilder.AddConsole())
+                .AddLogging(loggingBuilder => loggingBuilder.AddDebug())
                 .Configure2021Services()
                 .Configure2022Services()
                 .AddScoped<Func<(int Year, int Day), IDaySolver>>(dayServiceProvider => options =>

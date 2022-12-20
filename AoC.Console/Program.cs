@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Diagnostics;
 
-using IHost host = Host.CreateDefaultBuilder(args)
+using var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
         services.ConfigureDayServices())
     .Build();
