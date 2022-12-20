@@ -220,7 +220,7 @@ namespace aoc2022.day17.tests
             _ = chamber.PlaceRock(Shape.MakeShape(RockShape.VerticalLine), 2, 5);
             
             var bottomLeftPosition = 0;
-            var bottomLeftHeight = 2;
+            long bottomLeftHeight = 2;
 
             bottomLeftPosition = chamber.PushRockRight(rock, bottomLeftPosition, bottomLeftHeight);
             bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
@@ -255,7 +255,7 @@ namespace aoc2022.day17.tests
             _ = chamber.PlaceRock(Shape.MakeShape(RockShape.MirroredL), 1, 4);
             
             var bottomLeftPosition = 4;
-            var bottomLeftHeight = 2;
+            long bottomLeftHeight = 2;
 
             bottomLeftPosition = chamber.PushRockLeft(rock, bottomLeftPosition, bottomLeftHeight);
             bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
@@ -293,7 +293,7 @@ namespace aoc2022.day17.tests
             _ = chamber.PlaceRock(Shape.MakeShape(RockShape.HorizontalLine), 3, 8);
             
             var bottomLeftPosition = 0;
-            var bottomLeftHeight = 1;
+            long bottomLeftHeight = 1;
             
             bottomLeftPosition = chamber.PushRockRight(rock, bottomLeftPosition, bottomLeftHeight);
             bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
@@ -333,7 +333,7 @@ namespace aoc2022.day17.tests
             
             var rock = Shape.MakeShape(RockShape.Square);
             var bottomLeftPosition = 2;
-            var bottomLeftHeight = 12;
+            long bottomLeftHeight = 12;
 
             bottomLeftPosition = chamber.PushRockLeft(rock, bottomLeftPosition, bottomLeftHeight);
             bottomLeftHeight = chamber.LetRockFall(rock, bottomLeftPosition, bottomLeftHeight);
