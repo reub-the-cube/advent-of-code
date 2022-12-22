@@ -27,10 +27,6 @@ public class Day18Solver : IDaySolver
         grid.SubmergeShape();
         var answerTwo = grid.GetExternalFaces();
         
-        // Incorrect answers for part two:  4058
-        //                                  2706
-        //                                  2630 (too high)
-        //                                  2214 (???)
         return (answerOne.ToString(), answerTwo.ToString());
     }
 }
