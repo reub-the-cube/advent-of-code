@@ -11,6 +11,8 @@ namespace aoc2022.day18.tests
         [InlineData(new[] { 2, 1, 3, 2, 2, 2, 2, 2, 2, 1, 3, 2, 2 }, new[] { 2, 2, 2, 1, 3, 2, 2, 2, 2, 2, 2, 1, 3 }, new[] { 2, 2, 2, 2, 2, 1, 3, 4, 6, 5, 5, 5, 5 }, 64)]
         public void MappingCubesOntoGridReturnsExpectedNumberOfUnconnectedFaces(int[] x, int[] y, int[] z, int expectedNumberOfFaces)
         {
+            Assert.Fail("adding in direction cube faces created more faces in the dictionary");
+
             // Check inputs are the same length
             x.Length.Should().Be(y.Length);
             y.Length.Should().Be(z.Length);

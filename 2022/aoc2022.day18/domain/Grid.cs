@@ -2,62 +2,70 @@
 {
     public class Grid
     {
-        private readonly Dictionary<Face, int> _faceCounter;
+        private readonly HashSet<Cube> _cubes;
+        private readonly Dictionary<Face, int> _faces;
 
         public Grid()
         {
-            _faceCounter = new Dictionary<Face, int>();
+            _cubes = new HashSet<Cube>();
+            _faces = new Dictionary<Face, int>();
         }
 
         public void AddCube(Cube cube)
         {
-            AddFace(Face.AddXYFace(cube.X, cube.Y, cube.Z));
-            AddFace(Face.AddXYFace(cube.X, cube.Y, cube.Z + 1));
-            AddFace(Face.AddXZFace(cube.X, cube.Y, cube.Z));
-            AddFace(Face.AddXZFace(cube.X, cube.Y + 1, cube.Z));
-            AddFace(Face.AddYZFace(cube.X, cube.Y, cube.Z));
-            AddFace(Face.AddYZFace(cube.X + 1, cube.Y, cube.Z));
+            AddFace(Face.AddXYFace(cube.X, cube.Y, cube.Z, -1));
+            AddFace(Face.AddXYFace(cube.X, cube.Y, cube.Z + 1, 0));
+            AddFace(Face.AddXZFace(cube.X, cube.Y, cube.Z, -1));
+            AddFace(Face.AddXZFace(cube.X, cube.Y + 1, cube.Z, 0));
+            AddFace(Face.AddYZFace(cube.X, cube.Y, cube.Z, -1));
+            AddFace(Face.AddYZFace(cube.X + 1, cube.Y, cube.Z, 0));
+            _cubes.Add(cube);
         }
 
         public int GetUnconnectedFaces()
         {
-            return _faceCounter.Where(f => f.Value == 1).Count();
+            return _faces.Where(f => f.Value == 1).Count();
         }
 
         public int GetExposedFaces()
         {
-            var unconnectedFaces = _faceCounter.Where(f => f.Value == 1).ToList();
-            var xLower = unconnectedFaces.Min(f => f.Key.lowerX);
-            var xUpper = unconnectedFaces.Max(f => f.Key.upperX);
-            var yLower = unconnectedFaces.Min(f => f.Key.lowerY);
-            var yUpper = unconnectedFaces.Max(f => f.Key.upperY);
-            var zLower = unconnectedFaces.Min(f => f.Key.lowerZ);
-            var zUpper = unconnectedFaces.Max(f => f.Key.upperZ);
+            // Exposed faces = unconnected faces - exposed faces of internal shape(s)
+            var unconnectedFaces = _faces.Where(f => f.Value == 1).Count();
 
-            var facesToCheck = unconnectedFaces
-                .Where(f =>
-                {
-                    return f.Key.lowerX > xLower && f.Key.upperX < xUpper &&
-                           f.Key.lowerY > yLower && f.Key.upperY < yUpper &&
-                           f.Key.lowerZ > zLower && f.Key.upperZ < zUpper;
-                }).ToList();
-
-            foreach (var faceToCheck in facesToCheck)
+            var internalCubes = GetInternalCubes();
+            var internalGrid = new Grid();
+            if (internalCubes.Any())
             {
-                // is there a path to freedom?
-                // move out in each direction recursively until hitting another face or going past the extremities of the shape
+                internalCubes.ForEach(internalGrid.AddCube);
+                return unconnectedFaces - internalGrid.GetExposedFaces();
             }
+            else
+            {
+                return unconnectedFaces;
+            }
+        }
 
-            throw new NotImplementedException();
+        private List<Cube> GetInternalCubes()
+        {
+            var singleFacedCubes = _faces
+                .Where(f => f.Value == 1)
+                .Select(f => f.Key.FacingCube)
+                .Distinct()
+                .ToHashSet();
+
+            var gridExplorer = new GridExplorer(_cubes);
+            var internalCubes = singleFacedCubes.Where(gridExplorer.IsContained).ToList();
+
+            return internalCubes.ToList();
         }
 
         private void AddFace(Face face)
         {
-            if (!_faceCounter.ContainsKey(face))
+            if (!_faces.ContainsKey(face))
             {
-                _faceCounter.Add(face, 0);
+                _faces.Add(face, 0);
             }
-            _faceCounter[face]++;
+            _faces[face]++;
         }
     }
 }
