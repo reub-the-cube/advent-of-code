@@ -1,111 +1,131 @@
-﻿namespace aoc2022.day18.domain
+﻿using System.Diagnostics;
+
+namespace aoc2022.day18.domain
 {
     public class GridExplorer
     {
-        private HashSet<Cube> ContainedCubes { get; init; }
-        private HashSet<Cube> Cubes { get; init; }
-        private HashSet<Cube> ExternalCubes { get; init; }
-        private HashSet<Cube> VisitedCubes { get; init; }
+        private readonly HashSet<Cube> _containedCubes;
+        private readonly HashSet<Cube> _cubes;
+        private readonly HashSet<Cube> _externalCubes;
+        private readonly HashSet<Cube> _visitedCubes;
 
-        private int XLower { get; set; }
-        private int XUpper { get; set; }
-        private int YLower { get; set; }
-        private int YUpper { get; set; }
-        private int ZLower { get; set; }
-        private int ZUpper { get; set; }
+        private readonly int _xLower;
+        private readonly int _xUpper;
+        private readonly int _yLower;
+        private readonly int _yUpper;
+        private readonly int _zLower;
+        private readonly int _zUpper;
 
         public GridExplorer(HashSet<Cube> cubes)
         {
-            ContainedCubes = new HashSet<Cube>();
-            Cubes = cubes;
-            ExternalCubes = new HashSet<Cube>();
-            VisitedCubes = new HashSet<Cube>();
+            _containedCubes = new HashSet<Cube>();
+            _cubes = cubes;
+            _externalCubes = new HashSet<Cube>();
+            _visitedCubes = new HashSet<Cube>();
 
-            XLower = Cubes.Min(c => c.X);
-            XUpper = Cubes.Max(c => c.X);
-            YLower = Cubes.Min(c => c.Y);
-            YUpper = Cubes.Max(c => c.Y);
-            ZLower = Cubes.Min(c => c.Z);
-            ZUpper = Cubes.Max(c => c.Z);
+            _xLower = _cubes.Min(c => c.X);
+            _xUpper = _cubes.Max(c => c.X);
+            _yLower = _cubes.Min(c => c.Y);
+            _yUpper = _cubes.Max(c => c.Y);
+            _zLower = _cubes.Min(c => c.Z);
+            _zUpper = _cubes.Max(c => c.Z);
         }
 
-        public bool IsContained(Cube cubeToInspect)
+        public void ExploreCubes(Cube cubeToInspect)
         {
-            VisitedCubes.Add(cubeToInspect);
+            _visitedCubes.Add(cubeToInspect);
 
             while (true)
             {
-                if (ExternalCubes.Contains(cubeToInspect))
-                {
-                    // If this is already known to be an external cube
-                    return false;
-                }
-
-                if (Cubes.Contains(cubeToInspect))
-                {
-                    // If this is already known to be a part of the shape
-                    return false;
-                }
-
-                if (ContainedCubes.Contains(cubeToInspect))
-                {
-                    // If this is already known an internal cube
-                    return true;
-                }
+                var cubeIsKnown = CubeStateIsKnown(cubeToInspect);
+                if (cubeIsKnown.HasValue) break;
 
                 var neighbours = cubeToInspect.GetAdjacentCubes().ToList();
                 var neighboursNotVisited = neighbours
-                    .Where(c => !VisitedCubes.Contains(c))
+                    .Where(c => !_visitedCubes.Contains(c))
                     .ToList();
 
                 foreach (var neighbour in neighboursNotVisited)
                 {
-                    if (IsCubePastEdge(neighbour))
-                    {
-                        ExternalCubes.Add(neighbour);
-                    }
-                    else
-                    {
-                        if (IsContained(neighbour))
-                        {
-                            ContainedCubes.Add(neighbour);
-                        }
-                        else if (!Cubes.Contains(neighbour))
-                        {
-                            ExternalCubes.Add(neighbour);
-                        }
-                    }
+                    AddNeighbouringCubeToKnownCubes(neighbour);
                 }
 
-                if (neighbours.Any(ExternalCubes.Contains) && !Cubes.Contains(cubeToInspect))
-                {
-                    // If any neighbour is known to be external and this is not a part of the shape, it is also external
-                    ExternalCubes.Add(cubeToInspect);
-                    return false;
-                }
+                AddCubeToKnownCubesBasedOnNeighbours(cubeToInspect, neighbours);
+                break;
+            }
 
-                if (neighbours.Any(ExternalCubes.Contains))
-                {
-                    // If any neighbour is known to be external, this shape cannot be contained
-                    return false;
-                }
+            _externalCubes.RemoveWhere(IsCubePastEdge);
+        }
 
-                if (neighbours.All(c => ContainedCubes.Contains(c) || Cubes.Contains(c)))
-                {
-                    // If all the neighbours are contained or a part of the shape
-                    ContainedCubes.Add(cubeToInspect);
-                    return true;
-                }
-                else
-                {
-                    throw new Exception("neighbours are not all contained or a part of the shape, none are external. What could it be?");
-                }
+        public IEnumerable<Cube> GetContainedCubes()
+        {
+            Debug.Assert(CubeTotalsAreCorrect());
+            return _containedCubes;
+        }
+
+        private bool CubeTotalsAreCorrect()
+        {
+            var expectedCubes = (_xUpper - _xLower + 1) * (_yUpper - _yLower + 1) * (_zUpper - _zLower + 1);
+            var totalCubes = _containedCubes.Count + _cubes.Count + _externalCubes.Count;
+
+            return totalCubes == expectedCubes;
+        }
+        
+        private bool? CubeStateIsKnown(Cube cubeToInspect)
+        {
+            if (_externalCubes.Contains(cubeToInspect))
+            {
+                // If this is already known to be an external cube
+                return false;
+            }
+
+            if (_containedCubes.Contains(cubeToInspect))
+            {
+                // If this is already known an internal cube
+                return true;
+            }
+
+            return null;
+        }
+
+        private void AddCubeToKnownCubesBasedOnNeighbours(Cube cubeToInspect, IEnumerable<Cube> neighbours)
+        {
+            // If it's a part of the shape then it can't be external or contained
+            if (_cubes.Contains(cubeToInspect)) return;
+
+            // If any of the neighbours is external then there's a path to freedom
+            if (neighbours.Any(_externalCubes.Contains))
+            {
+                _externalCubes.Add(cubeToInspect);
+            }
+            else
+            {
+                _containedCubes.Add(cubeToInspect);
+            }
+        }
+
+        private void AddNeighbouringCubeToKnownCubes(Cube neighbour)
+        {
+            if (IsCubePastEdge(neighbour))
+            {
+                _externalCubes.Add(neighbour);
+            }
+            else
+            {
+                ExploreCubes(neighbour);
             }
         }
 
         private bool IsCubePastEdge(Cube cube)
         {
-            return cube.X < XLower || cube.X > XUpper || cube.Y < YLower || cube.Y > YUpper || cube.Z < ZLower || cube.Z > ZUpper;
+            return IsOutOfRange(cube.X, _xLower, _xUpper) || 
+                   IsOutOfRange(cube.Y, _yLower, _yUpper) || 
+                   IsOutOfRange(cube.Z, _zLower, _zUpper);
+        }
+
+        private static bool IsOutOfRange(int index, int indexLower, int indexUpper)
+        {
+            return index < indexLower || index > indexUpper;
         }
     }
 }
