@@ -50,7 +50,32 @@ namespace aoc2022.day18.tests
 
             actualNumberOfFaces.Should().Be(expectedNumberOfFaces);
         }
-        
+
+        [Theory]
+        [InlineData(new[] { 2, 1, 3, 2, 2, 2, 2, 2, 2, 1, 3, 2, 2 }, new[] { 2, 2, 2, 1, 3, 2, 2, 2, 2, 2, 2, 1, 3 }, new[] { 2, 2, 2, 2, 2, 1, 3, 4, 6, 5, 5, 5, 5 }, 58)]
+        [InlineData(new[] { 0, 2, 1, 1, 1, 1 }, new[] { 1, 1, 0, 2, 1, 1 }, new[] { 1, 1, 1, 1, 0, 2 }, 30)]
+        [InlineData(new[] { 0, 3, 1, 2, 1, 2, 1, 2, 1, 2 }, new[] { 1, 1, 0, 0, 2, 2, 1, 1, 1, 1 }, new[] { 1, 1, 1, 1, 1, 1, 0, 0, 2, 2 }, 42)]
+        public void SubmergingShapeOnGridSetsExternalFaces(int[] x, int[] y, int[] z, int expectedNumberOfFaces)
+        {
+            // Check inputs are the same length
+            x.Length.Should().Be(y.Length);
+            y.Length.Should().Be(z.Length);
+
+            var cubes = new List<Cube>();
+            for (int i = 0; i < x.Length; i++)
+            {
+                cubes.Add(new Cube(x[i], y[i], z[i]));
+            }
+            var grid = new Grid();
+
+            cubes.ForEach(grid.AddCube);
+
+            grid.SubmergeShape();
+            var externalFaces = grid.GetExternalFaces();
+
+            externalFaces.Should().Be(expectedNumberOfFaces);
+        }
+
         /*
          *  Block in cube at 1,1,1 with one cube out in each direction
          *  0,1,1 - left

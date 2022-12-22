@@ -1,13 +1,18 @@
-﻿namespace aoc2022.day18.domain
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
+
+namespace aoc2022.day18.domain
 {
     public class Grid
     {
         private readonly HashSet<Cube> _cubes;
+        private readonly HashSet<Cube> _externalCubes;
         private readonly Dictionary<Face, HashSet<Cube>> _faces;
 
         public Grid()
         {
             _cubes = new HashSet<Cube>();
+            _externalCubes = new HashSet<Cube>();
             _faces = new Dictionary<Face, HashSet<Cube>>();
         }
 
@@ -25,6 +30,66 @@
         public int GetUnconnectedFaces()
         {
             return _faces.Count(f => f.Value.Count == 1);
+        }
+
+        public void SubmergeShape()
+        {
+            var xLower = _cubes.Min(c => c.X) - 1;
+            var xUpper = _cubes.Max(c => c.X) + 1;
+            var yLower = _cubes.Min(c => c.Y) - 1;
+            var yUpper = _cubes.Max(c => c.Y) + 1;
+            var zLower = _cubes.Min(c => c.Z) - 1;
+            var zUpper = _cubes.Max(c => c.Z) + 1;
+
+            Debug.WriteLine($"{(xUpper - xLower + 1) * (yUpper - yLower + 1) * (zUpper - zLower + 1)} cubes to fill.");
+
+            var startingPoint = new Cube(xLower, yLower, zLower);
+
+            var cubesSubmerged = new HashSet<Cube>();
+            var cubesToSubmerge = new Queue<Cube>();
+            cubesToSubmerge.Enqueue(startingPoint);
+            while (cubesToSubmerge.Any())
+            {
+                var cube = cubesToSubmerge.Dequeue();
+
+                var neighbours = GetNeighboursInRange(cube, xLower, xUpper, yLower, yUpper, zLower, zUpper);
+
+                foreach (var neighbour in neighbours)
+                {
+                    if (!cubesSubmerged.Contains(neighbour) && !_cubes.Contains(neighbour) && !cubesToSubmerge.Contains(neighbour))
+                    {
+                        _externalCubes.Add(neighbour);
+                        cubesToSubmerge.Enqueue(neighbour);
+                    }
+                }
+
+                cubesSubmerged.Add(cube);
+
+                if (cubesSubmerged.Count % 500 == 0)
+                {
+                    Debug.WriteLine($"Cubes submerged so far: {cubesSubmerged.Count}");
+                    Debug.WriteLine($"Current queue length: {cubesToSubmerge.Count}");
+                }
+            }
+        }
+
+        private static HashSet<Cube> GetNeighboursInRange(Cube cube, int xLower, int xUpper, int yLower, int yUpper, int zLower, int zUpper)
+        {
+            return cube.GetAdjacentCubes()
+                .Where(c =>
+                {
+                    return !GridExplorer.IsOutOfRange(c.X, xLower, xUpper) &&
+                           !GridExplorer.IsOutOfRange(c.Y, yLower, yUpper) &&
+                           !GridExplorer.IsOutOfRange(c.Z, zLower, zUpper);
+                })
+                .ToHashSet();
+        }
+
+        public int GetExternalFaces()
+        {
+            return _externalCubes
+                .SelectMany(c => c.GetAdjacentCubes())
+                .Count(_cubes.Contains);
         }
 
         public int GetExposedFaces()

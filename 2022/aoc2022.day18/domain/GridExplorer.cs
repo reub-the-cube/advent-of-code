@@ -123,7 +123,7 @@ namespace aoc2022.day18.domain
                    IsOutOfRange(cube.Z, _zLower, _zUpper);
         }
 
-        private static bool IsOutOfRange(int index, int indexLower, int indexUpper)
+        internal static bool IsOutOfRange(int index, int indexLower, int indexUpper)
         {
             return index < indexLower || index > indexUpper;
         }
