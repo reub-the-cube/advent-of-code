@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using AoC.Core;
 using aoc2022.day21.domain;
 using System.Security.Cryptography;
@@ -22,7 +23,7 @@ public class Day21Solver : IDaySolver
 
         // Part 2
         // Wrong answers:   3782852515586 (too high)
-        
+
         // Left monkey must equal right monkey, so change the operation to subtract and target the value 0
         parsedInput.Riddle.ChangeMonkeyOperation("root", parsedInput.Riddle.MonkeyOperations["root"].Left, parsedInput.Riddle.MonkeyOperations["root"].Right, "-");
 
@@ -30,8 +31,13 @@ public class Day21Solver : IDaySolver
         var (humnLow, humnHigh, linearUp) = GetInitialMinMaxHumnValues(rootNumber, parsedInput.Riddle);
 
         // Hone in on the answer
-        var answerTwo = FindHumnValueThatMakesRootZero(humnLow, humnHigh, parsedInput.Riddle, linearUp);
+        var nearHumnAnswer = FindHumnValueThatMakesRootZero(humnLow, humnHigh, parsedInput.Riddle, linearUp);
+        var answerTwo = FindHumnValueWithPrecision(nearHumnAnswer, parsedInput.Riddle);
 
+        Debug.Assert(parsedInput.Riddle.GetMonkeyNumber("root") == 0);
+        Debug.Assert(parsedInput.Riddle.GetMonkeyNumber("humn") == answerTwo);
+        Debug.Assert(parsedInput.Riddle.GetMonkeyNumber(parsedInput.Riddle.MonkeyOperations["root"].Left) ==
+                     parsedInput.Riddle.GetMonkeyNumber(parsedInput.Riddle.MonkeyOperations["root"].Right));
         return (rootNumber.ToString(), answerTwo.ToString());
         //return (rootNumber.ToString(), 0.ToString());
     }
@@ -79,10 +85,9 @@ public class Day21Solver : IDaySolver
     {
         long humnValue = 0;
         long rootValue = -1;
-
         while (rootValue != 0)
         {
-            humnValue = (humnLow + humnHigh) / 2;
+            humnValue = (long)Math.Round((double)(humnLow + humnHigh) / 2, MidpointRounding.ToEven);
             riddle.ChangeMonkeyNumber("humn", humnValue);
             rootValue = riddle.GetMonkeyNumber("root");
 
@@ -96,6 +101,42 @@ public class Day21Solver : IDaySolver
                 // decrease upper bound
                 humnHigh = humnValue;
             }
+        }
+
+        return humnValue;
+    }
+
+    private static long FindHumnValueWithPrecision(long nearHumnAnswer, Riddle riddle)
+    {
+        long humnValue = nearHumnAnswer - 1;
+        long rootValue = 0;
+        bool success = false;
+        while (rootValue == 0 && !success)
+        {
+            humnValue++;
+            riddle.ChangeMonkeyNumber("humn", humnValue);
+            
+            try
+            {
+                rootValue = riddle.GetMonkeyNumberPrecisely("root");
+                if (rootValue == 0) success = true;
+            } 
+            catch (MonkeyOperationException) { }
+        }
+        
+        humnValue = nearHumnAnswer; 
+        rootValue = 0;
+        while (rootValue == 0 && !success)
+        {
+            humnValue--;
+            riddle.ChangeMonkeyNumber("humn", humnValue);
+            
+            try
+            {
+                rootValue = riddle.GetMonkeyNumberPrecisely("root");
+                if (rootValue == 0) success = true;
+            } 
+            catch (MonkeyOperationException) { }
         }
 
         return humnValue;

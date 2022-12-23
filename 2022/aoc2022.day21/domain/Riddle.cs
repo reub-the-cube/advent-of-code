@@ -1,4 +1,6 @@
-﻿namespace aoc2022.day21.domain
+﻿using System.Xml.Xsl;
+
+namespace aoc2022.day21.domain
 {
     public class Riddle
     {
@@ -47,39 +49,63 @@
 
         public long GetMonkeyNumber(string name)
         {
-            if (MonkeyNumbers.TryGetValue(name, out long value)) return value;
+            return GetMonkeyValue(name, false);
+        }
+        
+        public long GetMonkeyNumberPrecisely(string name)
+        {
+            return GetMonkeyValue(name, true);
+        }
 
-            value = EvaluateOperation(MonkeyOperations[name]);
+        private long GetMonkeyValue(string name, bool withPrecision)
+        {
+            if (MonkeyNumbers.TryGetValue(name, out var value)) return value;
+
+            value = EvaluateOperation(MonkeyOperations[name], withPrecision);
 
             return value;
         }
 
-        private long EvaluateOperation(MathOperation monkeyOperation)
+        private long EvaluateOperation(MathOperation monkeyOperation, bool withPrecision)
         {
-            var left = ParseSide(monkeyOperation.Left);
-            var right = ParseSide(monkeyOperation.Right);
+            var left = ParseSide(monkeyOperation.Left, withPrecision);
+            var right = ParseSide(monkeyOperation.Right, withPrecision);
 
             return monkeyOperation.Operation switch
             {
                 "+" => left + right,
                 "-" => left - right,
                 "*" => left * right,
-                "/" => left / right,
+                "/" => withPrecision ? Divide(left, right) : left / right,
                 _ => throw new NotImplementedException($"operation {monkeyOperation.Operation} not recognised.")
             };
         }
 
-        private long ParseSide(string side)
+        private static long Divide(long left, long right)
         {
-            if (long.TryParse(side, out long value)) return value;
+            if (left % right == 0) return left / right;
+
+            throw new MonkeyOperationException($"Something smells monkey-like - {left} is not divisible by {right}");
+        }
+
+        private long ParseSide(string side, bool withPrecision)
+        {
+            if (long.TryParse(side, out var value)) return value;
             if (MonkeyNumbers.TryGetValue(side, out value)) return value;
 
-            value = GetMonkeyNumber(side);
+            value = GetMonkeyValue(side, withPrecision);
             return value;
         }
     }
 
     public readonly record struct MathOperation(string Left, string Right, string Operation)
     {
+    }
+
+    public class MonkeyOperationException : Exception
+    {
+        public MonkeyOperationException(string message) : base(message)
+        {
+        }
     }
 }
