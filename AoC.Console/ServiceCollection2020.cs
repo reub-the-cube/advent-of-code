@@ -4,15 +4,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AoC.Console
 {
-    public static class ServiceCollection0
+    public static class ServiceCollection2020
     {
-        public static IServiceCollection Configure0Services(this IServiceCollection services)
+        public static IServiceCollection Configure2020Services(this IServiceCollection services)
         {
             return services
                 .ConfigureDay1Services();
         }
 
-        public static IDaySolver ResolveDayFor0(this IServiceProvider serviceProvider, int day)
+        public static IDaySolver ResolveDayFor2020(this IServiceProvider serviceProvider, int day)
         {
             return day switch
             {
