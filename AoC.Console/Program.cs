@@ -14,6 +14,7 @@ using var host = Host.CreateDefaultBuilder(args)
 // Could do this intelligently with automation
 var implementedYearsAndDays = new Dictionary<int, List<int>>()
 {
+    { 2020, new List<int> { 1 } },
     { 2021, new List<int> { 1, 2, 3, 4 } },
     { 2022, new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20 } }
 };
@@ -106,7 +107,7 @@ void PromptForYearAndDay()
 
         if (YearIsValid)
         {
-            Console.WriteLine("Which day's challenges would you like to run? Use `all` or a number from 1 to 25.");
+            Console.WriteLine($"Which day's challenges would you like to run? Use `all` or a number from {implementedYearsAndDays[YearValue].Min()} to {implementedYearsAndDays[YearValue].Max()}.");
             var dayNumberInput = Console.ReadLine();
 
             if (dayNumberInput == "all")
@@ -115,7 +116,7 @@ void PromptForYearAndDay()
             }
             else
             {
-                var (DayIsValid, DayValue) = ValidateNumber(dayNumberInput, 1, 25);
+                var (DayIsValid, DayValue) = ValidateNumber(dayNumberInput, implementedYearsAndDays[YearValue].Min(), implementedYearsAndDays[YearValue].Max());
 
                 if (DayIsValid) PrepareDay(YearValue, DayValue);
             }
