@@ -1,5 +1,5 @@
 using AoC.Core;
-using AoC.Day01;
+using aoc2023.day01;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AoC.Console
@@ -9,14 +9,14 @@ namespace AoC.Console
         public static IServiceCollection Configure2023Services(this IServiceCollection services)
         {
             return services
-                .ConfigureDay1Services();
+                .ConfigureDay01Services();
         }
 
         public static IDaySolver ResolveDayFor2023(this IServiceProvider serviceProvider, int day)
         {
             return day switch
             {
-                1 => serviceProvider.GetService<Day1>() ?? throw new InvalidOperationException(),
+                1 => serviceProvider.GetService<Day01Solver>() ?? throw new InvalidOperationException(),
                 _ => throw new NotImplementedException($"Day service provider has not been configured for day {day} this year.")
             };
         }
