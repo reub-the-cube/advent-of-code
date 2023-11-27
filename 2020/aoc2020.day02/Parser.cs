@@ -7,7 +7,19 @@ namespace aoc2020.day02
     {
         public Input ParseInput(string[] input)
         {
-            throw new NotImplementedException();
+            return new Input
+            {
+                PolicyPasswordPairs = input.Select(s => ParseLine(s)).ToList()
+            };
+        }
+
+        private static KeyValuePair<Policy, string> ParseLine(string inputLine)
+        {
+            string[] splitInputLine = inputLine.Split('-', ' ', ':');
+            return new KeyValuePair<Policy, string>(
+                new Policy(int.Parse(splitInputLine[0]), int.Parse(splitInputLine[1]), char.Parse(splitInputLine[2])),
+                splitInputLine.Last()
+            );
         }
     }
 }
