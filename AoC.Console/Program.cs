@@ -14,7 +14,7 @@ using var host = Host.CreateDefaultBuilder(args)
 // Could do this intelligently with automation
 var implementedYearsAndDays = new Dictionary<int, List<int>>()
 {
-    { 2020, new List<int> { 1, 2 } },
+    { 2020, new List<int> { 1, 2, 3 } },
     { 2021, new List<int> { 1, 2, 3, 4 } },
     { 2022, new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20 } },
     { 2023, new List<int> { 1 } }
