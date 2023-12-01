@@ -5,8 +5,9 @@ namespace aoc2023.day01.tests;
 public class Day01SolverTests
 {
     private readonly string[] INPUT = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "Inputs", "2023", "day01testinput.txt"));
-    private const string EXPECTED_ANSWER_ONE = "not_implemented"; // <--------- solution from web page test example goes here
-    private const string EXPECTED_ANSWER_TWO = "not_implemented"; // <--------- solution from web page test example goes here
+    private readonly string[] INPUT_PART_TWO = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "Inputs", "2023", "day01testinput_part2.txt"));
+    private const string EXPECTED_ANSWER_ONE = "142"; // <--------- solution from web page test example goes here
+    private const string EXPECTED_ANSWER_TWO = "281"; // <--------- solution from web page test example goes here
 
     [Fact]
     public void InputLoadsCorrectly()
@@ -31,7 +32,7 @@ public class Day01SolverTests
         var parser = new Parser();
         var day01 = new Day01Solver(parser);
 
-        var (_, answerTwo) = day01.CalculateAnswers(INPUT);
+        var (_, answerTwo) = day01.CalculateAnswers(INPUT_PART_TWO);
         
         answerTwo.Should().Be(EXPECTED_ANSWER_TWO);
     }
