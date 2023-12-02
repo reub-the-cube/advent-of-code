@@ -15,6 +15,34 @@ public class DayXSolver : IDaySolver
     public (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input)
     {
         var parsedInput = _parser.ParseInput(input);
-        throw new NotImplementedException();
+
+        var answerOne = CalculateAnswerOne();
+        var answerTwo = CalculateAnswerTwo();
+
+        return (answerOne, answerTwo);
+    }
+
+    private static string CalculateAnswerOne()
+    {
+        try
+        {
+            return $"TODO";
+        }
+        catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
+        {
+            return $"{e.Message}: {e.GetBaseException().Message}";
+        }
+    }
+
+    private static string CalculateAnswerTwo()
+    {
+        try
+        {
+            return $"TODO";
+        }
+        catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
+        {
+            return $"{e.Message}: {e.GetBaseException().Message}";
+        }
     }
 }
