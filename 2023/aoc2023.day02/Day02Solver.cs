@@ -15,6 +15,34 @@ public class Day02Solver : IDaySolver
     public (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input)
     {
         var parsedInput = _parser.ParseInput(input);
-        throw new NotImplementedException();
+
+        var answerOne = CalculateAnswerOne(parsedInput.Games);
+        var answerTwo = CalculateAnswerTwo(parsedInput.Games);
+
+        return (answerOne, answerTwo);
+    }
+
+    private static string CalculateAnswerOne(IEnumerable<Game> games)
+    {
+        try
+        {
+            return $"{games.Where(g => g.IsPossible()).Select(g => g.Id).Sum()}";
+        }
+        catch (Exception e)
+        {
+            return $"{e.Message}: {e.GetBaseException().Message}";
+        }
+    }
+
+    private static string CalculateAnswerTwo(IEnumerable<Game> games)
+    {
+        try
+        {
+            return $"{games.Sum(g => g.PowerOfMinimumCubes())}";
+        }
+        catch (Exception e)
+        {
+            return $"{e.Message}: {e.GetBaseException().Message}";
+        }
     }
 }
