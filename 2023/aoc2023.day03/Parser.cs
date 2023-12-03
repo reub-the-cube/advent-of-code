@@ -14,7 +14,7 @@ namespace aoc2023.day03
         {
             var engineParts = new List<EnginePart>();
 
-            var currentPartType = EnginePartType.Number;
+            var currentPartType = GetPartTypeFromSchematicCharacter(inputRow[0]);
             var currentPartStartIndex = 0;
 
             for (int i = 0; i < inputRow.Length; i++)
@@ -46,7 +46,7 @@ namespace aoc2023.day03
             }
             else
             {
-                throw new Exception($"Unhandled part character '{schematicCharacter}'");
+                return EnginePartType.Symbol;
             }
         }
     }

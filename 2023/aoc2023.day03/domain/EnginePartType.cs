@@ -3,6 +3,7 @@
     public enum EnginePartType
     {
         Number,
-        Period
+        Period,
+        Symbol
     }
 }
