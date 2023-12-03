@@ -102,5 +102,22 @@ namespace aoc2023.day03.tests
             engineParts[1].EndIndex.Should().Be(3);
             engineParts[2].EndIndex.Should().Be(9);
         }
+
+
+        [Fact]
+        public void EngineSchematicWithMultipleRowsCanBeParsedToEngineParts()
+        {
+            var inputRows = "......#...\r\n617*......".Split(Environment.NewLine);
+
+            var engineParts = Parser.ParseRows(inputRows);
+
+            engineParts.Should().HaveCount(6);
+            engineParts[0].RowIndex.Should().Be(0);
+            engineParts[1].RowIndex.Should().Be(0);
+            engineParts[2].RowIndex.Should().Be(0);
+            engineParts[3].RowIndex.Should().Be(1);
+            engineParts[4].RowIndex.Should().Be(1);
+            engineParts[5].RowIndex.Should().Be(1);
+        }
     }
 }
