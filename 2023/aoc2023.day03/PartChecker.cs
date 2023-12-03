@@ -1,9 +1,4 @@
 ﻿using aoc2023.day03.domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace aoc2023.day03
 {
@@ -15,24 +10,15 @@ namespace aoc2023.day03
                 return false;
             }
 
-            var adjacentParts = partsToCheckAgainst
-                .Where(p => p.PartType == EnginePartType.Symbol)
-                .Where(p => p != partBeingChecked)
-                .Where(p => IsAdjacent(partBeingChecked, p));
-
+            var adjacentParts = GetAdjacentParts(partBeingChecked, partsToCheckAgainst, EnginePartType.Symbol);
             return adjacentParts.Any();
         }
 
         public static int GetGearRatio(EnginePart partBeingChecked, List<EnginePart> partsToCheckAgainst)
         {
-
             if (partBeingChecked.PartType == EnginePartType.Symbol && partBeingChecked.PartValue == "*")
             {
-                var adjacentParts = partsToCheckAgainst
-                    .Where(p => p.PartType == EnginePartType.Number)
-                    .Where(p => p != partBeingChecked)
-                    .Where(p => IsAdjacent(partBeingChecked, p))
-                    .ToList();
+                var adjacentParts = GetAdjacentParts(partBeingChecked, partsToCheckAgainst, EnginePartType.Number);
 
                 if (adjacentParts.Count == 2)
                 {
@@ -43,31 +29,30 @@ namespace aoc2023.day03
             return 0;
         }
 
+        private static List<EnginePart> GetAdjacentParts(EnginePart partBeingChecked, List<EnginePart> partsToCheckAgainst, EnginePartType partTypeFilter)
+        {
+            return partsToCheckAgainst
+                .Where(p => p.PartType == partTypeFilter)
+                .Where(p => p != partBeingChecked)
+                .Where(p => IsAdjacent(partBeingChecked, p))
+                .ToList();
+        }
+
         private static bool IsAdjacent(EnginePart partBeingChecked, EnginePart partToCheckAgainst)
         {
-            return IsAdjacentAbove(partBeingChecked, partToCheckAgainst) ||
-                IsAdjacentSameRow(partBeingChecked, partToCheckAgainst) ||
-                IsAdjacentBelow(partBeingChecked, partToCheckAgainst);
+            return IsAdjacentVertically(partBeingChecked, partToCheckAgainst) &&
+                IsAdjacentHorizontally(partBeingChecked, partToCheckAgainst);
         }
 
-        private static bool IsAdjacentAbove(EnginePart partBeingChecked, EnginePart partToCheckAgainst)
+        private static bool IsAdjacentVertically(EnginePart partBeingChecked, EnginePart partToCheckAgainst)
         {
-            return partToCheckAgainst.RowIndex == partBeingChecked.RowIndex - 1 &&
-                partToCheckAgainst.StartIndex <= partBeingChecked.EndIndex + 1 &&
-                partToCheckAgainst.EndIndex >= partBeingChecked.StartIndex - 1;
+            return partToCheckAgainst.RowIndex <= partBeingChecked.RowIndex + 1 &&
+                partToCheckAgainst.RowIndex >= partBeingChecked.RowIndex - 1;
         }
 
-        private static bool IsAdjacentSameRow(EnginePart partBeingChecked, EnginePart partToCheckAgainst)
+        private static bool IsAdjacentHorizontally(EnginePart partBeingChecked, EnginePart partToCheckAgainst)
         {
-            return partToCheckAgainst.RowIndex == partBeingChecked.RowIndex &&
-                partToCheckAgainst.StartIndex <= partBeingChecked.EndIndex + 1 &&
-                partToCheckAgainst.EndIndex >= partBeingChecked.StartIndex - 1;
-        }
-
-        private static bool IsAdjacentBelow(EnginePart partBeingChecked, EnginePart partToCheckAgainst)
-        {
-            return partToCheckAgainst.RowIndex == partBeingChecked.RowIndex + 1 &&
-                partToCheckAgainst.StartIndex <= partBeingChecked.EndIndex + 1 &&
+            return partToCheckAgainst.StartIndex <= partBeingChecked.EndIndex + 1 &&
                 partToCheckAgainst.EndIndex >= partBeingChecked.StartIndex - 1;
         }
     }
