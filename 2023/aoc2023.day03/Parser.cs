@@ -7,7 +7,7 @@ namespace aoc2023.day03
     {
         public Input ParseInput(string[] input)
         {
-            throw new NotImplementedException();
+            return new Input(ParseRows(input));
         }
 
         public static List<EnginePart> ParseRows(string[] inputRows)
@@ -40,14 +40,15 @@ namespace aoc2023.day03
 
                 if (partType != currentPartType)
                 {
-                    engineParts.Add(new EnginePart(currentPartType, currentPartStartIndex, i - 1, rowIndex));
+                    var partValue = inputRow[currentPartStartIndex..i];
+                    engineParts.Add(new EnginePart(currentPartType, currentPartStartIndex, i - 1, rowIndex, partValue));
 
                     currentPartType = partType;
                     currentPartStartIndex = i;
                 }
             }
 
-            engineParts.Add(new EnginePart(currentPartType, currentPartStartIndex, inputRow.Length - 1, rowIndex));
+            engineParts.Add(new EnginePart(currentPartType, currentPartStartIndex, inputRow.Length - 1, rowIndex, inputRow[currentPartStartIndex..]));
             return engineParts;
         }
 

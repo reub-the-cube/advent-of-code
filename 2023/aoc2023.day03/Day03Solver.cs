@@ -16,17 +16,24 @@ public class Day03Solver : IDaySolver
     {
         var parsedInput = _parser.ParseInput(input);
 
-        var answerOne = CalculateAnswerOne();
-        var answerTwo = CalculateAnswerTwo();
+        var answerOne = CalculateAnswerOne(parsedInput.EngineParts);
+        var answerTwo = CalculateAnswerTwo(parsedInput.EngineParts);
 
         return (answerOne, answerTwo);
     }
 
-    private static string CalculateAnswerOne()
+    private static string CalculateAnswerOne(List<EnginePart> engineParts)
     {
         try
         {
-            throw new NotImplementedException();
+            var partsWithAdjacentSymbol = engineParts
+                .Where(e => PartChecker.IsPartAdjacentToASymbol(e, engineParts))
+                .ToList();
+
+            var sumOfPartsWithAdjacentSymbol = partsWithAdjacentSymbol
+                .Sum(e => int.Parse(e.PartValue));
+
+            return $"{sumOfPartsWithAdjacentSymbol}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
@@ -34,11 +41,15 @@ public class Day03Solver : IDaySolver
         }
     }
 
-    private static string CalculateAnswerTwo()
+    private static string CalculateAnswerTwo(List<EnginePart> engineParts)
     {
         try
         {
-            throw new NotImplementedException();
+            var gearRatios = engineParts
+                .Select(e => PartChecker.GetGearRatio(e, engineParts))
+                .Where(r => r > 0);
+
+            return $"{gearRatios.Sum()}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {

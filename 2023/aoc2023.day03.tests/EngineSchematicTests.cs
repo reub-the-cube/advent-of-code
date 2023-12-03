@@ -1,10 +1,5 @@
 ﻿using aoc2023.day03.domain;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace aoc2023.day03.tests
 {
@@ -103,7 +98,6 @@ namespace aoc2023.day03.tests
             engineParts[2].EndIndex.Should().Be(9);
         }
 
-
         [Fact]
         public void EngineSchematicWithMultipleRowsCanBeParsedToEngineParts()
         {
@@ -118,6 +112,17 @@ namespace aoc2023.day03.tests
             engineParts[3].RowIndex.Should().Be(1);
             engineParts[4].RowIndex.Should().Be(1);
             engineParts[5].RowIndex.Should().Be(1);
+        }
+
+        [Fact]
+        public void EngineSchematicWithNumbersCanBeParsedToValue()
+        {
+            var inputRow = "467.......";
+
+            var engineParts = Parser.ParseRow(inputRow);
+
+            engineParts.Count.Should().BeGreaterThan(1);
+            engineParts[0].PartValue.Should().Be("467");
         }
     }
 }
