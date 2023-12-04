@@ -5,8 +5,8 @@ namespace aoc2023.day04.tests;
 public class Day04SolverTests
 {
     private readonly string[] INPUT = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "Inputs", "2023", "day04testinput.txt"));
-    private const string EXPECTED_ANSWER_ONE = "not_implemented"; // <--------- solution from web page test example goes here
-    private const string EXPECTED_ANSWER_TWO = "not_implemented"; // <--------- solution from web page test example goes here
+    private const string EXPECTED_ANSWER_ONE = "13"; // <--------- solution from web page test example goes here
+    private const string EXPECTED_ANSWER_TWO = "30"; // <--------- solution from web page test example goes here
 
     [Fact]
     public void InputLoadsCorrectly()
