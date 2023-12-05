@@ -26,7 +26,7 @@ public class Day05Solver : IDaySolver
                                     parsedInput.Maps["humidity-to-location"]))))));
 
         var answerOne = CalculateAnswerOne(mapChain, parsedInput.Seeds);
-        var answerTwo = CalculateAnswerTwo();
+        var answerTwo = CalculateAnswerTwo(mapChain, parsedInput.Seeds);
 
         return (answerOne, answerTwo);
     }
@@ -50,11 +50,30 @@ public class Day05Solver : IDaySolver
         }
     }
 
-    private static string CalculateAnswerTwo()
+    private static string CalculateAnswerTwo(Map map, List<long> seeds)
     {
         try
         {
-            return "TODO";
+            long minLocation = long.MaxValue;
+
+            for (var i = 0; i < seeds.Count; i += 2)
+            {
+                var seedMin = seeds[i];
+                var seedMax = seedMin + seeds[i + 1];
+
+                for (var j = seedMin; j < seedMax + 1; j++)
+                {
+                    var location = map.GetDestination(j);
+                    minLocation = Math.Min(minLocation, location);
+
+                    if ((j - seedMin) % 100000 == 0)
+                    {
+                        Console.WriteLine($"Seed range {i + 1} of {seeds.Count}. Seed number {j + 1} from {seedMin} to {seedMax}. Current min {minLocation}.");
+                    }
+                }
+            }
+
+            return $"{minLocation}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
