@@ -18,7 +18,7 @@ namespace aoc2023.day05
             this.nextMap = nextMap;
         }
 
-        public int GetDestination(int sourceValue)
+        public long GetDestination(long sourceValue)
         {
             var destinationValue = GetThisDestination(sourceValue);
 
@@ -30,7 +30,7 @@ namespace aoc2023.day05
             return destinationValue;
         }
 
-        private int GetThisDestination(int sourceValue)
+        private long GetThisDestination(long sourceValue)
         {
             foreach (var range in Ranges)
             {

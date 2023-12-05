@@ -10,7 +10,7 @@ namespace aoc2023.day05
             var seeds = input[0]
                 .Split(':')[1]
                 .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                .Select(int.Parse)
+                .Select(long.Parse)
                 .ToList();
 
             var parsedInput = new Input
@@ -40,9 +40,9 @@ namespace aoc2023.day05
                     // Range information
                     var mappingInformation = input[i].Split(' ');
                     mappingRanges.Add(new MappingRange(
-                        int.Parse(mappingInformation[1]), 
-                        int.Parse(mappingInformation[2]), 
-                        int.Parse(mappingInformation[0])));
+                        long.Parse(mappingInformation[1]), 
+                        long.Parse(mappingInformation[2]), 
+                        long.Parse(mappingInformation[0])));
                     var newMap = new Map(mappingRanges);
                     parsedInput.Maps[mapName] = newMap;
                 }

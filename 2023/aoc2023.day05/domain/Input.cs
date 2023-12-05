@@ -2,7 +2,7 @@
 {
     public class Input
     {
-        public required List<int> Seeds { get; set; }
+        public required List<long> Seeds { get; set; }
         public required Dictionary<string, Map> Maps { get; set; }
     }
 }

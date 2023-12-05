@@ -31,11 +31,11 @@ public class Day05Solver : IDaySolver
         return (answerOne, answerTwo);
     }
 
-    private static string CalculateAnswerOne(Map map, List<int> seeds)
+    private static string CalculateAnswerOne(Map map, List<long> seeds)
     {
         try
         {
-            var locations = new List<int>();
+            var locations = new List<long>();
 
             foreach (var seed in seeds)
             {
