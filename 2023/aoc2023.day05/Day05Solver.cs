@@ -16,7 +16,7 @@ public class Day05Solver : IDaySolver
     {
         var parsedInput = _parser.ParseInput(input);
 
-        var mapChain = 
+        var mapChain =
             parsedInput.Maps["seed-to-soil"].CreateNewMapWithDependency(
                 parsedInput.Maps["soil-to-fertilizer"].CreateNewMapWithDependency(
                     parsedInput.Maps["fertilizer-to-water"].CreateNewMapWithDependency(
@@ -54,30 +54,48 @@ public class Day05Solver : IDaySolver
     {
         try
         {
-            long minLocation = long.MaxValue;
+            List<Task<long>> minLocationTasks = new();
 
             for (var i = 0; i < seeds.Count; i += 2)
             {
                 var seedMin = seeds[i];
                 var seedMax = seedMin + seeds[i + 1];
-
-                for (var j = seedMin; j < seedMax + 1; j++)
+                
+                for (var j = seedMin; j < seedMax + 1; j += 10000000)
                 {
-                    var location = map.GetDestination(j);
-                    minLocation = Math.Min(minLocation, location);
-
-                    if ((j - seedMin) % 100000 == 0)
-                    {
-                        Console.WriteLine($"Seed range {i + 1} of {seeds.Count}. Seed number {j + 1} from {seedMin} to {seedMax}. Current min {minLocation}.");
-                    }
+                    minLocationTasks.Add(GetMinLocationAsync(map, j, Math.Min(j + 10000000, seedMax)));
                 }
             }
 
-            return $"{minLocation}";
+            var minLocations = Task.Run(() => Task.WhenAll(minLocationTasks)).GetAwaiter().GetResult();
+
+            return $"{minLocations.Min()}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
             return $"{e.Message}: {e.GetBaseException().Message}";
         }
+    }
+
+    private static Task<long> GetMinLocationAsync(Map map, long from, long to)
+    {
+        var task = Task.Factory.StartNew(() =>
+        {
+            var minLocation = long.MaxValue;
+
+            Console.WriteLine($"Starting seed range from {from} to {to}.");
+
+            for (var j = from; j < to + 1; j++)
+            {
+                var location = map.GetDestination(j);
+                minLocation = Math.Min(minLocation, location);
+            }
+
+            Console.WriteLine($"Finished seed range from {from} to {to}. Min location is {minLocation}.");
+
+            return minLocation;
+        });
+
+        return task;
     }
 }
