@@ -66,7 +66,7 @@ namespace aoc2023.day05
             return destinationRanges;
         }
 
-        private List<(long From, long To)> GetOverlappingRanges(MappingRange range, long sourceFrom, long sourceTo)
+        private static List<(long From, long To)> GetOverlappingRanges(MappingRange range, long sourceFrom, long sourceTo)
         {
             var destinationRanges = new List<(long From, long To)>();
             if (sourceFrom <= range.SourceStart + range.Length && sourceTo >= range.SourceStart)
