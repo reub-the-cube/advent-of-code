@@ -35,14 +35,9 @@ public class Day05Solver : IDaySolver
     {
         try
         {
-            var locations = new List<long>();
+            var minLocation = GetMinimumDestinationForSeedRanges(map, seeds.Select(s => (s, s)).ToList());
 
-            foreach (var seed in seeds)
-            {
-                locations.Add(map.GetDestination(seed));
-            }
-
-            return $"{locations.Min()}";
+            return $"{minLocation}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
@@ -53,23 +48,10 @@ public class Day05Solver : IDaySolver
     private static string CalculateAnswerTwo(Map map, List<long> seeds)
     {
         try
-        {
-            List<Task<long>> minLocationTasks = new();
+        { 
+            var minLocation = GetMinimumDestinationForSeedRanges(map, GetSeedRangesFromSeeds(seeds));
 
-            for (var i = 0; i < seeds.Count; i += 2)
-            {
-                var seedMin = seeds[i];
-                var seedMax = seedMin + seeds[i + 1];
-                
-                for (var j = seedMin; j < seedMax + 1; j += 10000000)
-                {
-                    minLocationTasks.Add(GetMinLocationAsync(map, j, Math.Min(j + 10000000, seedMax)));
-                }
-            }
-
-            var minLocations = Task.Run(() => Task.WhenAll(minLocationTasks)).GetAwaiter().GetResult();
-
-            return $"{minLocations.Min()}";
+            return $"{minLocation}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
@@ -77,25 +59,19 @@ public class Day05Solver : IDaySolver
         }
     }
 
-    private static Task<long> GetMinLocationAsync(Map map, long from, long to)
+    private static long GetMinimumDestinationForSeedRanges(Map map, List<(long Min, long Max)> seedRanges)
     {
-        var task = Task.Factory.StartNew(() =>
-        {
-            var minLocation = long.MaxValue;
+        return seedRanges.Min(r => GetMinimumDestinationForSeedRange(map, r.Min, r.Max));
+    }
 
-            Console.WriteLine($"Starting seed range from {from} to {to}.");
+    private static long GetMinimumDestinationForSeedRange(Map map, long min, long max)
+    {
+        return map.GetDestinations(min, max).Min(d => d.From);
+    }
 
-            for (var j = from; j < to + 1; j++)
-            {
-                var location = map.GetDestination(j);
-                minLocation = Math.Min(minLocation, location);
-            }
-
-            Console.WriteLine($"Finished seed range from {from} to {to}. Min location is {minLocation}.");
-
-            return minLocation;
-        });
-
-        return task;
+    private static List<(long Min, long Max)> GetSeedRangesFromSeeds(List<long> seeds)
+    {
+        // Chunk into pairs -> first item is the min, second is the max, for the seed range
+        return seeds.Chunk(2).Select(c => (c[0], c[0] + c[1])).ToList();
     }
 }
