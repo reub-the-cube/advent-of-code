@@ -4,17 +4,17 @@ namespace aoc2023.day05
 {
     public class Map
     {
-        private readonly List<MappingRange> ranges;
+        public List<MappingRange> Ranges { get; init; }
         private readonly Map? nextMap;
 
         public Map(List<MappingRange> mappingRanges)
         {
-            ranges = mappingRanges;
+            Ranges = mappingRanges;
         }
 
         public Map(List<MappingRange> mappingRanges, Map nextMap)
         {
-            ranges = mappingRanges;
+            Ranges = mappingRanges;
             this.nextMap = nextMap;
         }
 
@@ -32,7 +32,7 @@ namespace aoc2023.day05
 
         private int GetThisDestination(int sourceValue)
         {
-            foreach (var range in ranges)
+            foreach (var range in Ranges)
             {
                 if (sourceValue >= range.SourceStart && sourceValue <= range.SourceStart + range.Length)
                 {
@@ -42,6 +42,14 @@ namespace aoc2023.day05
             }
 
             return sourceValue;
+        }
+    }
+
+    public static class MapExtensions
+    {
+        public static Map CreateNewMapWithDependency(this Map map, Map nextMap)
+        {
+            return new Map(map.Ranges, nextMap);
         }
     }
 }

@@ -16,17 +16,33 @@ public class Day05Solver : IDaySolver
     {
         var parsedInput = _parser.ParseInput(input);
 
-        var answerOne = CalculateAnswerOne();
+        var mapChain = 
+            parsedInput.Maps["seed-to-soil"].CreateNewMapWithDependency(
+                parsedInput.Maps["soil-to-fertilizer"].CreateNewMapWithDependency(
+                    parsedInput.Maps["fertilizer-to-water"].CreateNewMapWithDependency(
+                        parsedInput.Maps["water-to-light"].CreateNewMapWithDependency(
+                            parsedInput.Maps["light-to-temperature"].CreateNewMapWithDependency(
+                                parsedInput.Maps["temperature-to-humidity"].CreateNewMapWithDependency(
+                                    parsedInput.Maps["humidity-to-location"]))))));
+
+        var answerOne = CalculateAnswerOne(mapChain, parsedInput.Seeds);
         var answerTwo = CalculateAnswerTwo();
 
         return (answerOne, answerTwo);
     }
 
-    private static string CalculateAnswerOne()
+    private static string CalculateAnswerOne(Map map, List<int> seeds)
     {
         try
         {
-            throw new NotImplementedException();
+            var locations = new List<int>();
+
+            foreach (var seed in seeds)
+            {
+                locations.Add(map.GetDestination(seed));
+            }
+
+            return $"{locations.Min()}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
@@ -38,7 +54,7 @@ public class Day05Solver : IDaySolver
     {
         try
         {
-            throw new NotImplementedException();
+            return "TODO";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
