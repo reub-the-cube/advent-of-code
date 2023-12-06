@@ -13,8 +13,10 @@ namespace aoc2023.day06.tests
             var race = new BoatRace(raceDuration);
 
             var numberOfWaysToWin = race.GetNumberOfScenariosToBeatADistance(distanceToBeat);
-
             numberOfWaysToWin.Should().Be(numberOfWinningOutcomes);
+
+            var calculatedWaysToWin = race.GetNumberOfScenariosToBeatADistance(distanceToBeat, false);
+            calculatedWaysToWin.Should().Be(numberOfWinningOutcomes);
         }
     }
 }

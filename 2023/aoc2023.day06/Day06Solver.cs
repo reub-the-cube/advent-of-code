@@ -55,7 +55,7 @@ public class Day06Solver : IDaySolver
             foreach (var raceEvent in raceEvents)
             {
                 var race = new BoatRace(raceEvent.Duration);
-                var waysToWin = race.GetNumberOfScenariosToBeatADistance(raceEvent.RecordDistance);
+                var waysToWin = race.GetNumberOfScenariosToBeatADistance(raceEvent.RecordDistance, false);
                 waysToWinEachRace.Add(waysToWin);
             }
 
