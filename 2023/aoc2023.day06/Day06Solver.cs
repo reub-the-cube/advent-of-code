@@ -38,7 +38,7 @@ public class Day06Solver : IDaySolver
     {
         try
         {
-            throw new NotImplementedException();
+            return "TODO";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
