@@ -4,15 +4,15 @@ namespace aoc2023.day06
 {
     public class BoatRace
     {
-        private readonly int raceDuration;
-        private readonly List<RaceState> raceOutcomes = new List<RaceState>();
+        private readonly long raceDuration;
+        private readonly List<RaceState> raceOutcomes = new();
 
-        public BoatRace(int raceDuration)
+        public BoatRace(long raceDuration)
         {
             this.raceDuration = raceDuration;
         }
 
-        public int GetNumberOfScenariosToBeatADistance(int distanceToBeat)
+        public long GetNumberOfScenariosToBeatADistance(long distanceToBeat)
         {
             Begin();
             return raceOutcomes.Count(r => r.DistanceTravelled > distanceToBeat);

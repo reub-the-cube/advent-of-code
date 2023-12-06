@@ -15,18 +15,30 @@ public class Day06Solver : IDaySolver
     public (string AnswerOne, string AnswerTwo) CalculateAnswers(string[] input)
     {
         var parsedInput = _parser.ParseInput(input);
+        var answerOne = CalculateAnswerOne(parsedInput.RaceEvents);
 
-        var answerOne = CalculateAnswerOne();
-        var answerTwo = CalculateAnswerTwo();
+        // Remove spaces before parsing
+        var newParsedInput = Parser.ReformInput(input);
+        var answerTwo = CalculateAnswerTwo(newParsedInput.RaceEvents);
 
         return (answerOne, answerTwo);
     }
 
-    private static string CalculateAnswerOne()
+    private static string CalculateAnswerOne(List<RaceEvent> raceEvents)
     {
         try
         {
-            throw new NotImplementedException();
+            var waysToWinEachRace = new List<long>();
+
+            foreach (var raceEvent in raceEvents)
+            {
+                var race = new BoatRace(raceEvent.Duration);
+                var waysToWin = race.GetNumberOfScenariosToBeatADistance(raceEvent.RecordDistance);
+                waysToWinEachRace.Add(waysToWin);
+            }
+
+            var aggregate = waysToWinEachRace.Aggregate((accumulatedValue, w) => accumulatedValue * w);
+            return $"{aggregate}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
@@ -34,11 +46,21 @@ public class Day06Solver : IDaySolver
         }
     }
 
-    private static string CalculateAnswerTwo()
+    private static string CalculateAnswerTwo(List<RaceEvent> raceEvents)
     {
         try
         {
-            return "TODO";
+            var waysToWinEachRace = new List<long>();
+
+            foreach (var raceEvent in raceEvents)
+            {
+                var race = new BoatRace(raceEvent.Duration);
+                var waysToWin = race.GetNumberOfScenariosToBeatADistance(raceEvent.RecordDistance);
+                waysToWinEachRace.Add(waysToWin);
+            }
+
+            var aggregate = waysToWinEachRace.Aggregate((accumulatedValue, w) => accumulatedValue * w);
+            return $"{aggregate}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {

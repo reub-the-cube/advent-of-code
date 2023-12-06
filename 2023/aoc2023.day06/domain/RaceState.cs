@@ -1,6 +1,6 @@
 ﻿namespace aoc2023.day06.domain
 {
-    internal record RaceState(int TimeButtonHeld, int DistanceTravelled, int TimeRemaining, int Speed)
+    internal record RaceState(long TimeButtonHeld, long DistanceTravelled, long TimeRemaining, long Speed)
     {
     }
 }
