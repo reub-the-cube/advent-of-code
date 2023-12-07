@@ -7,7 +7,7 @@ namespace aoc2023.day07
     {
         public Input ParseInput(string[] input)
         {
-            throw new NotImplementedException();
+            return new Input(input.Select(i => (i.Split(' ')[0], int.Parse(i.Split(' ')[1]))).ToList());
         }
     }
 }

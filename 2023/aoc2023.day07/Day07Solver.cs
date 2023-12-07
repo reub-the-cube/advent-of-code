@@ -1,5 +1,6 @@
 using AoC.Core;
 using aoc2023.day07.domain;
+using System.Reflection.Metadata;
 
 namespace aoc2023.day07;
 
@@ -16,17 +17,20 @@ public class Day07Solver : IDaySolver
     {
         var parsedInput = _parser.ParseInput(input);
 
-        var answerOne = CalculateAnswerOne();
-        var answerTwo = CalculateAnswerTwo();
+        var answerOne = CalculateAnswerOne(parsedInput.Hands);
+        var answerTwo = CalculateAnswerTwo(parsedInput.Hands);
 
         return (answerOne, answerTwo);
     }
 
-    private static string CalculateAnswerOne()
+    private static string CalculateAnswerOne(List<(string Cards, int Bid)> hands)
     {
         try
         {
-            throw new NotImplementedException();
+            var game = new CamelCardsGame(new StandardScoringRules());
+            hands.ForEach(h => game.AddHand(h.Cards, h.Bid));
+
+            return $"{game.CalculateTotalWinnings()}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
@@ -34,11 +38,14 @@ public class Day07Solver : IDaySolver
         }
     }
 
-    private static string CalculateAnswerTwo()
+    private static string CalculateAnswerTwo(List<(string Cards, int Bid)> hands)
     {
         try
         {
-            throw new NotImplementedException();
+            var game = new CamelCardsGame(new JokerScoringRules());
+            hands.ForEach(h => game.AddHand(h.Cards, h.Bid));
+
+            return $"{game.CalculateTotalWinnings()}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
