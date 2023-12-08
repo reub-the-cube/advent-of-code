@@ -33,6 +33,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc2023.day07", "aoc2023.da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc2023.day07.tests", "aoc2023.day07.tests\aoc2023.day07.tests.csproj", "{A624A604-3920-4101-B6FC-86C01FBC1F89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc2023.day08", "aoc2023.day08\aoc2023.day08.csproj", "{EAE5C05A-3E85-4057-A09D-8A51A2189CEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc2023.day08.tests", "aoc2023.day08.tests\aoc2023.day08.tests.csproj", "{40D12E41-5F14-43D5-A602-4CD9D0F017D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,5 +106,13 @@ Global
 		{A624A604-3920-4101-B6FC-86C01FBC1F89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A624A604-3920-4101-B6FC-86C01FBC1F89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A624A604-3920-4101-B6FC-86C01FBC1F89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAE5C05A-3E85-4057-A09D-8A51A2189CEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAE5C05A-3E85-4057-A09D-8A51A2189CEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAE5C05A-3E85-4057-A09D-8A51A2189CEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAE5C05A-3E85-4057-A09D-8A51A2189CEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40D12E41-5F14-43D5-A602-4CD9D0F017D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40D12E41-5F14-43D5-A602-4CD9D0F017D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40D12E41-5F14-43D5-A602-4CD9D0F017D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40D12E41-5F14-43D5-A602-4CD9D0F017D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
