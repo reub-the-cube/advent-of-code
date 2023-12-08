@@ -16,7 +16,7 @@ namespace aoc2023.day08
 
         private static Node CreateNode(string nodeInput)
         {
-            var nodeMatches = Regex.Matches(nodeInput, @"\b[A-Z]+\b");
+            var nodeMatches = Regex.Matches(nodeInput, @"\b[A-Z0-9]+\b");
             return new Node(nodeMatches[0].Value, nodeMatches[1].Value, nodeMatches[2].Value);
         }
     }
