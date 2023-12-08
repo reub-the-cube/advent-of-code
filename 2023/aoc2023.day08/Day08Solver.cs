@@ -20,7 +20,7 @@ public class Day08Solver : IDaySolver
 
         var answerTwo = CalculateAnswerTwo(parsedInput.NodeNetwork, parsedInput.NodeSelectorSequence);
 
-        return (answerOne, answerTwo);
+        dreturn (answerOne, answerTwo);
     }
 
     private static string CalculateAnswerOne(Dictionary<string, Node> network, char[] nodeSelectorSequence)
