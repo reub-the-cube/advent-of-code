@@ -17,7 +17,7 @@ public class Day09Solver : IDaySolver
         var parsedInput = _parser.ParseInput(input);
 
         var answerOne = CalculateAnswerOne(parsedInput.OasisHistoryRecords);
-        var answerTwo = CalculateAnswerTwo();
+        var answerTwo = CalculateAnswerTwo(parsedInput.OasisHistoryRecords);
 
         return (answerOne, answerTwo);
     }
@@ -35,11 +35,12 @@ public class Day09Solver : IDaySolver
         }
     }
 
-    private static string CalculateAnswerTwo()
+    private static string CalculateAnswerTwo(List<List<int>> oasisHistoryRecords)
     {
         try
         {
-            return "TODO";
+            var sumOfNextValues = oasisHistoryRecords.Sum(GetPreviousValue);
+            return $"{sumOfNextValues}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
@@ -47,9 +48,15 @@ public class Day09Solver : IDaySolver
         }
     }
 
-    private static int GetNextValue(List<int> oasisHistoryRecord)
+    private static long GetNextValue(List<int> oasisHistoryRecord)
     {
         var predictor = new OasisHistoryPredictor(oasisHistoryRecord);
         return predictor.GetNextValue();
+    }
+
+    private static long GetPreviousValue(List<int> oasisHistoryRecord)
+    {
+        var predictor = new OasisHistoryPredictor(oasisHistoryRecord);
+        return predictor.GetPreviousValue();
     }
 }

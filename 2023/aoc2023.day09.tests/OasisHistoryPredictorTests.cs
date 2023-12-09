@@ -5,7 +5,7 @@ namespace aoc2023.day09.tests
     public class OasisHistoryPredictorTests
     {
         [Fact]
-        public void OasisHistoryWithNoLevelsOfDifferenceCanBePredicted()
+        public void OasisHistoryWithNoLevelsOfDifferenceCanPredictNextValue()
         {
             var history = new List<int>() { 1, 1, 1, 1, 1 };
 
@@ -17,7 +17,7 @@ namespace aoc2023.day09.tests
         }
 
         [Fact]
-        public void OasisHistoryWithOneLevelOfDifferenceOfASingleUnitCanBePredicted()
+        public void OasisHistoryWithOneLevelOfDifferenceOfASingleUnitCanPredictNextValue()
         {
             var history = new List<int>() { 1, 2, 3, 4, 5 };
 
@@ -29,7 +29,7 @@ namespace aoc2023.day09.tests
         }
 
         [Fact]
-        public void OasisHistoryWithOneLevelOfDifferenceOfMultipleUnitsCanBePredicted()
+        public void OasisHistoryWithOneLevelOfDifferenceOfMultipleUnitsCanPredictNextValue()
         {
             var history = new List<int>() { 8, 5, 2, -1, -4 };
 
@@ -41,7 +41,7 @@ namespace aoc2023.day09.tests
         }
 
         [Fact]
-        public void OasisHistoryWithTwoLevelsOfDifferenceCanBePredicted()
+        public void OasisHistoryWithTwoLevelsOfDifferenceCanPredictNextValue()
         {
             var history = new List<int>() { 1, 3, 6, 10, 15, 21 };
 
@@ -53,7 +53,7 @@ namespace aoc2023.day09.tests
         }
 
         [Fact]
-        public void OasisHistoryWithThreeLevelsOfDifferenceCanBePredicted()
+        public void OasisHistoryWithThreeLevelsOfDifferenceCanPredictNextValue()
         {
             var history = new List<int>() { 10, 13, 16, 21, 30, 45 };
 
@@ -62,6 +62,42 @@ namespace aoc2023.day09.tests
             var nextValue = oasisHistoryPredictor.GetNextValue();
 
             nextValue.Should().Be(68);
+        }
+
+        [Fact]
+        public void OasisHistoryWithNoLevelsOfDifferenceCanPredictPreviousValue()
+        {
+            var history = new List<int>() { 1, 1, 1, 1, 1 };
+
+            var oasisHistoryPredictor = new OasisHistoryPredictor(history);
+
+            var nextValue = oasisHistoryPredictor.GetPreviousValue();
+
+            nextValue.Should().Be(1);
+        }
+
+        [Fact]
+        public void OasisHistoryWithOneLevelOfDifferenceCanPredictPreviousValue()
+        {
+            var history = new List<int>() { 1, 3, 6, 10, 15, 21 };
+
+            var oasisHistoryPredictor = new OasisHistoryPredictor(history);
+
+            var nextValue = oasisHistoryPredictor.GetPreviousValue();
+
+            nextValue.Should().Be(0);
+        }
+
+        [Fact]
+        public void OasisHistoryWithThreeLevelsOfDifferenceCanPredictPreviousValue()
+        {
+            var history = new List<int>() { 10, 13, 16, 21, 30, 45 };
+
+            var oasisHistoryPredictor = new OasisHistoryPredictor(history);
+
+            var nextValue = oasisHistoryPredictor.GetPreviousValue();
+
+            nextValue.Should().Be(5);
         }
     }
 }
