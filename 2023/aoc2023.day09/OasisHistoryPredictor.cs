@@ -1,4 +1,6 @@
-﻿namespace aoc2023.day09
+﻿using System.Net;
+
+namespace aoc2023.day09
 {
     public class OasisHistoryPredictor
     {
@@ -12,22 +14,21 @@
 
         public int GetNextValue()
         {
-            var listOfDifferences = _history;
-            var numberOfLevels = 1;
-
-            while (!listOfDifferences.All(d => d == 0))
-            {
-                _listOfDifferences.Add(numberOfLevels, listOfDifferences);
-                listOfDifferences = GetListOfDifferences(listOfDifferences);
-                numberOfLevels++;
-            }
-
+            GetListOfAllDifferencesFromInitialHistory();
             var nextValue = PredictNextValue();
 
             return nextValue;
         }
 
         public int GetPreviousValue()
+        {
+            GetListOfAllDifferencesFromInitialHistory();
+            var previousValue = PredictPreviousValue();
+
+            return previousValue;
+        }
+
+        private void GetListOfAllDifferencesFromInitialHistory()
         {
             var listOfDifferences = _history;
             var numberOfLevels = 1;
@@ -38,10 +39,6 @@
                 listOfDifferences = GetListOfDifferences(listOfDifferences);
                 numberOfLevels++;
             }
-
-            var previousValue = PredictPreviousValue();
-
-            return previousValue;
         }
 
         private List<int> GetListOfDifferences(List<int> values)
@@ -57,42 +54,37 @@
 
         private int PredictNextValue()
         {
-            var listOfPredictedValues = new Dictionary<int, int>
+            return PredictEdgeValues().Next;
+        }
+
+        private int PredictPreviousValue()
+        {
+            return PredictEdgeValues().Previous;
+        }
+
+        private (int Previous, int Next) PredictEdgeValues()
+        {
+            var listOfPredictedValues = new Dictionary<int, (int Previous, int Next)>
             {
-                { 0, 0 } // Row of differences of 0 will have 0 as the next value
+                { 0, (0, 0) } // Row of differences of 0 will have 0 as the next and previous value
             };
 
             var levels = _listOfDifferences.Max(d => d.Key);
 
             for (int i = 1; i <= levels; i++)
             {
-                int previousValue = _listOfDifferences[levels - i + 1].Last();
-                int differenceFromPrevious = listOfPredictedValues[i - 1];
+                int previousValue = CalculateSequenceValue(_listOfDifferences[levels - i + 1].First(), listOfPredictedValues[i - 1].Previous, false);
+                int nextValue = CalculateSequenceValue(_listOfDifferences[levels - i + 1].Last(), listOfPredictedValues[i - 1].Next, true);
 
-                listOfPredictedValues.Add(i, previousValue + differenceFromPrevious);
+                listOfPredictedValues.Add(i, (previousValue, nextValue));
             }
 
             return listOfPredictedValues[levels];
         }
 
-        private int PredictPreviousValue()
+        private int CalculateSequenceValue(int previousStartingValue, int step, bool stepForwards)
         {
-            var listOfPredictedValues = new Dictionary<int, int>
-            {
-                { 0, 0 } // Row of differences of 0 will have 0 as the next value
-            };
-
-            var levels = _listOfDifferences.Max(d => d.Key);
-
-            for (int i = 1; i <= levels; i++)
-            {
-                int previousValue = _listOfDifferences[levels - i + 1].First();
-                int differenceFromPrevious = listOfPredictedValues[i - 1];
-
-                listOfPredictedValues.Add(i, previousValue - differenceFromPrevious);
-            }
-
-            return listOfPredictedValues[levels];
+            return stepForwards ? previousStartingValue + step : previousStartingValue - step;
         }
     }
 }
