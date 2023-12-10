@@ -17,7 +17,7 @@ public class Day10Solver : IDaySolver
         var parsedInput = _parser.ParseInput(input);
 
         var answerOne = CalculateAnswerOne(parsedInput.Sketch);
-        var answerTwo = CalculateAnswerTwo();
+        var answerTwo = CalculateAnswerTwo(parsedInput.Sketch);
 
         return (answerOne, answerTwo);
     }
@@ -37,11 +37,14 @@ public class Day10Solver : IDaySolver
         }
     }
 
-    private static string CalculateAnswerTwo()
+    private static string CalculateAnswerTwo(char[][] pipeSketch)
     {
         try
         {
-            return "TODO";
+            var pipeField = new PipeField(PipeField.BuildField(pipeSketch));
+            var clearedField = pipeField.RemoveJunkPipes();
+            var enclosedTiles = clearedField.GetEnclosedTiles();
+            return $"{enclosedTiles}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {

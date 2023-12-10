@@ -1,4 +1,5 @@
 ﻿using System.Data.Common;
+using System.Text;
 
 namespace aoc2023.day10
 {
@@ -11,11 +12,28 @@ namespace aoc2023.day10
             _tiles = tiles;
         }
 
+        public override string ToString()
+        {
+            var stringRepresentation = new List<string>();
+            
+            for (var i = 0; i < _tiles.GetUpperBound(0) + 1; i++)
+            {
+                var lineBuilder = new StringBuilder();
+                for (var j = 0; j < _tiles.GetUpperBound(1) + 1; j++)
+                {
+                    lineBuilder.Append(_tiles[i, j].PipeValue);
+                }
+                stringRepresentation.Add(lineBuilder.ToString());
+            }
+
+            return string.Join(Environment.NewLine, stringRepresentation);
+        }
+
         public (bool Exists, int Row, int Column) FindStart()
         {
-            for (var i = 0; i < _tiles.GetUpperBound(0); i++)
+            for (var i = 0; i < _tiles.GetUpperBound(0) + 1; i++)
             {
-                for (var j = 0; j < _tiles.GetUpperBound(1); j++)
+                for (var j = 0; j < _tiles.GetUpperBound(1) + 1; j++)
                 {
                     if (_tiles[i, j].PipeValue == 'S')
                     {
@@ -27,30 +45,44 @@ namespace aoc2023.day10
             return (false, -1, -1);
         }
 
-        public int GetFurthestDistance(int Row, int Column)
+        public int GetFurthestDistance(int row, int column)
         {
-            var visitedTiles = new Dictionary<(int Row, int Column), int>
-            {
-                { (Row, Column), 0 }
-            };
-            var numberOfSteps = 0;
-            var connectedNeighbours = GetConnectingNeighbours(Row, Column);
+            var visitedTiles = GetTilesInLoop(row, column);
+            return visitedTiles.Max(kvp => kvp.Value);
+        }
 
-            while (connectedNeighbours.Count > 0)
-            {
-                numberOfSteps++;
-                var nextNeighbours = new List<(int Row, int Column)>();
+        public PipeField RemoveJunkPipes()
+        {
+            var start = FindStart();
+            var tilesInLoop = GetTilesInLoop(start.Row, start.Column);
 
-                foreach (var neighbour in connectedNeighbours)
+            var rowCount = _tiles.GetUpperBound(0) + 1;
+            var columnCount = _tiles.GetUpperBound(1) + 1;
+            var tiles = new Tile[rowCount, columnCount];
+
+            for (var i = 0; i < rowCount; i++)
+            {
+                for (var j = 0; j < columnCount; j++)
                 {
-                    visitedTiles.Add(neighbour, numberOfSteps);
-                    nextNeighbours.AddRange(GetConnectingNeighbours(neighbour.Row, neighbour.Column));
-                }
+                    char thisPipe = tilesInLoop.ContainsKey((i, j)) ? _tiles[i, j].PipeValue : '.';
+                    char? above = i > 0 ? _tiles[i - 1, j].PipeValue : null;
+                    char? right = j < columnCount - 1 ? _tiles[i, j + 1].PipeValue : null;
+                    char? below = i < rowCount - 1 ? _tiles[i + 1, j].PipeValue : null;
+                    char? left = j > 0 ? _tiles[i, j - 1].PipeValue : null;
 
-                connectedNeighbours = nextNeighbours.Distinct().Where(n => !visitedTiles.ContainsKey(n)).ToList();
+                    tiles[i, j] = new Tile(thisPipe, above, right, below, left);
+                }
             }
 
-            return visitedTiles.Max(kvp => kvp.Value);
+            return new PipeField(tiles);
+        }
+
+        public int GetEnclosedTiles()
+        {
+            // Replace 'S' with the correct pipe
+            // Find the highest top-left corner (F) and trace the shape
+            // Keep perimeter on the right the whole time
+            throw new NotImplementedException();
         }
 
         public static Tile[,] BuildField(char[][] pipeLayout)
@@ -73,6 +105,32 @@ namespace aoc2023.day10
             }
 
             return tiles;
+        }
+
+        private Dictionary<(int Row, int Column), int> GetTilesInLoop(int startRow, int startColumn)
+        {
+            var visitedTiles = new Dictionary<(int Row, int Column), int>
+            {
+                { (startRow, startColumn), 0 }
+            };
+            var numberOfSteps = 0;
+            var connectedNeighbours = GetConnectingNeighbours(startRow, startColumn);
+
+            while (connectedNeighbours.Count > 0)
+            {
+                numberOfSteps++;
+                var nextNeighbours = new List<(int Row, int Column)>();
+
+                foreach (var neighbour in connectedNeighbours)
+                {
+                    visitedTiles.Add(neighbour, numberOfSteps);
+                    nextNeighbours.AddRange(GetConnectingNeighbours(neighbour.Row, neighbour.Column));
+                }
+
+                connectedNeighbours = nextNeighbours.Distinct().Where(n => !visitedTiles.ContainsKey(n)).ToList();
+            }
+
+            return visitedTiles;
         }
 
         private List<(int Row, int Column)> GetConnectingNeighbours(int row, int column)

@@ -55,34 +55,38 @@ namespace aoc2023.day10.tests
             furthestDistance.Should().Be(8);
         }
 
-        //This test is commented because there is no need (yet) to remove unconnected pipes
-        //[Fact]
-        //public void PipeFieldCanHaveNonConnectedPipesRemoved()
-        //{
-        //    /* FROM     TO
-        //     *  
-        //     * .F7-.    .F7..
-        //     * F|L77    .|L7.
-        //     * -L-J.    .L-J.
-        //     */
-        //    //var parsedInput = inputParser.ParseInput(INPUT_1A);
-        //    var initialField = new char[][] {
-        //        ['.', 'F', '7', '-', '.'],
-        //        ['F', '|', 'L', '7', '7'],
-        //        ['-', 'L', '-', 'J', '.']
-        //    };
+        [Fact]
+        public void PipeFieldCanHaveNonConnectedPipesRemoved()
+        {
+            /* FROM     TO
+             *  
+             * .F7-.    .F7..
+             * F|L77    .|L7.
+             * -L-J.    .L-J.
+             */
 
-        //    var clearedField = new char[][] {
-        //        ['.', 'F', '7', '.', '.'],
-        //        ['.', '|', 'L', '7', '.'],
-        //        ['.', 'L', '-', 'J', '.']
-        //    };
+            var initialField = new char[][] {
+                ['.', 'F', '7', '-', '.'],
+                ['F', '|', 'S', '7', '7'],
+                ['-', 'L', '-', 'J', '.']
+            };
 
-        //    var pipeField = new PipeField(initialField);
+            var clearedField = new char[][] {
+                ['.', 'F', '7', '.', '.'],
+                ['.', '|', 'S', '7', '.'],
+                ['.', 'L', '-', 'J', '.']
+            };
 
-        //    var clearedPipeField = pipeField.RemoveUnconnectedPipes();
+            var pipeField = new PipeField(PipeField.BuildField(initialField));
 
-        //    clearedPipeField.Get().Should().Be(clearedField);
-        //}
+            var clearedPipeField = pipeField.RemoveJunkPipes();
+
+            var pipeFieldOutput = clearedPipeField.ToString().Split(Environment.NewLine);
+
+            pipeFieldOutput.Should().HaveCount(3);
+            pipeFieldOutput[0].Should().Be(".F7..");
+            pipeFieldOutput[1].Should().Be(".|S7.");
+            pipeFieldOutput[2].Should().Be(".L-J.");
+        }
     }
 }
