@@ -16,17 +16,20 @@ public class Day10Solver : IDaySolver
     {
         var parsedInput = _parser.ParseInput(input);
 
-        var answerOne = CalculateAnswerOne();
+        var answerOne = CalculateAnswerOne(parsedInput.Sketch);
         var answerTwo = CalculateAnswerTwo();
 
         return (answerOne, answerTwo);
     }
 
-    private static string CalculateAnswerOne()
+    private static string CalculateAnswerOne(char[][] pipeSketch)
     {
         try
         {
-            throw new NotImplementedException();
+            var pipeField = new PipeField(PipeField.BuildField(pipeSketch));
+            var start = pipeField.FindStart();
+            var furthestDistance = pipeField.GetFurthestDistance(start.Row, start.Column);
+            return $"{furthestDistance}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
@@ -38,7 +41,7 @@ public class Day10Solver : IDaySolver
     {
         try
         {
-            throw new NotImplementedException();
+            return "TODO";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {

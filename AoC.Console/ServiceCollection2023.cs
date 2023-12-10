@@ -1,5 +1,4 @@
 using AoC.Core;
-using aoc2022.day10;
 using aoc2023.day01;
 using aoc2023.day02;
 using aoc2023.day03;
@@ -9,6 +8,7 @@ using aoc2023.day06;
 using aoc2023.day07;
 using aoc2023.day08;
 using aoc2023.day09;
+using aoc2023.day10;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AoC.Console
