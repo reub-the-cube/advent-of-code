@@ -16,17 +16,19 @@ public class Day11Solver : IDaySolver
     {
         var parsedInput = _parser.ParseInput(input);
 
-        var answerOne = CalculateAnswerOne();
-        var answerTwo = CalculateAnswerTwo();
+        var answerOne = CalculateAnswerOne(parsedInput.GalaxyImageInput);
+        var answerTwo = CalculateAnswerTwo(parsedInput.GalaxyImageInput);
 
         return (answerOne, answerTwo);
     }
 
-    private static string CalculateAnswerOne()
+    private static string CalculateAnswerOne(List<string> galaxyImageInput)
     {
         try
         {
-            throw new NotImplementedException();
+            var expandedGalaxyImage = GalaxyImage.Build(galaxyImageInput);
+            var sumOfShortestPaths = expandedGalaxyImage.GetSumOfShortestPaths(2);
+            return $"{sumOfShortestPaths}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
@@ -34,11 +36,13 @@ public class Day11Solver : IDaySolver
         }
     }
 
-    private static string CalculateAnswerTwo()
+    private static string CalculateAnswerTwo(List<string> galaxyImageInput)
     {
         try
         {
-            throw new NotImplementedException();
+            var expandedGalaxyImage = GalaxyImage.Build(galaxyImageInput);
+            var sumOfShortestPaths = expandedGalaxyImage.GetSumOfShortestPaths(1000000);
+            return $"{sumOfShortestPaths}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {

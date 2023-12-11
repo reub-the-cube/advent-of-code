@@ -1,82 +1,76 @@
 ﻿using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace aoc2023.day11.tests
 {
     public class GalaxyImageTests
     {
         [Fact]
-        public void GalaxyImageWithColumnOfSpaceCanExpandHorizontally()
+        public void GalaxyImageWithMultipleEmptyRowsAndColumnsCanGetSumOfShortestPathsBetweenGalaxiesWithATwoMultiplier()
         {
-            List<string> galaxyImageInput = [   "##.",
-                                                "#..",
-                                                ".#."
+            List<string> galaxyImageInput = [
+                "...#......",
+                ".......#..",
+                "#.........",
+                "..........",
+                "......#...",
+                ".#........",
+                ".........#",
+                "..........",
+                ".......#..",
+                "#...#....."
             ];
-            
-            var expandedGalaxyImage = GalaxyImage.Expand(galaxyImageInput);
 
-            var dimensions = expandedGalaxyImage.GetSize();
+            var expandedGalaxyImage = GalaxyImage.Build(galaxyImageInput);
 
-            dimensions.Width.Should().Be(4);
-            dimensions.Height.Should().Be(3);
+            var sumOfShortestPaths = expandedGalaxyImage.GetSumOfShortestPaths(2);
+
+            sumOfShortestPaths.Should().Be(374);
         }
 
         [Fact]
-        public void GalaxyImageWithRowOfSpaceCanExpandVertically()
+        public void GalaxyImageWithMultipleEmptyRowsAndColumnsCanGetSumOfShortestPathsBetweenGalaxiesWithATenMultiplier()
         {
-            List<string> galaxyImageInput = [   "##.",
-                                                "#..",
-                                                "...",
-                                                ".##"
+            List<string> galaxyImageInput = [
+                "...#......",
+                ".......#..",
+                "#.........",
+                "..........",
+                "......#...",
+                ".#........",
+                ".........#",
+                "..........",
+                ".......#..",
+                "#...#....."
             ];
 
-            var expandedGalaxyImage = GalaxyImage.Expand(galaxyImageInput);
+            var galaxyImage = GalaxyImage.Build(galaxyImageInput);
 
-            var dimensions = expandedGalaxyImage.GetSize();
+            var sumOfShortestPaths = galaxyImage.GetSumOfShortestPaths(10);
 
-            dimensions.Width.Should().Be(3);
-            dimensions.Height.Should().Be(5);
+            sumOfShortestPaths.Should().Be(1030);
         }
 
         [Fact]
-        public void GalaxyImageCanExpandVerticallyAndHorizontally()
+        public void GalaxyImageWithMultipleEmptyRowsAndColumnsCanGetSumOfShortestPathsBetweenGalaxiesWithAHundredMultiplier()
         {
-            List<string> galaxyImageInput = [   "##.",
-                                                "#..",
-                                                "...",
-                                                ".#."
+            List<string> galaxyImageInput = [
+                "...#......",
+                ".......#..",
+                "#.........",
+                "..........",
+                "......#...",
+                ".#........",
+                ".........#",
+                "..........",
+                ".......#..",
+                "#...#....."
             ];
 
-            var expandedGalaxyImage = GalaxyImage.Expand(galaxyImageInput);
+            var galaxyImage = GalaxyImage.Build(galaxyImageInput);
 
-            var dimensions = expandedGalaxyImage.GetSize();
+            var sumOfShortestPaths = galaxyImage.GetSumOfShortestPaths(100);
 
-            dimensions.Width.Should().Be(4);
-            dimensions.Height.Should().Be(5);
-        }
-
-        [Fact]
-        public void GalaxyImageWithMultipleEmptyRowsAndColumnsCanExpandVerticallyAndHorizontally()
-        {
-            List<string> galaxyImageInput = [   ".....",
-                                                "#.#..",
-                                                "#....",
-                                                ".....",
-                                                ".....",
-                                                "..#..",
-                                                "....."
-            ];
-
-            var expandedGalaxyImage = GalaxyImage.Expand(galaxyImageInput);
-
-            var dimensions = expandedGalaxyImage.GetSize();
-
-            dimensions.Width.Should().Be(8);
-            dimensions.Height.Should().Be(11);
+            sumOfShortestPaths.Should().Be(8410);
         }
     }
 }
