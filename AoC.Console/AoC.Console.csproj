@@ -60,6 +60,7 @@
     <ProjectReference Include="..\2023\aoc2023.day08\aoc2023.day08.csproj" />
     <ProjectReference Include="..\2023\aoc2023.day09\aoc2023.day09.csproj" />
     <ProjectReference Include="..\2023\aoc2023.day10\aoc2023.day10.csproj" />
+    <ProjectReference Include="..\2023\aoc2023.day11\aoc2023.day11.csproj" />
   </ItemGroup>
 
   <ItemGroup>
