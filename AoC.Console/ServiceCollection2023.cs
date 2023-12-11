@@ -10,6 +10,7 @@ using aoc2023.day08;
 using aoc2023.day09;
 using aoc2023.day10;
 using aoc2023.day11;
+using aoc2023.day12;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AoC.Console
@@ -29,7 +30,8 @@ namespace AoC.Console
                 .ConfigureDay08Services()
                 .ConfigureDay09Services()
                 .ConfigureDay10Services()
-                .ConfigureDay11Services();
+                .ConfigureDay11Services()
+                .ConfigureDay12Services();
         }
 
         public static IDaySolver ResolveDayFor2023(this IServiceProvider serviceProvider, int day)
@@ -47,6 +49,7 @@ namespace AoC.Console
                 9 => serviceProvider.GetService<Day09Solver>() ?? throw new InvalidOperationException(),
                 10 => serviceProvider.GetService<Day10Solver>() ?? throw new InvalidOperationException(),
                 11 => serviceProvider.GetService<Day11Solver>() ?? throw new InvalidOperationException(),
+                12 => serviceProvider.GetService<Day12Solver>() ?? throw new InvalidOperationException(),
                 _ => throw new NotImplementedException($"Day service provider has not been configured for day {day} this year.")
             };
         }
