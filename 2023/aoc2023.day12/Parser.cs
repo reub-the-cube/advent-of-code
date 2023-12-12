@@ -7,7 +7,18 @@ namespace aoc2023.day12
     {
         public Input ParseInput(string[] input)
         {
-            throw new NotImplementedException();
+            var parsedInput = new Input();
+
+            foreach (var item in input)
+            {
+                var inputSplitBySpace = item.Split(' ');
+                var springArrangements = inputSplitBySpace[0];
+                var contiguousGroups = inputSplitBySpace[1].Split(',').Select(int.Parse).ToList();
+
+                parsedInput.AddSpringConditionsRecord(new SpringConditionsRecord(springArrangements, contiguousGroups));
+            }
+
+            return parsedInput;
         }
     }
 }
