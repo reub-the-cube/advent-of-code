@@ -11,6 +11,7 @@ using aoc2023.day09;
 using aoc2023.day10;
 using aoc2023.day11;
 using aoc2023.day12;
+using aoc2023.day13;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AoC.Console
@@ -31,7 +32,8 @@ namespace AoC.Console
                 .ConfigureDay09Services()
                 .ConfigureDay10Services()
                 .ConfigureDay11Services()
-                .ConfigureDay12Services();
+                .ConfigureDay12Services()
+                .ConfigureDay13Services();
         }
 
         public static IDaySolver ResolveDayFor2023(this IServiceProvider serviceProvider, int day)
