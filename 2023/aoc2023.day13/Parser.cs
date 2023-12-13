@@ -7,7 +7,25 @@ namespace aoc2023.day13
     {
         public Input ParseInput(string[] input)
         {
-            throw new NotImplementedException();
+            var pattern = new List<string>();
+            var patternList = new List<Pattern>();
+
+            foreach (var inputItem in input)
+            {
+                if (inputItem == string.Empty)
+                {
+                    patternList.Add(new Pattern(pattern.ToList()));
+                    pattern.Clear();
+                }
+                else
+                {
+                    pattern.Add(inputItem);
+                }
+            }
+
+            patternList.Add(new Pattern(pattern));
+
+            return new Input(patternList);
         }
     }
 }

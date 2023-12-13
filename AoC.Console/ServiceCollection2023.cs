@@ -52,6 +52,7 @@ namespace AoC.Console
                 10 => serviceProvider.GetService<Day10Solver>() ?? throw new InvalidOperationException(),
                 11 => serviceProvider.GetService<Day11Solver>() ?? throw new InvalidOperationException(),
                 12 => serviceProvider.GetService<Day12Solver>() ?? throw new InvalidOperationException(),
+                13 => serviceProvider.GetService<Day13Solver>() ?? throw new InvalidOperationException(),
                 _ => throw new NotImplementedException($"Day service provider has not been configured for day {day} this year.")
             };
         }

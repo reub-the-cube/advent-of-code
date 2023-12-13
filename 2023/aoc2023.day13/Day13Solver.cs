@@ -16,17 +16,18 @@ public class Day13Solver : IDaySolver
     {
         var parsedInput = _parser.ParseInput(input);
 
-        var answerOne = CalculateAnswerOne();
-        var answerTwo = CalculateAnswerTwo();
+        var answerOne = CalculateAnswerOne(parsedInput.Patterns);
+        var answerTwo = CalculateAnswerTwo(parsedInput.Patterns);
 
         return (answerOne, answerTwo);
     }
 
-    private static string CalculateAnswerOne()
+    private static string CalculateAnswerOne(List<Pattern> patterns)
     {
         try
         {
-            throw new NotImplementedException();
+            var sumOfSummarizeScores = patterns.Sum(p => p.SummarizeScore());
+            return $"{sumOfSummarizeScores}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
@@ -34,11 +35,12 @@ public class Day13Solver : IDaySolver
         }
     }
 
-    private static string CalculateAnswerTwo()
+    private static string CalculateAnswerTwo(List<Pattern> patterns)
     {
         try
         {
-            throw new NotImplementedException();
+            var sumOfSummarizeScores = patterns.Sum(p => p.SummarizeScore(true));
+            return $"{sumOfSummarizeScores}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
