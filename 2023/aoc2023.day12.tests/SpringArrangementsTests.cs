@@ -10,10 +10,10 @@ namespace aoc2023.day12.tests
             var springConditions = "?.#.###";
             List<int> contiguousGroups = [1, 1, 3];
 
-            var springArrangements = SpringArrangements.GetPossibleArrangements(springConditions, contiguousGroups);
+            var springArrangements = new SpringArrangements();
+            var validArrangements = springArrangements.GetPossibleArrangements(springConditions, contiguousGroups);
 
-            springArrangements.Should().HaveCount(1);
-            springArrangements.Should().Contain("#.#.###");
+            validArrangements.Should().Be(1);
         }
 
         [Fact]
@@ -22,10 +22,10 @@ namespace aoc2023.day12.tests
             var springConditions = "#??.###";
             List<int> contiguousGroups = [1, 1, 3];
 
-            var springArrangements = SpringArrangements.GetPossibleArrangements(springConditions, contiguousGroups);
+            var springArrangements = new SpringArrangements();
+            var validArrangements = springArrangements.GetPossibleArrangements(springConditions, contiguousGroups);
 
-            springArrangements.Should().HaveCount(1);
-            springArrangements.Should().Contain("#.#.###");
+            validArrangements.Should().Be(1);
         }
 
         [Fact]
@@ -34,11 +34,10 @@ namespace aoc2023.day12.tests
             var springConditions = "#.??.###";
             List<int> contiguousGroups = [1, 1, 3];
 
-            var springArrangements = SpringArrangements.GetPossibleArrangements(springConditions, contiguousGroups);
+            var springArrangements = new SpringArrangements();
+            var validArrangements = springArrangements.GetPossibleArrangements(springConditions, contiguousGroups);
 
-            springArrangements.Should().HaveCount(2);
-            springArrangements.Should().Contain("#..#.###");
-            springArrangements.Should().Contain("#.#..###");
+            validArrangements.Should().Be(2);
         }
 
         [Fact]
@@ -47,9 +46,10 @@ namespace aoc2023.day12.tests
             var springConditions = ".??..??...?##.";
             List<int> contiguousGroups = [1, 1, 3];
 
-            var springArrangements = SpringArrangements.GetPossibleArrangements(springConditions, contiguousGroups);
+            var springArrangements = new SpringArrangements();
+            var validArrangements = springArrangements.GetPossibleArrangements(springConditions, contiguousGroups);
 
-            springArrangements.Should().HaveCount(4);
+            validArrangements.Should().Be(4);
         }
 
         [Fact]
@@ -58,9 +58,10 @@ namespace aoc2023.day12.tests
             var springConditions = "????.######..#####.";
             List<int> contiguousGroups = [1, 6, 5];
 
-            var springArrangements = SpringArrangements.GetPossibleArrangements(springConditions, contiguousGroups);
+            var springArrangements = new SpringArrangements();
+            var validArrangements = springArrangements.GetPossibleArrangements(springConditions, contiguousGroups);
 
-            springArrangements.Should().HaveCount(4);
+            validArrangements.Should().Be(4);
         }
 
         [Fact]
@@ -69,9 +70,35 @@ namespace aoc2023.day12.tests
             var springConditions = "?###????????";
             List<int> contiguousGroups = [3, 2, 1];
 
-            var springArrangements = SpringArrangements.GetPossibleArrangements(springConditions, contiguousGroups);
+            var springArrangements = new SpringArrangements();
+            var validArrangements = springArrangements.GetPossibleArrangements(springConditions, contiguousGroups);
 
-            springArrangements.Should().HaveCount(10);
+            validArrangements.Should().Be(10);
+        }
+
+        [Fact]
+        public void SpringArrangementCanBeUnfolded()
+        {
+            var springConditions = ".#";
+            List<int> contiguousGroups = [1];
+
+            var unfoldedRecord = SpringArrangements.Unfold(springConditions, contiguousGroups);
+
+            unfoldedRecord.SpringConditions.Should().Be(".#?.#?.#?.#?.#");
+            unfoldedRecord.ContiguousCount.Should().HaveCount(5);
+            unfoldedRecord.ContiguousCount.All(c => c == 1).Should().BeTrue();
+        }
+
+        [Fact]
+        public void SpringArrangementCanBeUnfoldedWithUnknowns()
+        {
+            var springConditions = "???.###";
+            List<int> contiguousGroups = [1, 1, 3];
+
+            var unfoldedRecord = SpringArrangements.Unfold(springConditions, contiguousGroups);
+
+            unfoldedRecord.SpringConditions.Should().Be("???.###????.###????.###????.###????.###");
+            unfoldedRecord.ContiguousCount.Should().HaveCount(15);
         }
     }
 }
