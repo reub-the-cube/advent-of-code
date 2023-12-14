@@ -1,4 +1,6 @@
-﻿namespace aoc2023.day13
+﻿using static System.Formats.Asn1.AsnWriter;
+
+namespace aoc2023.day13
 {
     public class Pattern
     {
@@ -36,26 +38,21 @@
             return NumberOfLinesLeftOfReflection(false);
         }
 
-        public long SummarizeScore()
-        {
-            return SummarizeScore(false);
-        }
-
         public long SummarizeScore(bool checkForSmudges)
         {
-            long score;
+            long score = SummarizeHorizontalScore(checkForSmudges);
 
-            var numberOfLinesAboveReflection = NumberOfLinesAboveReflection(checkForSmudges);
-            if (numberOfLinesAboveReflection == -1)
+            if (score == 0)
             {
-                score = NumberOfLinesLeftOfReflection(checkForSmudges);
-            }
-            else
-            {
-                score = numberOfLinesAboveReflection * 100;
+                score = SummarizeVerticalScore(checkForSmudges);
             }
 
             return score;
+        }
+
+        public long SummarizeScore()
+        {
+            return SummarizeScore(false);
         }
 
         private List<string> TransposePattern()
@@ -77,40 +74,21 @@
 
             while (!fullyMirrored && adjacentRowIndex > -1)
             {
-                adjacentRowIndex = FindNextAdjacentRowIndex(adjacentRowIndex);
+                adjacentRowIndex = FindNextAdjacentRowIndex(adjacentRowIndex, checkForSmudges);
                 if (adjacentRowIndex > -1)
                 {
-                    string? preSmudgeRowOne = _pattern[adjacentRowIndex - 1];
-                    string? preSmudgeRowTwo = _pattern[adjacentRowIndex];
-                    var indexOfDifference = IndexOfDifference(preSmudgeRowOne, preSmudgeRowTwo);
-                    if (indexOfDifference > -1)
-                    {
-                        var newPattern = preSmudgeRowOne[..(indexOfDifference)] + "." + preSmudgeRowOne[(indexOfDifference + 1)..];
-                        _pattern[adjacentRowIndex - 1] = newPattern;
-                        _pattern[adjacentRowIndex] = newPattern;
-                    }
-                    fullyMirrored = IsFullyMirroredFromIndex(adjacentRowIndex);
-                    if (!fullyMirrored || (checkForSmudges && !_smudgeFound))
-                    {
-                        _pattern[adjacentRowIndex - 1] = preSmudgeRowOne;
-                        _pattern[adjacentRowIndex] = preSmudgeRowTwo;
-                        _checkForSmudges = checkForSmudges;
-                        fullyMirrored = false;
-                        _smudgeFound = false;
-                    }
+                    fullyMirrored = IsFullyMirroredFromIndex(adjacentRowIndex, checkForSmudges);
                 }
-            }
-
-            if (fullyMirrored && checkForSmudges && !_smudgeFound)
-            {
-                adjacentRowIndex = -1;
             }
 
             return adjacentRowIndex;
         }
 
-        private int FindNextAdjacentRowIndex(int startIndex)
+        private int FindNextAdjacentRowIndex(int startIndex, bool checkForSmudges)
         {
+            _checkForSmudges = checkForSmudges;
+            _smudgeFound = false;
+
             var matchingIndex = -1;
 
             for (int i = startIndex; i < _pattern.Count - 1; i++)
@@ -127,11 +105,15 @@
 
         private bool IsAdjacentRowMatching(string first, string second)
         {
-            bool isMatch = first == second;
+            bool isMatch = first == second; // Exact match
             if (!isMatch && _checkForSmudges)
             {
                 isMatch = IndexOfDifference(first, second) > -1;
-                if (isMatch) { _checkForSmudges = false; _smudgeFound = true; }
+                if (isMatch)
+                {
+                    _checkForSmudges = false;
+                    _smudgeFound = true;
+                }
             }
 
             return isMatch;
@@ -158,12 +140,13 @@
             return differenceIndex;
         }
 
-        private bool IsFullyMirroredFromIndex(int adjacentRowIndex)
+        private bool IsFullyMirroredFromIndex(int adjacentRowIndex, bool checkForSmudges)
         {
-            if (adjacentRowIndex < 0) return false;
+            _checkForSmudges = checkForSmudges;
+            _smudgeFound = false;
 
-            var aboveIndex = adjacentRowIndex - 2;
-            var belowIndex = adjacentRowIndex + 1;
+            var aboveIndex = adjacentRowIndex - 1;
+            var belowIndex = adjacentRowIndex;
             var isFullyMirrored = true;
 
             while (aboveIndex >= 0 && belowIndex < _pattern.Count && isFullyMirrored)
@@ -176,7 +159,23 @@
                 belowIndex++;
             }
 
+            if (checkForSmudges && !_smudgeFound)
+            {
+                isFullyMirrored = false;
+            }
+
             return isFullyMirrored;
+        }
+
+        private long SummarizeHorizontalScore(bool checkForSmudges)
+        {
+            var numberOfLinesAboveReflection = Math.Max(NumberOfLinesAboveReflection(checkForSmudges), 0);
+            return numberOfLinesAboveReflection * 100;
+        }
+
+        private long SummarizeVerticalScore(bool checkForSmudges)
+        {
+            return NumberOfLinesLeftOfReflection(checkForSmudges);
         }
     }
 }
