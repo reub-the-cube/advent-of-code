@@ -1,6 +1,4 @@
-﻿using static System.Formats.Asn1.AsnWriter;
-
-namespace aoc2023.day13
+﻿namespace aoc2023.day13
 {
     public class Pattern
     {
