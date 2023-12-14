@@ -41,66 +41,19 @@ namespace aoc2023.day14
 
             for (int i = 1; i < numberOfCycles + 1; i++)
             {
-                TiltNorth();
-                TiltWest();
-                TiltSouth();
-                TiltEast();
+                RunCycle();
 
                 if (!rockFormationIndexes.TryAdd(ToString(), i))
                 {
-                    // Repeated cycle
-                    // Repeat sequence is from now to previous
-                    var firstOccurence = rockFormationIndexes[ToString()];
-                    var step = i - firstOccurence;
-                    var targetOccurence = firstOccurence + ((numberOfCycles - i) % step);
-                    var remainder = targetOccurence - firstOccurence;
-                    RunCycles(remainder); // Get to 'numberOfCycles' state
+                    GetFinishingStateForManyCycles(rockFormationIndexes[ToString()], i, numberOfCycles);
                     break;
                 }
             }
         }
+
         public void TiltNorth()
         {
-            while (AnyRockCanRoll(Direction.North))
-            {
-                for (var i = 0; i < Rocks.GetUpperBound(0) + 1; i++)
-                {
-                    RollRowOfRocksNorth(i);
-                }
-            }
-        }
-
-        private void TiltWest()
-        {
-            while (AnyRockCanRoll(Direction.West))
-            {
-                for (var i = 0; i < Rocks.GetUpperBound(0) + 1; i++)
-                {
-                    RollRowOfRocksWest(i);
-                }
-            }
-        }
-
-        private void TiltSouth()
-        {
-            while (AnyRockCanRoll(Direction.South))
-            {
-                for (var i = 0; i < Rocks.GetUpperBound(0) + 1; i++)
-                {
-                    RollRowOfRocksSouth(i);
-                }
-            }
-        }
-
-        private void TiltEast()
-        {
-            while (AnyRockCanRoll(Direction.East))
-            {
-                for (var i = 0; i < Rocks.GetUpperBound(0) + 1; i++)
-                {
-                    RollRowOfRocksEast(i);
-                }
-            }
+            Tilt(Direction.North);
         }
 
         public RockType GetRockAtPosition(int row, int column)
@@ -140,6 +93,35 @@ namespace aoc2023.day14
             }
         }
 
+        private void RunCycle()
+        {
+            Tilt(Direction.North);
+            Tilt(Direction.West);
+            Tilt(Direction.South);
+            Tilt(Direction.East);
+        }
+
+        private void Tilt(Direction direction)
+        {
+            while (AnyRockCanRoll(direction))
+            {
+                for (var i = 0; i < Rocks.GetUpperBound(0) + 1; i++)
+                {
+                    RollRowOfRocks(i, direction);
+                }
+            }
+        }
+
+        private void GetFinishingStateForManyCycles(int firstOccurence, int currentCycle, int numberOfCycles)
+        {
+            // Repeated cycle
+            // Repeat sequence is from now to previous
+            var step = currentCycle - firstOccurence;
+            var targetOccurence = firstOccurence + ((numberOfCycles - currentCycle) % step);
+            var remainder = targetOccurence - firstOccurence;
+            RunCycles(remainder); // Get to final 'numberOfCycles' state
+        }
+
         private static RockType GetRockType(char formationCharacter)
         {
             return formationCharacter switch
@@ -151,49 +133,14 @@ namespace aoc2023.day14
             };
         }
 
-        private void RollRowOfRocksNorth(int row)
+        private void RollRowOfRocks(int row, Direction direction)
         {
             for (var j = 0; j < Rocks.GetUpperBound(1) + 1; j++)
             {
-                if (RockCanRoll(row, j, Direction.North))
+                var (CanRoll, AdjacentPosition) = RockCanRoll(row, j, direction);
+                if (CanRoll && AdjacentPosition.HasValue)
                 {
-                    SetRockPosition(row - 1, j, RockType.Rounded);
-                    SetRockPosition(row, j, RockType.None);
-                }
-            }
-        }
-
-        private void RollRowOfRocksWest(int row)
-        {
-            for (var j = 0; j < Rocks.GetUpperBound(1) + 1; j++)
-            {
-                if (RockCanRoll(row, j, Direction.West))
-                {
-                    SetRockPosition(row, j - 1, RockType.Rounded);
-                    SetRockPosition(row, j, RockType.None);
-                }
-            }
-        }
-
-        private void RollRowOfRocksSouth(int row)
-        {
-            for (var j = 0; j < Rocks.GetUpperBound(1) + 1; j++)
-            {
-                if (RockCanRoll(row, j, Direction.South))
-                {
-                    SetRockPosition(row + 1, j, RockType.Rounded);
-                    SetRockPosition(row, j, RockType.None);
-                }
-            }
-        }
-
-        private void RollRowOfRocksEast(int row)
-        {
-            for (var j = 0; j < Rocks.GetUpperBound(1) + 1; j++)
-            {
-                if (RockCanRoll(row, j, Direction.East))
-                {
-                    SetRockPosition(row, j + 1, RockType.Rounded);
+                    SetRockPosition(AdjacentPosition.Value.Row, AdjacentPosition.Value.Column, RockType.Rounded);
                     SetRockPosition(row, j, RockType.None);
                 }
             }
@@ -205,17 +152,15 @@ namespace aoc2023.day14
             Rocks[row, column] = new RockPosition(thisPosition, rockType);
         }
 
-        private bool RockCanRoll(int row, int column, Direction direction)
+        private (bool CanRoll, Position? AdjacentPosition) RockCanRoll(int row, int column, Direction direction)
         {
             var adjacentPosition = GetAdjacentPosition(row, column, direction);
 
-            bool canRoll = Rocks[row, column].RockType == RockType.Rounded && adjacentPosition.HasValue;
-            if (canRoll)
-            {
-                canRoll = Rocks[adjacentPosition.Value.Row, adjacentPosition.Value.Column].RockType == RockType.None;
-            }
+            bool canRoll = adjacentPosition.HasValue && 
+                Rocks[row, column].RockType == RockType.Rounded &&
+                Rocks[adjacentPosition.Value.Row, adjacentPosition.Value.Column].RockType == RockType.None;
 
-            return canRoll;
+            return (canRoll, adjacentPosition);
         }
 
         private Position? GetAdjacentPosition(int row, int column, Direction direction)
@@ -265,7 +210,7 @@ namespace aoc2023.day14
             {
                 for (int j = 0; j < Rocks.GetUpperBound(1) + 1; j++)
                 {
-                    if (RockCanRoll(i, j, direction))
+                    if (RockCanRoll(i, j, direction).CanRoll)
                     {
                         anyRockCanRoll = true;
                         break;
