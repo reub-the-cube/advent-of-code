@@ -8,5 +8,13 @@
             Cubed = 1,
             Rounded = 2
         }
+
+        public enum Direction
+        {
+            North,
+            West,
+            South,
+            East
+        }
     }
 }

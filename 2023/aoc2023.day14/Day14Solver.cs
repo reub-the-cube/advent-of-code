@@ -16,17 +16,20 @@ public class Day14Solver : IDaySolver
     {
         var parsedInput = _parser.ParseInput(input);
 
-        var answerOne = CalculateAnswerOne();
-        var answerTwo = CalculateAnswerTwo();
+        var answerOne = CalculateAnswerOne(parsedInput.RockFormation);
+        var answerTwo = CalculateAnswerTwo(parsedInput.RockFormation);
 
         return (answerOne, answerTwo);
     }
 
-    private static string CalculateAnswerOne()
+    private static string CalculateAnswerOne(List<string> rockFormation)
     {
         try
         {
-            throw new NotImplementedException();
+            var platform = new Platform(rockFormation);
+            platform.TiltNorth();
+            var load = platform.CalculateLoad();
+            return $"{load}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
@@ -34,11 +37,14 @@ public class Day14Solver : IDaySolver
         }
     }
 
-    private static string CalculateAnswerTwo()
+    private static string CalculateAnswerTwo(List<string> rockFormation)
     {
         try
         {
-            throw new NotImplementedException();
+            var platform = new Platform(rockFormation);
+            platform.RunCycles(1000000000);
+            var load = platform.CalculateLoad();
+            return $"{load}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
