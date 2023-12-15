@@ -17,7 +17,7 @@ public class Day15Solver : IDaySolver
         var parsedInput = _parser.ParseInput(input);
 
         var answerOne = CalculateAnswerOne(parsedInput.InitialisationSequenceSteps);
-        var answerTwo = CalculateAnswerTwo();
+        var answerTwo = CalculateAnswerTwo(parsedInput.InitialisationSequenceSteps);
 
         return (answerOne, answerTwo);
     }
@@ -35,11 +35,27 @@ public class Day15Solver : IDaySolver
         }
     }
 
-    private static string CalculateAnswerTwo()
+    private static string CalculateAnswerTwo(List<string> initialisationSequenceSteps)
     {
         try
         {
-            return "TODO";
+            var stepHandler = new StepHandler();
+            foreach (var step in initialisationSequenceSteps)
+            {
+                stepHandler.ProcessStep(step);
+            }
+
+            long focusPower = 0;
+            for (var boxNumber = 0; boxNumber < 256; boxNumber++)
+            {
+                var lenses = stepHandler.GetLenses(boxNumber);
+                focusPower += FocusPower.Calculate(boxNumber, lenses);
+            }
+            return $"{focusPower}";
+
+            // Wrong answers 
+            // Too high 246309
+            // Too low  242594
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
