@@ -118,7 +118,7 @@ namespace aoc2023.day15.tests
         {
             var input = "abc-";
 
-            var step = StepHandler.ParseStep(input);
+            var step = StepParser.Parse(input);
 
             step.Lens.Label.Should().Be("abc");
             step.Lens.FocalLength.Should().Be(-1);
@@ -130,7 +130,7 @@ namespace aoc2023.day15.tests
         {
             var input = "abc=9";
 
-            var step = StepHandler.ParseStep(input);
+            var step = StepParser.Parse(input);
 
             step.Lens.Label.Should().Be("abc");
             step.Lens.FocalLength.Should().Be(9);

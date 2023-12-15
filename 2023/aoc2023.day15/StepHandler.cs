@@ -53,37 +53,8 @@ namespace aoc2023.day15
 
         public int ProcessStep(string input)
         {
-            var step = ParseStep(input);
+            var step = StepParser.Parse(input);
             return ProcessStep(step);
-        }
-
-        public static Step ParseStep(string input)
-        {
-            if (input.EndsWith('-'))
-            {
-                return ParseRemoveStep(input);
-            }
-
-            if (input.Contains('='))
-            {
-                return ParseAddStep(input);
-            }
-
-            throw new NotImplementedException();
-        }
-
-        private static Step ParseRemoveStep(string input)
-        {
-            var lensLabel = input[..^1];
-            var lens = new Lens(lensLabel, -1);
-            return new Step(lens, Enums.StepOperator.Remove);
-        }
-
-        private static Step ParseAddStep(string input)
-        {
-            var lensConfiguration = input.Split('=');
-            var lens = new Lens(lensConfiguration[0], int.Parse(lensConfiguration[1]));
-            return new Step(lens, Enums.StepOperator.Add);
         }
 
         private int ProcessStep(Step step)
@@ -113,6 +84,38 @@ namespace aoc2023.day15
 
             _stepCounter++;
             return isNewLabel;
+        }
+    }
+
+    public static class StepParser
+    {
+        public static Step Parse(string input)
+        {
+            if (input.EndsWith('-'))
+            {
+                return ParseRemoveStep(input);
+            }
+
+            if (input.Contains('='))
+            {
+                return ParseAddStep(input);
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private static Step ParseRemoveStep(string input)
+        {
+            var lensLabel = input[..^1];
+            var lens = new Lens(lensLabel, -1);
+            return new(lens, Enums.StepOperator.Remove);
+        }
+
+        private static Step ParseAddStep(string input)
+        {
+            var lensConfiguration = input.Split('=');
+            var lens = new Lens(lensConfiguration[0], int.Parse(lensConfiguration[1]));
+            return new(lens, Enums.StepOperator.Add);
         }
     }
 }
