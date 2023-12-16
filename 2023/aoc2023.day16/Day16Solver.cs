@@ -1,5 +1,6 @@
 using AoC.Core;
 using aoc2023.day16.domain;
+using static aoc2023.day16.Enums;
 
 namespace aoc2023.day16;
 
@@ -17,7 +18,7 @@ public class Day16Solver : IDaySolver
         var parsedInput = _parser.ParseInput(input);
 
         var answerOne = CalculateAnswerOne(parsedInput.ContraptionLayout);
-        var answerTwo = CalculateAnswerTwo();
+        var answerTwo = CalculateAnswerTwo(parsedInput.ContraptionLayout);
 
         return (answerOne, answerTwo);
     }
@@ -37,11 +38,36 @@ public class Day16Solver : IDaySolver
         }
     }
 
-    private static string CalculateAnswerTwo()
+    private static string CalculateAnswerTwo(List<string> contraptionLayout)
     {
         try
         {
-            return "TODO";
+            int rowCount = contraptionLayout.Count;
+            int columnCount = contraptionLayout[0].Length;
+            int maxEnergisedTiles = 0;
+
+            for (var startingRow = 0; startingRow < rowCount; startingRow++)
+            {
+                var contraption = new Contraption(contraptionLayout);
+                contraption.FillWithLight(startingRow, 0, Direction.Right);
+                maxEnergisedTiles = Math.Max(maxEnergisedTiles, contraption.UniqueEnergisedTiles.Count);
+
+                contraption = new Contraption(contraptionLayout);
+                contraption.FillWithLight(startingRow, columnCount - 1, Direction.Left);
+                maxEnergisedTiles = Math.Max(maxEnergisedTiles, contraption.UniqueEnergisedTiles.Count);
+            }
+
+            for (var startingColumn = 0; startingColumn < columnCount; startingColumn++)
+            {
+                var contraption = new Contraption(contraptionLayout);
+                contraption.FillWithLight(0, startingColumn, Direction.Down);
+                maxEnergisedTiles = Math.Max(maxEnergisedTiles, contraption.UniqueEnergisedTiles.Count);
+
+                contraption = new Contraption(contraptionLayout);
+                contraption.FillWithLight(rowCount - 1, startingColumn, Direction.Down);
+                maxEnergisedTiles = Math.Max(maxEnergisedTiles, contraption.UniqueEnergisedTiles.Count);
+            }
+            return $"{maxEnergisedTiles}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
