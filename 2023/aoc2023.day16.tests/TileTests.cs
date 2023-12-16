@@ -75,9 +75,9 @@ namespace aoc2023.day16.tests
         }
 
         [Theory]
-        [InlineData(Direction.Left, Direction.Up)]
+        [InlineData(Direction.Left, Direction.Down)]
         [InlineData(Direction.Up, Direction.Right)]
-        [InlineData(Direction.Right, Direction.Down)]
+        [InlineData(Direction.Right, Direction.Up)]
         [InlineData(Direction.Down, Direction.Left)]
         public void ExitDirectionOfTravelIsLeftUpOrUpRightOrRightDownOrDownLeftFromEntryDirectionForForwardSlashMirror(Direction entryDirection, Direction exitDirection)
         {
@@ -90,9 +90,9 @@ namespace aoc2023.day16.tests
         }
 
         [Theory]
-        [InlineData(Direction.Left, Direction.Down)]
+        [InlineData(Direction.Left, Direction.Up)]
         [InlineData(Direction.Up, Direction.Left)]
-        [InlineData(Direction.Right, Direction.Up)]
+        [InlineData(Direction.Right, Direction.Down)]
         [InlineData(Direction.Down, Direction.Right)]
         public void ExitDirectionOfTravelIsLeftDownOrUpLeftOrRightUpOrDownRightFromEntryDirectionForForwardSlashMirror(Direction entryDirection, Direction exitDirection)
         {

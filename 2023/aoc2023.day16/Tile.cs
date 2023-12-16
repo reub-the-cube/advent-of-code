@@ -49,9 +49,9 @@ namespace aoc2023.day16
     {
         protected override Dictionary<Direction, List<Direction>> EntryExitDirections => new()
         {
-            { Direction.Left, new() { Direction.Up } },
+            { Direction.Left, new() { Direction.Down } },
             { Direction.Up, new() { Direction.Right } },
-            { Direction.Right, new() { Direction.Down } },
+            { Direction.Right, new() { Direction.Up } },
             { Direction.Down, new() { Direction.Left } }
         };
     }
@@ -60,9 +60,9 @@ namespace aoc2023.day16
     {
         protected override Dictionary<Direction, List<Direction>> EntryExitDirections => new()
         {
-            { Direction.Left, new() { Direction.Down } },
+            { Direction.Left, new() { Direction.Up } },
             { Direction.Up, new() { Direction.Left } },
-            { Direction.Right, new() { Direction.Up } },
+            { Direction.Right, new() { Direction.Down } },
             { Direction.Down, new() { Direction.Right } }
         };
     }

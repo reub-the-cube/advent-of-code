@@ -7,7 +7,8 @@ namespace aoc2023.day16
     {
         public Input ParseInput(string[] input)
         {
-            throw new NotImplementedException();
+            var parsedInput = new Input(input.ToList());
+            return parsedInput;
         }
     }
 }

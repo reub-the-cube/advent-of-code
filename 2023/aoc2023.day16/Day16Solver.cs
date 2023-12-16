@@ -16,17 +16,20 @@ public class Day16Solver : IDaySolver
     {
         var parsedInput = _parser.ParseInput(input);
 
-        var answerOne = CalculateAnswerOne();
+        var answerOne = CalculateAnswerOne(parsedInput.ContraptionLayout);
         var answerTwo = CalculateAnswerTwo();
 
         return (answerOne, answerTwo);
     }
 
-    private static string CalculateAnswerOne()
+    private static string CalculateAnswerOne(List<string> contraptionLayout)
     {
         try
         {
-            throw new NotImplementedException();
+            var contraption = new Contraption(contraptionLayout);
+            contraption.FillWithLight(0, 0, Enums.Direction.Right);
+            var energisedTiles = contraption.UniqueEnergisedTiles;
+            return $"{energisedTiles.Count}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
