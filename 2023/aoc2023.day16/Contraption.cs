@@ -23,12 +23,6 @@ namespace aoc2023.day16
 
         public void FillWithLight(int row, int column, Direction heading)
         {
-            _energisedTiles.Add((row, column, heading));
-            MoveToNextTile(row, column, heading);
-        }
-
-        public void Enter(int row, int column, Direction heading)
-        {
             if (_energisedTiles.Contains((row, column, heading))) return;
 
             _energisedTiles.Add((row, column, heading));
@@ -53,7 +47,7 @@ namespace aoc2023.day16
 
             if (IsInBounds(NextRow, NextColumn))
             {
-                Enter(NextRow, NextColumn, heading);
+                FillWithLight(NextRow, NextColumn, heading);
             }
         }
 

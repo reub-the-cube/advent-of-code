@@ -14,7 +14,7 @@ namespace aoc2023.day16.tests
             ];
             var contraption = new Contraption(input);
 
-            contraption.Enter(0, 0, Direction.Right);
+            contraption.FillWithLight(0, 0, Direction.Right);
 
             var energisedTiles = contraption.EnergisedTiles;
 
@@ -100,6 +100,23 @@ namespace aoc2023.day16.tests
             var energisedTiles = contraption.UniqueEnergisedTiles;
 
             energisedTiles.Count.Should().Be(7);
+        }
+
+        [Fact]
+        public void FillingWithLightReactsToMirrorInFirstPosition()
+        {
+            List<string> input = [
+                @"\/.",
+                @"..."
+            ];
+            var contraption = new Contraption(input);
+
+            contraption.FillWithLight(0, 0, Direction.Right);
+
+            var energisedTiles = contraption.UniqueEnergisedTiles;
+
+            energisedTiles.Count.Should().Be(2);
+            energisedTiles.Contains((1, 0));
         }
     }
 }
