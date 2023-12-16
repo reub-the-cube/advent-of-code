@@ -69,6 +69,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc2023.day16", "aoc2023.da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc2023.day16.tests", "aoc2023.day16.tests\aoc2023.day16.tests.csproj", "{01E60D4F-B587-4ADB-AAD5-245260CC37D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc2023.day17", "aoc2023.day17\aoc2023.day17.csproj", "{98505C87-09C6-4BBD-A7DC-25EBCD5E3629}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc2023.day17.tests", "aoc2023.day17.tests\aoc2023.day17.tests.csproj", "{583305DC-C227-476A-8415-5022E140C9B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -210,5 +214,13 @@ Global
 		{01E60D4F-B587-4ADB-AAD5-245260CC37D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01E60D4F-B587-4ADB-AAD5-245260CC37D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01E60D4F-B587-4ADB-AAD5-245260CC37D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98505C87-09C6-4BBD-A7DC-25EBCD5E3629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98505C87-09C6-4BBD-A7DC-25EBCD5E3629}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98505C87-09C6-4BBD-A7DC-25EBCD5E3629}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98505C87-09C6-4BBD-A7DC-25EBCD5E3629}.Release|Any CPU.Build.0 = Release|Any CPU
+		{583305DC-C227-476A-8415-5022E140C9B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{583305DC-C227-476A-8415-5022E140C9B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{583305DC-C227-476A-8415-5022E140C9B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{583305DC-C227-476A-8415-5022E140C9B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
