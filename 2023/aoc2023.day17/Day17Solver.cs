@@ -16,17 +16,19 @@ public class Day17Solver : IDaySolver
     {
         var parsedInput = _parser.ParseInput(input);
 
-        var answerOne = CalculateAnswerOne();
+        var answerOne = CalculateAnswerOne(parsedInput.HeatLossMap);
         var answerTwo = CalculateAnswerTwo();
 
         return (answerOne, answerTwo);
     }
 
-    private static string CalculateAnswerOne()
+    private static string CalculateAnswerOne(List<List<int>> heatLossMap)
     {
         try
         {
-            throw new NotImplementedException();
+            var trafficMap = new TrafficPattern(heatLossMap);
+            var leastHeatLoss = trafficMap.GetLeastHeatLossPath(new Position(0, 0), new Position(heatLossMap.Count - 1, heatLossMap[0].Count - 1));
+            return $"{leastHeatLoss}";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {
@@ -38,7 +40,7 @@ public class Day17Solver : IDaySolver
     {
         try
         {
-            throw new NotImplementedException();
+            return "TODO";
         }
         catch (Exception e) when (e.GetType() != typeof(NotImplementedException))
         {

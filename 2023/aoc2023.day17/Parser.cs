@@ -7,7 +7,8 @@ namespace aoc2023.day17
     {
         public Input ParseInput(string[] input)
         {
-            throw new NotImplementedException();
+            var trafficPattern = input.Select(i => i.Chunk(1).Select(c => int.Parse(c)).ToList()).ToList();
+            return new Input(trafficPattern);
         }
     }
 }

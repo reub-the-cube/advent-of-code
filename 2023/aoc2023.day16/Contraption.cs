@@ -10,7 +10,8 @@ namespace aoc2023.day16
         public HashSet<(int Row, int Column, Direction Heading)> EnergisedTiles => _energisedTiles;
         public HashSet<(int Row, int Column)> UniqueEnergisedTiles => _energisedTiles
             .GroupBy(t => (t.Row, t.Column))
-            .Select(s => s.Key).ToHashSet();
+            .Select(s => s.Key)
+            .ToHashSet();
 
         public Contraption(List<string> layout)
         {
